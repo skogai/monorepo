@@ -1,0 +1,1 @@
+- [ ] quickly add fnox-claude-code-key  and basic encryption via mise dotfiles/bootstrap
