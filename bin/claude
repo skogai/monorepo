@@ -1,0 +1,6 @@
+#!/usr/bin/env bash
+
+source ~/.ssh/SKOGAI_CLAUDE_CODE_OAUTH_TOKEN.env
+export CLAUDE_CODE_OAUTH_TOKEN="$SKOGAI_CLAUDE_CODE_OAUTH_TOKEN"
+
+claude "$@"
