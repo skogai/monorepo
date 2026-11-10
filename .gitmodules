@@ -1,0 +1,6 @@
+[submodule "skogai"]
+	path = skogai
+	url = https://github.com/skogai/skogai
+[submodule "skogix"]
+	path = skogix
+	url = https://github.com/skogai/skogix

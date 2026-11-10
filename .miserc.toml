@@ -1,0 +1,3 @@
+env = ["skogai"]
+auto_install = true
+env_conf_d = true
