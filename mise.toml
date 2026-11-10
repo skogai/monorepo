@@ -1,7 +1,7 @@
 monorepo_root = true
 
-# [plugins]
-# skogai = "https://github.com/skogai/mise-plugin"
+[plugins]
+skogai = "https://github.com/skogai/mise-plugin"
 
 [env]
 # _.skogai = { api_key = " env key" } # this would be installed by the plugins.skogai above
