@@ -1,6 +1,7 @@
 monorepo_root = true
 
 [env]
+_.skogai = { test = "test test" }
 SKOGAI_HELLO_GREETING = "hello from the monorepo root!"
 
 [monorepo]
