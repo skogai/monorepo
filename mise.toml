@@ -1,10 +1,4 @@
 [tools]
-adr-tools = "latest"
-herdr = "latest"
-lazygit = "latest"
-"npm:@tobilu/qmd" = "latest"
 usage = { version = "latest", workflow = "publish-cli.yml" }
-uv = "latest"
 worktrunk = { version = "latest", workflow = "release.yaml" }
 
-[tasks.adr]
