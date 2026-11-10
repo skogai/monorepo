@@ -4,11 +4,13 @@ monorepo_root = true
 # skogai = "https://github.com/skogai/mise-plugin"
 
 [env]
-_.skogai = { api_key = "test test" }
+# _.skogai = { api_key = " env key" } # this would be installed by the plugins.skogai above
+_.skogai-develop = { api_key = "test env key" } # this is a simple symlink / mise plugins link
 SKOGAI_HELLO_GREETING = "hello from the monorepo root!"
 
 [monorepo]
 # config_roots = ["skogai","skogix"]
+config_roots = ["mise-plugin"]
 
 [tools]
 usage = { version = "latest", workflow = "publish-cli.yml" }
@@ -33,6 +35,8 @@ run = 'echo "MONOREPO: $SKOGAI_HELLO_GREETING $usage_who" | tee /tmp/greeting.tx
 # [tasks.build]
 # depends = ["//libs/shared:build", ":lint"]
 # run = "npm run build"
+
+# mise ls --local --monorepo
  
 # mise tasks --all
 # mise install --monorepo
