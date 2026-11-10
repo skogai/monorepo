@@ -1,20 +1,23 @@
 monorepo_root = true
 
+# [plugins]
+# skogai = "https://github.com/skogai/mise-plugin"
+
 [env]
-_.skogai = { test = "test test" }
+_.skogai = { api_key = "test test" }
 SKOGAI_HELLO_GREETING = "hello from the monorepo root!"
 
 [monorepo]
-config_roots = ["skogai","skogix"]
+# config_roots = ["skogai","skogix"]
 
 [tools]
 usage = { version = "latest", workflow = "publish-cli.yml" }
 worktrunk = { version = "latest", workflow = "release.yaml" }
 
-[_.skogai.hello]
-description = "greet someone and keep the greeting in /tmp/greeting.txt"
-owns = ["/tmp/greeting.txt"]
-writes = ["/tmp/greeting.txt"]
+# [_.skogai.hello]
+# description = "greet someone and keep the greeting in /tmp/greeting.txt"
+# owns = ["/tmp/greeting.txt"]
+# writes = ["/tmp/greeting.txt"]
 
 [tasks.hello]
 usage = 'arg "<who>"'
