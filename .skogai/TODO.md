@@ -1,1 +1,0 @@
-- [ ] config;basic encryption via mise dotfiles/bootstrap
