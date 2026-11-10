@@ -4,3 +4,6 @@
 [submodule "skogix"]
 	path = skogix
 	url = https://github.com/skogai/skogix
+[submodule "mise-plugin"]
+	path = mise-plugin
+	url = https://github.com/skogai/mise-plugin
