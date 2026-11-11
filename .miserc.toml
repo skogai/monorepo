@@ -1,3 +1,6 @@
+# Read before any mise.toml, so it can steer which config files load.
+# The default environment; `mise -E <name>` or MISE_ENV replaces it.
 env = ["skogai"]
-auto_install = true
+# Load conf.d/<name>.<env>.toml only when <env> is selected.
 env_conf_d = true
+auto_install = true
