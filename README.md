@@ -7,7 +7,7 @@ The starting workspace for SkogAI 3.0: document the setup already in use, test i
 - [Starting tools decision](doc/adr/0001-starting-tools.md)
 - [Setup evidence and next experiments](.skogai/tests/2026-11-10-setup.md)
 - [Research](.skogai/research/)
-- [Backlog](skogix/.skogai/todo.list) (private submodule)
+- [Backlog](skogix/.skogai/todo.list)
 
 The workspace is composed of the `skogai`, `skogix`, and `mise-plugin` Git submodules. Several agents work here in parallel on different machines; `AGENTS.md` explains what that requires.
 
