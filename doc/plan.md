@@ -70,6 +70,7 @@ Check: the same commands give the same results in a second checkout on a second 
 
 - Document how the owner starts work in T3 Code and what herdr and worktrunk do.
 - Take one small documentation change from request through branch, edit, validation, review, and completion. Record what the human decides, what the agent does, and where results are stored.
+- If messaging between sessions is part of the workflow, test delivery and reply separately and record both. No messaging test has run.
 - Try a pull request and CI round trip only once that workflow is chosen.
 
 Check: one change has a traceable request, diff, verification result, and completion record.
