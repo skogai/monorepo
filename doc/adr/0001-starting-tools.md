@@ -25,6 +25,6 @@ This record does not select a language, database, retrieval system, ticket track
 
 These tools appear in the repository or its history without a decision record. Each needs its own ADR before it counts as chosen:
 
-- `worktrunk` and `usage`: pinned in the root `mise.toml`.
+- `worktrunk` and `usage`: listed in the root `mise.toml`, both at version `latest`.
 - `adr-tools`, `qmd`, `uv`, `lazygit`: listed in `mise.toml` until commit `6d0ce28` removed them.
 - `fnox` and `age`: reported as installed on one workstation; the backlog asks for "basic encryption via mise dotfiles/bootstrap" without naming a mechanism.

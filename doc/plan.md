@@ -16,7 +16,7 @@ Work here is done by several agents in parallel on different machines. [AGENTS.m
 
 The [Claude survey](../.skogai/research/monorepo-claude.md), [Codex defaults](../.skogai/research/monorepo-codex.md), and [Gemini proposal](../.skogai/research/monorepo-gemini.md) are inputs. Their external statistics have not been reverified, and their claims about existing Python, database, or Notion usage are not established by this repository.
 
-All three agree on Markdown in Git, short decision records, text search with `rg` or `git grep` before any retrieval layer, a fresh-clone README, and one small end-to-end workflow test. Carry those forward.
+All three agree on Markdown in Git and on text search with `rg` or `git grep` before any retrieval layer. The Claude survey and the Gemini proposal name decision records. The Codex defaults and the Gemini proposal ask for a fresh-clone README. Only the Codex defaults propose one small end-to-end workflow test. This plan carries all five forward as its own choices.
 
 Defer the rest until a recorded need appears, each with its own ADR:
 
