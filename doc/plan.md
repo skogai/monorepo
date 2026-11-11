@@ -167,3 +167,7 @@ These are documentation observations, not runtime verification. Recheck them aga
 - [Package-manager plugins](https://mise.jdx.dev/bootstrap/packages/plugins.html)
 - [packslip backend](https://mise.jdx.dev/dev-tools/backends/packslip.html)
 - [Packaged documentation and completions](https://mise.jdx.dev/dev-tools/packslip-resources.html)
+
+## Next documentation experiment: current work and wiki
+
+The 2026-11-11 request for ongoing-work documentation motivates a small Open Knowledge pilot. Start with [current work](current-work.md), then follow the [research proposal](../.skogai/research/openknowledge-codex.md). Reconcile installed CLI behavior with the fork documentation, verify a pinned mise installation, and trial local validation/search/browsing before considering publication. This is a proposed experiment, not an accepted hosting or migration decision, and follows the isolated mise runner in milestone 1. Coordinate its installation and documentation access with milestone 2; it does not reorder the five milestones.
