@@ -3,6 +3,8 @@
 The starting workspace for SkogAI 3.0: document the setup already in use, test it in small steps, and build from the results.
 
 - [Agent instructions](AGENTS.md)
+- [Current work](doc/current-work.md)
+- [Open Knowledge wiki proposal](.skogai/research/openknowledge-codex.md)
 - [Setup plan](doc/plan.md)
 - [Starting tools decision](doc/adr/0001-starting-tools.md)
 - [Setup evidence and next experiments](.skogai/tests/2026-11-10-setup.md)
