@@ -18,7 +18,7 @@ Your output will be read next to other agents' output for the same task, produce
 
 1. **Identify the run.** State the agent, harness, machine, checkout path, and base commit in the pull request description and in any evidence you record. Name the branch so the agent and machine are visible, as in `t3/claude-laptop`.
 2. **Separate what you read from what you ran.** A source observation is not a passing test. For each claim say which it is, and list what you did not run.
-3. **Say where each fact lives.** A fact comes from tracked files in this repository, from a submodule, or from the machine: `~/.config/mise`, `/etc/mise`, dotfiles, installed tools. A machine fact holds for that machine only. Other agents may not be able to see it or reproduce it.
+3. **Say where each fact lives.** A fact comes from tracked files in this repository, from a submodule, or from the machine: `~/.config/mise`, `/etc/mise`, dotfiles, operating system packages, installed tools. A machine fact holds for that machine only. Other agents may not be able to see it or reproduce it.
 4. **Make machine dependencies explicit.** If a step needs anything outside the checkout, record it as a prerequisite. A check that passes on one workstation does not show the setup is reproducible.
 5. **Do not turn proposals into decisions.** Decisions are the records in `doc/adr/`. Research notes, files removed from Git history, and tools that happen to be installed are inputs. If something is undecided, list it as an open question.
 6. **Keep the shared layout.** Put files where the table below says, so that parallel runs produce diffs of the same paths.
@@ -30,6 +30,7 @@ Your output will be read next to other agents' output for the same task, produce
 |---|---|
 | `README.md` | Entry point. Setup commands go here once they are verified. |
 | `AGENTS.md` | This file. |
+| `CLAUDE.md` | One line that imports this file, so Claude Code loads it. A harness that reads neither file needs its own pointer here. |
 | `doc/plan.md` | The current working plan. |
 | `doc/adr/` | Decisions, as Context / Decision / Consequences with a status. |
 | `.skogai/research/` | Research inputs, kept as written by the agent that produced them. |

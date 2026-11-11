@@ -30,6 +30,7 @@ Defer the rest until a recorded need appears, each with its own ADR:
 - Which parts of the global and system mise configuration belong in the repository or the plugin, and which are workstation prerequisites.
 - Whether `SKOGAI_MONOREPO_DIR` should identify the checkout or a fixed home directory.
 - herdr's role, and how T3 Code, herdr, and worktrunk fit together.
+- What `.miserc.toml` is for. It selects a `skogai` mise environment, but the repository has no `mise.skogai.toml`.
 - What the legacy SkogAI repositories and names map to, and whether submodules are a lasting choice or a transition.
 - Whether the tools listed as undecided in ADR 0001 are chosen.
 
@@ -55,7 +56,9 @@ Check: `rg -n --hidden 'Starting tools' doc` finds ADR 0001.
 
 ### 2. Make the mise setup repeatable
 
-- Document how the `skogai-develop` plugin link is created, separately from using the remote `skogai` plugin.
+- Document how the `skogai-develop` plugin link is created, separately from using the remote `skogai` plugin. The submodule's relative `gitdir: ../.git/modules/mise-plugin` is a known trap when the link is made by hand.
+- Explain `.miserc.toml`: which files `env = ["skogai"]` and `env_conf_d = true` load on a fresh clone, and what `auto_install = true` installs without asking.
+- List which starting tools come from operating system packages instead of mise, per machine.
 - Run `mise run hello skogai` and check the output and the `/tmp/greeting.txt` side effect.
 - Verify the environment and PATH hooks from the root and from `mise-plugin`.
 - Establish a lint invocation that checks all intended files. The current one exits 0 having checked none.

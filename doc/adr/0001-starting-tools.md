@@ -18,6 +18,7 @@ Start with mise, T3 Code, herdr, Git, and Arch Linux with Omarchy workstations. 
 - The existing mise setup, the Git submodule structure, and the mise plugin are the baseline to inspect.
 - T3 Code's and herdr's actual workflow is captured from use before any automation is specified.
 - Workstation assumptions are recorded in the bootstrap instructions.
+- The starting tools are not all installed through mise. A tool that comes from an Arch or Omarchy package is a workstation prerequisite, not repository configuration, and is recorded as one.
 
 ## Not decided here
 
@@ -28,3 +29,5 @@ These tools appear in the repository or its history without a decision record. E
 - `worktrunk` and `usage`: listed in the root `mise.toml`, both at version `latest`.
 - `adr-tools`, `qmd`, `uv`, `lazygit`: listed in `mise.toml` until commit `6d0ce28` removed them.
 - `fnox` and `age`: reported as installed on one workstation; the backlog asks for "basic encryption via mise dotfiles/bootstrap" without naming a mechanism.
+
+Numbering is also open. `6d0ce28` removed an earlier `0001-record-architecture-decisions.md`, the adr-tools default, and this record reuses the number. If adr-tools is adopted, `adr init` will want to create its own 0001.
