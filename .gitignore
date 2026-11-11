@@ -4,3 +4,5 @@
 /wiki-site/
 /wiki-exports/
 wiki/.openknowledge/
+/.claude/settings.local.json
+/wiki/insights/

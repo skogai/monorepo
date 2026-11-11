@@ -31,3 +31,18 @@ Machine prerequisites: existing mise, Git, Open Knowledge, Python (one-off editi
 MCP experiment: launched `openknowledge mcp wiki` through Python subprocess with one newline-delimited JSON-RPC initialize request (protocolVersion 2025-11-25, clientInfo name wiki-check/version 1, empty capabilities); asserted response contains `result`, then process exited. Pass for initialization only; resource/tool calls not tested.
 
 Not run: clean installation, second machine, hosted CI, browser interaction, production runtime/deploy, scheduled agents, external connections, usage collection, evidence pinning, typed claim approval, semantic SPARQL/Datalog correctness. No model credentials or deployment accounts configured. These remain explicit capability boundaries, not passing tests. Exports were tested before final agent/log wording updates and can be regenerated with the documented commands.
+
+## Setup completion — 2026-11-11
+
+Run: Claude Code, Claude Opus 5.5, skogix-workstation. Checkout: `/home/skogix/Work`. Base: `5ca28cd216ef4f9fab5b48a56a6edaee935d137b`. Branch: `t3/claude-workstation`.
+
+Owner choices: harnesses claude and codex, project skill scope, observation on. Machine prerequisite: `openknowledge` 0.13.0 on PATH (`~/.local/bin`); the generated Stop hooks call `openknowledge` directly, not through `mise exec`.
+
+| Exact command | Expected | Actual / verdict | Next action |
+| --- | --- | --- | --- |
+| `okn validate wiki` | No errors | OK Validation passed; pass | Maintain |
+| `okn setup complete wiki --skill project --harness claude --harness codex --observe on` | Activate | Wrote `.openknowledge/integration.toml`, `.claude/skills/openknowledge/SKILL.md`, `.agents/skills/openknowledge/SKILL.md`, `.claude/settings.json`, `.codex/hooks.json`; pass | Verify hooks on another machine |
+| `okn search wiki "fresh checkout blockers"` | setup.md first | setup.md:11-20 ranked first; pass | Maintain |
+| `okn eval run .openknowledge/evals/knowledge.yaml wiki` | 3 cases pass | 3 passed, 6/6 checks; pass | Maintain |
+
+Not run: a Stop hook firing in Claude or Codex, insights output content, hosted CI. Observation output in `wiki/insights/` is git-ignored until its content is reviewed.

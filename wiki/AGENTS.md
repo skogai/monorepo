@@ -24,7 +24,6 @@ You are working inside a local Open Knowledge wiki.
 * Do not treat wiki automation pages as running jobs; real automations belong in the agent runtime or orchestrator that executes them.
 * Prefer concise, structured Markdown that future humans and agents can scan.
 * Preserve citations or source paths when a page depends on external material.
-* After meaningful wiki edits, run okn validate --spec 0.2 and fix issues before finishing.
 
 ## Configured Maintenance Rules
 
@@ -52,12 +51,13 @@ Apply the common editorial rule for any written language.
 - Keep source references for claims that depend on evidence.
 - Separate current behavior, planned work, and historical information.
 - Give copyable examples for commands, formats, and procedures.
-## Setup
+## When to use this wiki
 
-These are starter rules only. During setup, inspect the source and context,
-interview the user when needed, then replace or extend this file with rules
-that fit the final knowledge base.
+* Read [index.md](index.md) before non-trivial repository work; follow only relevant links.
+* Update a page when work changes durable repository knowledge: layout, setup blockers, decisions, current work, or the maintenance workflow.
+* Do not update the wiki for transient chatter, unmerged proposals presented as decisions, machine-only facts without labelling them, secrets, or environment dumps.
+* `doc/`, `doc/adr/`, and `.skogai/tests/` stay authoritative. The wiki summarizes them and links back.
 
 ## Repository maintenance
 
-Follow the root AGENTS.md and [maintenance workflow](workflow.md). Update concept pages only for durable changes. Preserve authoritative documents in doc/ and dated evidence in .skogai/tests/. Never label a proposal or source inspection as a passing test. Run `openknowledge validate wiki` from the repository root after edits.
+Follow the root AGENTS.md and [maintenance workflow](workflow.md). Never label a proposal or source inspection as a passing test. After meaningful wiki edits, run `openknowledge validate wiki` and `openknowledge eval run .openknowledge/evals/knowledge.yaml wiki` from the repository root and fix all errors.
