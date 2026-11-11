@@ -28,3 +28,25 @@ Run: Codex (gpt-6-astra), T3 Code / Codex harness, skogix-workstation; same chec
 Resolved `doc/plan.md` by preserving the complete new master roadmap and appending the wiki experiment. Updated current-work wording to reflect isolation as milestone 1. Historical research remains unchanged.
 
 Verification: `git diff --check origin/master...HEAD` passed; `git merge-base --is-ancestor origin/master HEAD` passed. A Python assertion checked that the resolved plan starts with the exact `git show origin/master:doc/plan.md` content, scanned changed files for conflict-marker lines, and checked relative Markdown link targets in the three new pages; all passed. No application tests or runtime experiments were rerun for this documentation-only resolution. Next action: push the rebased branch for owner review.
+
+## Open Knowledge workflow failure
+
+Run: Claude (claude-fable-5-2), T3 Code / Claude Code harness, machine skogix-workstation,
+checkout `/home/skogix/dev/Work/t3-8b954d3b-bfec7df1d5f133f0`,
+base `af7504c` (master).
+Prerequisites (machine, not repository): mise 2026.11.5, authenticated gh, network.
+
+| Exact command | Expected | Actual | Verdict / next action |
+| --- | --- | --- | --- |
+| `gh run list --limit 15` | See failing runs | All 6 `Open Knowledge` runs failed, on master and on two pull requests | Pass as observation |
+| `gh run view 42982824685 --log-failed` | Failure cause | `npm error 404 '@openknowledge-sh/openknowledge@0.13.0' is not in this registry` in the action's install step; later steps skipped | Fail; cause is the upstream action, not the wiki |
+| `npm view @openknowledge-sh/openknowledge versions` | Published versions | E404 | Fail; the package is not published |
+| `mise exec -- openknowledge automation github run --event push --ref master --base "$(git rev-parse HEAD~1)" --path wiki --eval .openknowledge/evals/knowledge.yaml --baseline .openknowledge/audit-sources.json --reports <scratch>/reports` | Checks pass | Exit 0; structure, quality and health `passing`; validation, audit and eval reports written | Pass |
+| Same command with `--event pull_request --ref t3/8b954d3b --base "$(git merge-base HEAD origin/master)"` | Checks pass | Exit 0 | Pass |
+| Fresh `git clone` of the checkout, `env -i` with an empty `HOME`, `MISE_YES=1`, `MISE_TRUSTED_CONFIG_PATHS=<clone>`, a GitHub token: `mise exec "github:openknowledge-sh/openknowledge@0.13.0" -- openknowledge --version` then `mise run wiki:validate` | mise installs the pinned release without machine state | Installed; validation passed, exit 0 | Pass; approximates a CI runner, is not one |
+
+Source inspection (not tests): upstream `action.yml` on `main` (`99b05e27`) has the same `npm install` step, so a newer pin does not fix it. Release `v0.13.0` ships binary tarballs, which is what the `github:` mise backend installs. `jdx/mise-action` `v5.2.7` resolves to `b44d12e7d0d8ee7461bb893e1b1993500433185b`.
+
+Change: `.github/workflows/openknowledge.yml` installs the pinned release with `jdx/mise-action` and runs the automation command the upstream action runs, then uploads the reports.
+
+Not run before pushing: the edited workflow on GitHub; the maintenance-agent path of the upstream action (maintenance mode is `off` in `wiki/.openknowledge.toml`). Next action: read the workflow result on the pull request.
