@@ -6,19 +6,6 @@ monorepo_root = true
 config_roots = ["mise-plugin"]
 
 [tools]
-"github:openknowledge-sh/openknowledge" = "0.13.0"
 usage = { version = "latest", workflow = "publish-cli.yml" }
 worktrunk = { version = "latest", workflow = "release.yaml" }
 
-# Wiki tools are scoped to these tasks.
-[tasks."wiki:validate"]
-tools = { "github:openknowledge-sh/openknowledge" = "0.13.0" }
-run = "openknowledge validate wiki"
-
-[tasks."wiki:eval"]
-tools = { "github:openknowledge-sh/openknowledge" = "0.13.0" }
-run = "openknowledge eval run .openknowledge/evals/knowledge.yaml wiki"
-
-[tasks."wiki:export"]
-tools = { "github:openknowledge-sh/openknowledge" = "0.13.0" }
-run = "openknowledge export html --out wiki-site wiki"

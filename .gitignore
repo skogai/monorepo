@@ -1,9 +1,6 @@
-/.claude/worktrees
 
-# Generated wiki artifacts and private local state
-/wiki-site/
-/wiki-exports/
-wiki/.openknowledge/
+# Generated and private local state
+/.claude/worktrees
 /.claude/settings.local.json
 
 # Personal mise configuration
