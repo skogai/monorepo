@@ -1,0 +1,19 @@
+type: openknowledge.eval
+version: 1
+id: repository-knowledge
+cases:
+  - id: setup
+    question: What blocks fresh checkout setup?
+    expect:
+      sources: [setup.md]
+      min_sources: 1
+  - id: decisions
+    question: Which starting tool decisions are accepted?
+    expect:
+      sources: [decisions.md]
+      min_sources: 1
+  - id: current-work
+    question: What are the five roadmap priorities?
+    expect:
+      sources: [current-work.md]
+      min_sources: 1

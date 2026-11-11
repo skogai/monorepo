@@ -4,10 +4,10 @@ Last updated: 2026-11-11. This is a working snapshot; accepted decisions live in
 
 ## Ongoing-work documentation and wiki
 
-- Status: research and pilot proposal ready for review.
+- Status: ./wiki implemented locally; validation and three retrieval cases pass; PR review pending.
 - Owner: repository owner; Codex prepared this proposal.
-- Next action: select a pinned Open Knowledge build, then trial a small wiki using the [research and acceptance checks](../.skogai/research/openknowledge-codex.md).
-- Blocker: installed 0.13.0 and current fork documentation expose different commands; reproducible installation is not verified.
+- Next action: review [wiki](../wiki/index.md), then verify installation on a second machine.
+- Blocker: fresh installation and hosted CI remain unverified. The wiki targets upstream 0.13.0, whose commands differ from current main.
 - Evidence: [local experiments](../.skogai/tests/2026-11-11-openknowledge.md).
 
 ## Reproducible workspace setup

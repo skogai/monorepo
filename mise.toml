@@ -97,3 +97,16 @@ run = 'echo "MONOREPO: $SKOGAI_HELLO_GREETING $usage_who" | tee /tmp/greeting.tx
 # To give every project's build task the same defaults without adding extends to each one, use [monorepo.task_defaults.build] from the workspace project graph instead. A template named by extends takes precedence over a root default.
 
 
+
+# Wiki tools are scoped to these tasks.
+[tasks."wiki:validate"]
+tools = { "github:openknowledge-sh/openknowledge" = "0.13.0" }
+run = "openknowledge validate wiki"
+
+[tasks."wiki:eval"]
+tools = { "github:openknowledge-sh/openknowledge" = "0.13.0" }
+run = "openknowledge eval run .openknowledge/evals/knowledge.yaml wiki"
+
+[tasks."wiki:export"]
+tools = { "github:openknowledge-sh/openknowledge" = "0.13.0" }
+run = "openknowledge export html --out wiki-site wiki"

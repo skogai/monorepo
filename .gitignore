@@ -1,1 +1,6 @@
 /.claude/worktrees
+
+# Generated wiki artifacts and private local state
+/wiki-site/
+/wiki-exports/
+wiki/.openknowledge/

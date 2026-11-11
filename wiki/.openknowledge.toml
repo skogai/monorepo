@@ -1,0 +1,5 @@
+[release]
+outputs = ["viewer"]
+
+[rules]
+enabled = ["project", "writing"]

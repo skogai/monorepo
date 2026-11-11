@@ -1,0 +1,25 @@
+name: Open Knowledge
+
+on:
+  pull_request:
+  push:
+    branches: ["master"]
+  workflow_dispatch:
+
+jobs:
+  checks:
+    name: Open Knowledge checks
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4.3.1
+        with:
+          fetch-depth: 0
+      - uses: openknowledge-sh/openknowledge@74da1da22d9348b3c33173037eeeb3b5c65713e9 # v0.13.0
+        with:
+          version: 0.13.0
+          path: "wiki"
+          eval: ".openknowledge/evals/knowledge.yaml"
+          baseline: .openknowledge/audit-sources.json

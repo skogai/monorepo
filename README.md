@@ -14,3 +14,7 @@ The starting workspace for SkogAI 3.0: document the setup already in use, test i
 The workspace is composed of the `skogai`, `skogix`, and `mise-plugin` Git submodules. Several agents work here in parallel on different machines; `AGENTS.md` explains what that requires.
 
 The setup currently depends on workstation configuration, including a development link for the mise plugin. A verified fresh-clone quickstart is the first milestone in the plan and will be added here once it has been tested.
+
+## Repository wiki
+
+Start at [wiki/index.md](wiki/index.md). See [capabilities](wiki/capabilities.md) for validation, search, local viewing, exports and MCP.
