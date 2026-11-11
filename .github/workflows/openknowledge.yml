@@ -23,6 +23,9 @@ jobs:
       - uses: jdx/mise-action@b44d12e7d0d8ee7461bb893e1b1993500433185b # v5.2.7
         with:
           install_args: "github:openknowledge-sh/openknowledge"
+          # Submodules are not checked out here, so the `mise-plugin` config
+          # root is absent and `mise install --monorepo` fails.
+          monorepo: false
       - name: Run Open Knowledge checks
         env:
           BASE_SHA: ${{ github.event.pull_request.base.sha || github.event.before }}

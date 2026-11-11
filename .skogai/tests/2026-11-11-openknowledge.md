@@ -50,3 +50,15 @@ Source inspection (not tests): upstream `action.yml` on `main` (`99b05e27`) has 
 Change: `.github/workflows/openknowledge.yml` installs the pinned release with `jdx/mise-action` and runs the automation command the upstream action runs, then uploads the reports.
 
 Not run before pushing: the edited workflow on GitHub; the maintenance-agent path of the upstream action (maintenance mode is `off` in `wiki/.openknowledge.toml`). Next action: read the workflow result on the pull request.
+
+### First workflow run on pull request #12
+
+Same run as above; commit `e035b62`.
+
+| Exact command | Expected | Actual | Verdict / next action |
+| --- | --- | --- | --- |
+| GitHub Actions run 42989304228 (pull_request, `e035b62`) | Workflow passes | `mise install --monorepo github:openknowledge-sh/openknowledge` exited 1: `[monorepo].config_roots did not match any config roots`. `jdx/mise-action` adds `--monorepo` because `mise.toml` sets `monorepo.config_roots`, and the `mise-plugin` submodule is not checked out | Fail; the local clean-clone test above did not pass `--monorepo`, so it missed this |
+| Clean clone as above: `mise install --monorepo github:openknowledge-sh/openknowledge` | Reproduce | Same error | Pass as reproduction |
+| Clean clone as above: `mise install github:openknowledge-sh/openknowledge` | Install without submodules | Exit 0, with a warning that `mise-plugin` has no mise config file | Pass; set `monorepo: false` on the action |
+
+Open question, not decided here: whether CI should check out the submodules instead. `skogai/mise-plugin` is public; the visibility of `skogai/skogai` and `skogai/skogix` to the workflow token was not checked.
