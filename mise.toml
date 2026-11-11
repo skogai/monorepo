@@ -13,6 +13,7 @@ SKOGAI_HELLO_GREETING = "hello from the monorepo root!"
 config_roots = ["mise-plugin"]
 
 [tools]
+"github:openknowledge-sh/openknowledge" = "0.13.0"
 usage = { version = "latest", workflow = "publish-cli.yml" }
 worktrunk = { version = "latest", workflow = "release.yaml" }
 
