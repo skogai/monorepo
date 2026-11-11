@@ -18,7 +18,7 @@ The [Claude survey](../.skogai/research/monorepo-claude.md), [Codex defaults](..
 
 All three agree on Markdown in Git and on text search with `rg` or `git grep` before any retrieval layer. The Claude survey and the Gemini proposal name decision records. The Codex defaults and the Gemini proposal ask for a fresh-clone README. Only the Codex defaults propose one small end-to-end workflow test. This plan carries all five forward as its own choices.
 
-Defer the rest until a recorded need appears, each with its own ADR:
+The owner's rule, recorded in ADR 0001, is to use mise as much as possible: a tool mise can install is free to use and comes before any tooling of our own. Defer the rest until a recorded need appears, each with its own ADR:
 
 - A second task runner or build orchestrator (Taskfile, Turborepo, Nx, Moon). mise monorepo tasks already cover this and were seen working.
 - A language workspace (uv, pnpm), Postgres with pgvector, Docker Compose, and a docs site.
@@ -32,7 +32,6 @@ Defer the rest until a recorded need appears, each with its own ADR:
 - herdr's role, and how T3 Code, herdr, and worktrunk fit together.
 - What `.miserc.toml` is for. It selects a `skogai` mise environment, but the repository has no `mise.skogai.toml`.
 - What the legacy SkogAI repositories and names map to, and whether submodules are a lasting choice or a transition.
-- Whether the tools listed as undecided in ADR 0001 are chosen.
 
 ## Steps
 
@@ -48,6 +47,7 @@ Check: `git status --short` prints nothing in a clean checkout.
 ### 1. Record the baseline
 
 - Keep durable documentation in `doc/` and decisions in `doc/adr/`, matching the backlog's spelling.
+- Add `adr-tools` to `mise.toml` and manage decision records with it. Settle the numbering clash with the existing ADR 0001 when running `adr init`.
 - Turn each answered open question into an ADR.
 - Describe `skogai/monorepo`, `skogai/skogai`, `skogai/skogix`, and `skogai/mise-plugin`, including legacy names.
 - Define what a `.skogai/` directory holds at each level. Root holds shared context; a submodule's holds context specific to it.

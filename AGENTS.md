@@ -10,6 +10,10 @@ It is at an early stage. There is no application code, no chosen language, and n
 
 Start from the [README](README.md), then read the [plan](doc/plan.md) and the [decisions](doc/adr/).
 
+## Prefer mise
+
+The goal is to use mise as much as possible. A tool or dependency that mise can install is free to use and comes first. Before you write tooling, rules, or a workflow of your own, look for a mise tool that already does the job. For example, manage decision records with `adr-tools` through mise instead of inventing a format and process. [ADR 0001](doc/adr/0001-starting-tools.md) records this.
+
 ## Many agents, many environments
 
 The same task is routinely given to several agents at once. So far that has meant Claude, Codex, and Gemini, each in its own harness, each on a different machine, all with the same prompt. Each run delivers one pull request against `master`. The owner then compares the runs and merges them.
@@ -20,7 +24,7 @@ Your output will be read next to other agents' output for the same task, produce
 2. **Separate what you read from what you ran.** A source observation is not a passing test. For each claim say which it is, and list what you did not run.
 3. **Say where each fact lives.** A fact comes from tracked files in this repository, from a submodule, or from the machine: `~/.config/mise`, `/etc/mise`, dotfiles, operating system packages, installed tools. A machine fact holds for that machine only. Other agents may not be able to see it or reproduce it.
 4. **Make machine dependencies explicit.** If a step needs anything outside the checkout, record it as a prerequisite. A check that passes on one workstation does not show the setup is reproducible.
-5. **Do not turn proposals into decisions.** Decisions are the records in `doc/adr/`. Research notes, files removed from Git history, and tools that happen to be installed are inputs. If something is undecided, list it as an open question.
+5. **Do not turn proposals into decisions.** Decisions are the records in `doc/adr/`. Research notes, files removed from Git history, and tools that happen to be installed outside mise are inputs. If something is undecided, list it as an open question.
 6. **Keep the shared layout.** Put files where the table below says, so that parallel runs produce diffs of the same paths.
 7. **Deliver a pull request and stop.** Leave merging to the owner. Leave other agents' branches and pull requests alone.
 
@@ -36,8 +40,6 @@ Your output will be read next to other agents' output for the same task, produce
 | `.skogai/research/` | Research inputs, kept as written by the agent that produced them. |
 | `.skogai/tests/` | Dated experiment records: what was run, where, and the result. |
 | `skogix/.skogai/todo.list` | The owner's backlog. |
-
-`skogix` is a private repository. A run without access to it cannot read the backlog, and should say so.
 
 ## Recording evidence
 
