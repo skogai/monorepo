@@ -5,3 +5,9 @@
 /wiki-exports/
 wiki/.openknowledge/
 /.claude/settings.local.json
+
+# Personal mise configuration
+mise.local.toml
+mise.*.local.toml
+.miserc.local.toml
+/.config/mise/conf.d/*.local.toml

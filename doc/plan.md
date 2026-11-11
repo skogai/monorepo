@@ -25,9 +25,9 @@ For implementation, work one milestone at a time. Each milestone produces its ow
 
 ## Current baseline: source observations
 
-The root `mise.toml` enables monorepo mode, includes only `mise-plugin` as a config root, requests usage and worktrunk at `latest`, and defines a greeting task writing `/tmp/greeting.txt`. It declares the remote `skogai` plugin but invokes `skogai-develop`, relying on a machine-local development link.
+The root `mise.toml` enables monorepo mode, includes only `mise-plugin` as a config root, requests usage and worktrunk at `latest`, and defines the wiki tasks. The greeting task and the mandatory `skogai-develop` link were removed on 2026-11-11.
 
-`.miserc.toml` selects `skogai`, enables automatic installation and enables `env_conf_d`; the checkout has no corresponding `mise.skogai.toml`. The plugin submodule returns static example values, derives `SKOGAI_MONOREPO_DIR` from `HOME/Work`, and prepends `HOME/.local/bin`. These are prototype behaviors, not the isolation contract.
+`.miserc.toml` selects the `skogai` environment and enables `env_conf_d`. Environment fragments in `.config/mise/conf.d/` choose the plugin source: `skogai` installs it from Git, `develop` links the submodule. The plugin takes its root from the declaring config and adds only the PATH entries it is given. [doc/mise.md](mise.md) describes the layout; the [evidence](../.skogai/tests/2026-11-11-mise-envs-plugin.md) records what was run. This is a first step into milestones 3 and 4, made before milestone 1: host configuration still applies, and MCP, profile composition beyond two environments, and remote installation at a pinned revision are untested.
 
 The earlier [setup evidence](../.skogai/tests/2026-11-10-setup.md) remains historical machine-specific evidence. The [planning evidence](../.skogai/tests/2026-11-11-mise-plan.md) separates this run's source inspection from CLI checks.
 

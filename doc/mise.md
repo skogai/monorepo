@@ -1,0 +1,103 @@
+# mise in this repository
+
+How the mise configuration is laid out: environments, `conf.d` fragments, and the SkogAI plugin. Everything here was run with mise 2026.11.5; the commands and results are in the [evidence](../.skogai/tests/2026-11-11-mise-envs-plugin.md).
+
+## Files
+
+| Path | Loaded | Holds |
+|---|---|---|
+| `.miserc.toml` | First, before any other config | The default environment and discovery settings. |
+| `mise.toml` | Always | Monorepo roots, tools, and tasks. |
+| `.config/mise/conf.d/<name>.toml` | Always | Shared fragments. None exist yet. |
+| `.config/mise/conf.d/<name>.<env>.toml` | When `<env>` is selected | Fragments for one environment. |
+| `mise.local.toml`, `mise.<env>.local.toml`, `.miserc.local.toml` | As their shared counterparts | Personal overrides. Ignored by Git. |
+
+Within the checkout, later wins: `conf.d` fragments, then `mise.toml`, then environment fragments, then `mise.local.toml`. Fragments load in alphabetical order. A `conf.d/<name>.local.toml` fragment loads and is ignored by Git, but an environment fragment overrides it, so put personal overrides in `mise.local.toml`.
+
+## Environments
+
+An environment is a name that selects extra config files. `.miserc.toml` sets the default:
+
+```toml
+env = ["skogai"]
+env_conf_d = true
+```
+
+`env_conf_d = true` makes mise read the part after the first dot in a fragment name as an environment. Without it every fragment loads for every environment. For that reason, do not use dots in a fragment's own name: write `node-tools.toml`, not `node.tools.toml`.
+
+| Environment | Select with | Adds |
+|---|---|---|
+| `skogai` | nothing, it is the default | The `skogai` plugin, installed from `https://github.com/skogai/mise-plugin`. |
+| `develop` | `mise -E develop …` | The `skogai-develop` plugin, linked to the `mise-plugin` submodule, and the `//:plugin:link` task. |
+| none | `MISE_ENV= mise …` | Nothing. Tools and tasks only. |
+
+`-E` and `MISE_ENV` replace the default, they do not add to it. `mise -E develop` loads `develop` only. To combine, list both: `mise -E skogai,develop`. The last one listed wins where they set the same thing.
+
+`mise.toml` cannot select an environment, and selecting one sets no variables by itself.
+
+To add an environment, add `.config/mise/conf.d/<name>.<env>.toml`. To see what a selection loads, run `mise -E <env> cfg`.
+
+## The SkogAI plugin
+
+The plugin sets `SKOGAI_MONOREPO_DIR` and `SKOGAI_CONFIG_DIR`, and prepends the directories in its `paths` option to `PATH`. Its options are described in the [plugin README](../mise-plugin/README.md).
+
+```toml
+[env]
+_.skogai = { paths = ["bin"] }
+```
+
+The two environments differ in where the plugin comes from:
+
+- `skogai` uses the published plugin. mise clones it on first use. It follows the plugin's default branch, not the submodule commit; update it with `mise plugins update skogai`.
+- `develop` uses the submodule in this checkout, so edits to `mise-plugin/` apply at once.
+
+A plugin link belongs to the mise data directory, not to a checkout. If two checkouts on one machine use `develop`, both get the plugin of the checkout that linked first. Run this in the checkout you are working in to point the link at it:
+
+```sh
+mise -E develop run //:plugin:link
+```
+
+## Monorepo notes kept from the earlier `mise.toml`
+
+These were comments in the root `mise.toml`, kept here as reference. None of them is in use.
+
+```toml
+# [monorepo]
+# config_roots = ["skogai", "skogix"]
+# lockfile = true
+#
+# [monorepo.path_aliases]
+# "mise_global" = "config/mise.config.toml"
+#
+# Shared task defaults for every project in the workspace:
+# [monorepo.task_defaults.build]
+# sources = ["src/**", "package.json"]
+# outputs = ["dist/**"]
+# cache = { enabled = true }
+#
+# [monorepo.task_defaults.test]
+# env = { NODE_ENV = "test" }
+#
+# Task templates, used by a project task with `extends`:
+# [task_templates."python:test"]
+# run = "uv run pytest"
+# tools = { python = "3.14", uv = "latest" }
+# depends = ["build"]
+#
+# packages/api/mise.toml
+# [tasks.test]
+# extends = "python:test"
+# run = "uv run pytest --cov"
+#
+# A task can depend on another project's task:
+# [tasks.build]
+# depends = ["//libs/shared:build", ":lint"]
+```
+
+Commands noted with them: `mise ls --local --monorepo`, `mise tasks --all`, `mise install --monorepo`. A template named by `extends` takes precedence over a root `task_defaults` entry.
+
+## References
+
+- [Config environments](https://mise.jdx.dev/configuration/environments.html)
+- [Configuration and load order](https://mise.jdx.dev/configuration.html)
+- [Environment plugins](https://mise.jdx.dev/env-plugin-development.html)

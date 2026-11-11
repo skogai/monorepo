@@ -17,4 +17,12 @@ Last updated: 2026-11-11. This is a working snapshot; accepted decisions live in
 - Next action: follow [milestone 1 of the setup plan](plan.md#milestone-1-isolated-mise-command-runner), defining isolation and bootstrap prerequisites before integrating the wiki.
 - Blocker: fresh-checkout bootstrap remains unverified according to the plan; this research did not retest it.
 
+## mise environments, conf.d and plugin
+
+- Status: test configuration removed from the root `mise.toml`; `skogai` and `develop` environments and a basic env/PATH plugin implemented; PR review pending in `skogai/monorepo` and `skogai/mise-plugin`.
+- Owner: repository owner; Claude prepared this change.
+- Next action: merge the plugin pull request first, then the monorepo one. See [doc/mise.md](mise.md).
+- Blocker: until the plugin change is on the plugin's default branch, the default `skogai` environment still gets the old hook values.
+- Evidence: [experiments](../.skogai/tests/2026-11-11-mise-envs-plugin.md).
+
 Update each item when its status changes, with the date, next action and source or PR link. Keep experiment output in `.skogai/tests/`, research in `.skogai/research/`, and durable guidance in `doc/`.

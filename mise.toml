@@ -1,103 +1,14 @@
+# Base configuration: loaded for every environment.
+# Environment-specific fragments live in .config/mise/conf.d/, see doc/mise.md.
 monorepo_root = true
 
-[plugins]
-skogai = "https://github.com/skogai/mise-plugin"
-
-[env]
-# _.skogai = { api_key = " env key" } # this would be installed by the plugins.skogai above
-_.skogai-develop = { api_key = "test env key" } # this is a simple symlink / mise plugins link
-SKOGAI_HELLO_GREETING = "hello from the monorepo root!"
-
 [monorepo]
-# config_roots = ["skogai","skogix"]
 config_roots = ["mise-plugin"]
 
 [tools]
 "github:openknowledge-sh/openknowledge" = "0.13.0"
 usage = { version = "latest", workflow = "publish-cli.yml" }
 worktrunk = { version = "latest", workflow = "release.yaml" }
-
-# [_.skogai.hello]
-# description = "greet someone and keep the greeting in /tmp/greeting.txt"
-# owns = ["/tmp/greeting.txt"]
-# writes = ["/tmp/greeting.txt"]
-
-[tasks.hello]
-usage = 'arg "<who>"'
-run = 'echo "MONOREPO: $SKOGAI_HELLO_GREETING $usage_who" | tee /tmp/greeting.txt'
-
-#
-# [@skogix:"examples for later"]
-#
-# [monorepo.path_aliases]
-# "mise_global" = "config/mise.config.toml"
-#
-# projects/frontend/mise.toml
-# [tasks.build]
-# depends = ["//libs/shared:build", ":lint"]
-# run = "npm run build"
-
-# mise ls --local --monorepo
- 
-# mise tasks --all
-# mise install --monorepo
-# mise install --monorepo
-
-# [monorepo] lockfile = true
-
-# myproject/mise.toml                       # monorepo_root = true
-# myproject/packages/api/mise.toml
-# myproject/.worktrees/feature-x/mise.toml  # monorepo_root = true (same repository, other branch)
-# myproject/.worktrees/feature-x/packages/api/mise.toml
-#
-
-# [monorepo.task_defaults.build]
-# sources = ["src/**", "package.json"]
-# outputs = ["dist/**"]
-# cache = { enabled = true }
-#
-# [monorepo.task_defaults.test]
-# env = { NODE_ENV = "test" }
-
-# [task_templates."python:build"]
-# run = "uv build"
-# tools = { python = "3.14", uv = "latest" }
-#
-# [task_templates."python:test"]
-# run = "uv run pytest"
-# tools = { python = "3.14", uv = "latest" }
-# depends = ["build"]
-#
-# [task_templates."python:lint"]
-# run = "ruff check ."
-# tools = { python = "3.14", ruff = "latest" }
-#
-# [task_templates."python:lint"]
-# run = "ruff check ."
-# tools = { python = "3.14", ruff = "latest" }
-# # packages/api/mise.toml
-# [tasks.build]
-# extends = "python:build"
-#
-# [tasks.test]
-# extends = "python:test"
-# run = "uv run pytest --cov" # adds coverage
-#
-# [tasks.lint]
-# extends = "python:lint"
-# # packages/worker/mise.toml
-# [tasks.build]
-# extends = "python:build"
-#
-# [tasks.test]
-# extends = "python:test"
-#
-# [tasks.lint]
-# extends = "python:lint"#
-#
-# To give every project's build task the same defaults without adding extends to each one, use [monorepo.task_defaults.build] from the workspace project graph instead. A template named by extends takes precedence over a root default.
-
-
 
 # Wiki tools are scoped to these tasks.
 [tasks."wiki:validate"]
