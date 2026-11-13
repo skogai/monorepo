@@ -37,3 +37,21 @@ copied to the new base. Runtime files are ignored.
 
 User lingering was already enabled on this workstation. Reboot, remote
 pairing and a live agent turn were not tested.
+
+## Native service and Tailscale pairing
+
+Same workstation and checkout, base `8715293`, Codex Desktop. Both
+`skogai-t3.service` and `t3code.service` were enabled and active, but
+`ss -ltnp '( sport = :3773 )'` showed only the custom unit's process listening.
+Stopped and disabled the custom unit, then restarted `t3code.service` using
+the existing `Work/t3` native configuration.
+
+| Command | Expected | Actual and verdict |
+| --- | --- | --- |
+| `./t3/install-service.sh` | Retain the native service and disable the custom unit | Native service already installed and enabled. Pass. |
+| `mise run t3:health` | Native backend responds | HTTP 200. Pass. |
+| `mise run t3:threads` | Existing thread remains available | One thread. Pass. |
+| `t3 pair --base-dir "$PWD/t3" --tailscale --label 'Codex Browser verification'` | HTTPS pairing URL for this backend | Opened in the browser and reached Monorepo. Pass. |
+
+Tailscale Serve was already configured on the workstation. Pairing from a
+second physical device, reboot and an agent turn were not run.
