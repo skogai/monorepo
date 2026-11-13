@@ -1,6 +1,4 @@
-# Environment `skogai` (the default): the published plugin, installed from Git.
+# Environment `skogai` (the default): where the published plugin is installed from.
+# The `_.skogai` directive is in mise.toml, so once installed the plugin loads in every environment.
 [plugins]
-skogai = "https://github.com/skogai/mise-plugin#7948c1252a32a1a183cce55cbf931934052a869e"
-
-[env]
-_.skogai = {}
+skogai = "https://github.com/skogai/mise-plugin#6f27f183680d519bd3ed2bdc56d87445eb653293"

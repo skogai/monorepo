@@ -28,10 +28,10 @@ env_conf_d = true
 
 | Environment | Select with | Adds |
 |---|---|---|
-| `skogai` | nothing, it is the default | The `skogai` plugin, installed from `https://github.com/skogai/mise-plugin` at a pinned commit. |
+| `skogai` | nothing, it is the default | The install source of the `skogai` plugin: `https://github.com/skogai/mise-plugin` at a pinned commit. |
 | `develop` | `mise -E develop …` | The `skogai-develop` plugin, linked to the `mise-plugin` submodule, and the `//:plugin:link` task. |
 | `t3` | `mise -E t3 run` | Local T3 playground and interactive picker; see [T3 guide](t3-cli.md#repository-interactive-playground). |
-| none | `MISE_ENV= mise …` | Nothing. Tools and tasks only. |
+| none | `MISE_ENV= mise …` | Nothing. The `skogai` plugin still loads once it is installed. |
 
 `-E` and `MISE_ENV` replace the default, they do not add to it. `mise -E develop` loads `develop` only. To combine, list both: `mise -E skogai,develop`. The last one listed wins where they set the same thing.
 
@@ -41,22 +41,49 @@ To add an environment, add `.config/mise/conf.d/<name>.<env>.toml`. To see what 
 
 ## Basic environment variables
 
-`mise.toml` sets these for every environment, including `MISE_ENV=`:
+The `skogai` plugin loads in every environment, so these are set everywhere:
 
-| Variable | Value | Example |
-|---|---|---|
-| `SKOGAI_HOST` | `uname -n`, run through the `exec()` template function | `skogix-workstation` |
-| `SKOGAI_OS` | `os()`: `linux`, `macos`, `windows` | `linux` |
-| `SKOGAI_ARCH` | `arch()`: `x64`, `arm64` | `x64` |
-| `SKOGAI_MISE_ENV` | The selected environments, comma-separated, empty when none | `skogai` |
+| Variable | Set by | Value | Example |
+|---|---|---|---|
+| `SKOGAI_HOST` | plugin default | `/proc/sys/kernel/hostname`, `/etc/hostname` or `$HOSTNAME` | `skogix-workstation` |
+| `SKOGAI_OS` | plugin default | `linux`, `macos`, `windows`, as in `mise.lock` | `linux` |
+| `SKOGAI_ARCH` | plugin default | `x64`, `arm64` | `x64` |
+| `SKOGAI_MISE_ENV` | `mise.toml` | The selected environments, comma-separated, empty when none | `skogai` |
+| `SKOGAI_MONOREPO_DIR` | plugin | This checkout | |
+| `SKOGAI_CONFIG_DIR` | plugin | `$XDG_CONFIG_HOME/skogai` | |
 
-mise has no `hostname()` template function, so the host comes from `uname -n`, which exists on Linux and macOS. `/etc/hostname` was not used because macOS lacks it. The values are rendered whenever mise computes the environment: `mise activate`, `mise exec`, `mise env` and tasks. To check them:
+The `_.skogai = {}` directive is in `mise.toml`, and the plugin's install source is in the `skogai` environment fragment. On a fresh machine the default environment installs the plugin on first use. Before that, another environment, such as `mise -E t3` or `MISE_ENV=`, skips it with `WARN skipping env plugin skogai: it is not installed and has no source` instead of failing. Once installed, it loads there too. If the source is present but cannot be installed, mise fails, so the source stays in one fragment.
 
-```sh
-mise env | grep SKOGAI_
+### Overriding
+
+To replace a default, set the variable yourself. The plugin keeps a value that is already set in `mise.toml` above the directive, in the global config, or in the shell. `mise.local.toml` loads after the plugin and replaces its value:
+
+```toml
+# mise.local.toml (personal, ignored by Git)
+[env]
+SKOGAI_HOST = "laptop"
 ```
 
-`SKOGAI_MISE_ENV` strips spaces because `mise -E develop env` passes the name as ` develop` with mise 2026.11.5. `--env=develop`, `MISE_ENV=develop` and `mise -E develop exec` do not. Other variables, such as `SKOGAI_MONOREPO_DIR`, come from the SkogAI plugin below.
+An empty value counts as unset. The [plugin README](../mise-plugin/README.md#overriding-the-defaults) has the full rules.
+
+The plugin cannot see an environment chosen in `.miserc.toml`, so `SKOGAI_MISE_ENV` is a template in `mise.toml`. It strips spaces because `mise -E develop env` passes the name as ` develop` with mise 2026.11.5.
+
+### Tasks
+
+| Task | Does |
+|---|---|
+| `mise run env:show` | Lists every `SKOGAI_` variable mise sets here, including ones from the machine's global config. |
+| `mise run env:test` | Checks that the plugin loaded, that `SKOGAI_MONOREPO_DIR` is this checkout, and that host, OS, architecture and environment are valid. It exits non-zero on failure and notes when `SKOGAI_HOST` is overridden. |
+| `mise run env:context` | Prints host, platform, environment, checkout and Git commit, for an agent's start-up context. |
+| `mise run env:context --trailers` | Prints the same as Git trailers (`Host:`, `Platform:`, `Mise-Env:`). |
+
+To add the trailers to a commit:
+
+```sh
+git commit -m "subject" -m "$(mise run env:context --trailers)"
+```
+
+The plugin's own checks run in isolated mise directories with `mise run //mise-plugin:test`.
 
 ## Tools
 
@@ -79,8 +106,8 @@ _.skogai = { paths = ["bin"] }
 
 The two environments differ in where the plugin comes from:
 
-- `skogai` uses the published plugin, pinned to a full commit SHA in `.config/mise/conf.d/plugin.skogai.toml`. mise clones it on first use. An abbreviated SHA is refused.
-- `develop` uses the submodule in this checkout, so edits to `mise-plugin/` apply at once.
+- `skogai` uses the published plugin, pinned to a full commit SHA in `.config/mise/conf.d/plugin.skogai.toml`. mise clones it on first use. An abbreviated SHA is refused. Once installed, it also loads in environments that do not select `skogai`.
+- `develop` adds the submodule in this checkout as `skogai-develop`, so edits to `mise-plugin/` apply at once. It runs after the published plugin, so its `SKOGAI_MONOREPO_DIR`, `SKOGAI_CONFIG_DIR` and `PATH` entries win. It keeps the host defaults the published plugin already set.
 
 To move the pin, change the SHA in the fragment to a commit that is reachable in `https://github.com/skogai/mise-plugin`, usually the new `mise-plugin` submodule pointer, then reinstall:
 
