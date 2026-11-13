@@ -1,6 +1,6 @@
 # Environment `skogai` (the default): the published plugin, installed from Git.
 [plugins]
-skogai = "https://github.com/skogai/mise-plugin"
+skogai = "https://github.com/skogai/mise-plugin#7948c1252a32a1a183cce55cbf931934052a869e"
 
 [env]
 _.skogai = {}
