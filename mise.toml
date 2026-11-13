@@ -86,3 +86,29 @@ else
   echo "git:      ${branch:-detached} at ${commit:-unknown}"
 fi
 """
+
+# Session start: what "hi" means in AGENTS.md, "Starting a session".
+[tasks.next]
+description = "Show open PRs and project 4 work, and the next item per track"
+quiet = true
+run = """
+set -eu
+repo=skogai/monorepo
+show() { if [ -n "$1" ]; then printf '%s\\n' "$1"; else echo "  none"; fi; }
+echo "== Open pull requests ($repo): review or merge these first"
+show "$(gh pr list -R "$repo" --json number,title,headRefName,isDraft,reviewDecision \
+  --jq '.[] | "#\\(.number)  \\(.title)  [\\(.headRefName)\\(if .isDraft then ", draft" else "" end)\\(if .reviewDecision != "" then ", " + .reviewDecision else "" end)]"' \
+  | sed 's/^/  /')"
+items=$(gh project item-list 4 --owner skogai --format json -L 200 \
+  --jq '.items[] | select(.status != "Done") | [.status, (.content.number|tostring), ((.labels // [])|join(",")), .title] | @tsv')
+echo
+echo "== In progress"
+show "$(printf '%s\\n' "$items" | awk -F'\\t' '$1 == "In Progress" { printf "  #%s  %s  [%s]\\n", $2, $4, $3 }')"
+echo
+echo "== Next per track (first open item in board order)"
+for track in roadmap mise-toolkit backlog; do
+  printf '%s\\n' "$items" | awk -F'\\t' -v t="$track" '$1 == "Todo" && $3 ~ t { printf "  %-13s #%s  %s\\n", t, $2, $4; exit }'
+done
+echo
+echo "== Open items: $(printf '%s\\n' "$items" | grep -c . || true) (board: https://github.com/orgs/skogai/projects/4)"
+"""
