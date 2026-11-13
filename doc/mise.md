@@ -28,7 +28,7 @@ env_conf_d = true
 
 | Environment | Select with | Adds |
 |---|---|---|
-| `skogai` | nothing, it is the default | The `skogai` plugin, installed from `https://github.com/skogai/mise-plugin`. |
+| `skogai` | nothing, it is the default | The `skogai` plugin, installed from `https://github.com/skogai/mise-plugin` at a pinned commit. |
 | `develop` | `mise -E develop …` | The `skogai-develop` plugin, linked to the `mise-plugin` submodule, and the `//:plugin:link` task. |
 | none | `MISE_ENV= mise …` | Nothing. Tools and tasks only. |
 
@@ -59,8 +59,16 @@ _.skogai = { paths = ["bin"] }
 
 The two environments differ in where the plugin comes from:
 
-- `skogai` uses the published plugin. mise clones it on first use. It follows the plugin's default branch, not the submodule commit; update it with `mise plugins update skogai`.
+- `skogai` uses the published plugin, pinned to a full commit SHA in `.config/mise/conf.d/plugin.skogai.toml`. mise clones it on first use. An abbreviated SHA is refused.
 - `develop` uses the submodule in this checkout, so edits to `mise-plugin/` apply at once.
+
+To move the pin, change the SHA in the fragment to a commit that is reachable in `https://github.com/skogai/mise-plugin`, usually the new `mise-plugin` submodule pointer, then reinstall:
+
+```sh
+mise plugins install --force skogai
+```
+
+`mise plugins update skogai` does not move an installed plugin to the pin. `mise doctor` warns when the installed plugin is at a different commit than the pin; nothing else does. The checks are in the [evidence](../.skogai/tests/2026-11-13-mise-plugin-pin.md).
 
 A plugin link belongs to the mise data directory, not to a checkout. If two checkouts on one machine use `develop`, both get the plugin of the checkout that linked first. Run this in the checkout you are working in to point the link at it:
 
