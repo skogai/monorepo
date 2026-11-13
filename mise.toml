@@ -8,6 +8,7 @@ config_roots = ["mise-plugin"]
 [env]
 # The plugin cannot see an environment chosen in .miserc.toml, so this stays a template.
 SKOGAI_MISE_ENV = "{{ mise_env | default(value=[]) | join(sep=',') | replace(from=' ', to='') }}"
+GPTODO_TASKS_DIR = ".skogai/tasks"
 # The skogai plugin, in every environment once installed. Its source and pin are in
 # .config/mise/conf.d/plugin.skogai.toml; with no source loaded, mise skips it with a warning
 # instead of failing. It sets SKOGAI_MONOREPO_DIR, SKOGAI_CONFIG_DIR and the SKOGAI_HOST,
@@ -25,6 +26,7 @@ lua-language-server = "latest"
 pkl = "latest"
 stylua = "latest"
 jq = "latest"
+"pipx:gptodo" = "latest"
 
 
 # GitHub OAuth for mise, gh and git push. See AGENTS.md, "GitHub authentication for mise".
