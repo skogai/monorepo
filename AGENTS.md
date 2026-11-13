@@ -8,7 +8,7 @@ Instructions for every agent working in this repository, whichever model and har
 
 It is at an early stage. There is no application code, no chosen language, and no root CI. Do not invent build, lint, or test commands. The commands that exist are in `mise.toml`, `.config/mise/conf.d/*.toml`, and `mise-plugin/mise.toml`.
 
-Start from the [README](README.md), then read the [plan](doc/plan.md) and the [decisions](doc/adr/).
+Start from the [README](README.md), then read the [decisions](doc/adr/). The plan and current work are GitHub issues on the [project board](https://github.com/orgs/skogai/projects/4); its README gives the order and the owner's direction.
 
 ## Prefer mise
 
@@ -49,7 +49,7 @@ Your output will be read next to other agents' output for the same task, produce
 | `README.md` | Entry point. Setup commands go here once they are verified. |
 | `AGENTS.md` | This file. |
 | `CLAUDE.md` | One line that imports this file, so Claude Code loads it. A harness that reads neither file needs its own pointer here. |
-| `doc/plan.md` | The current working plan. |
+| GitHub issues and [project 4](https://github.com/orgs/skogai/projects/4) | The plan and current work. Not in Git: update the issue, not a file. |
 | `doc/adr/` | Decisions, as Context / Decision / Consequences with a status. |
 | `.skogai/research/` | Research inputs, kept as written by the agent that produced them. |
 | `.skogai/tests/` | Dated experiment records: what was run, where, and the result. |
