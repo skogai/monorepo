@@ -66,13 +66,25 @@ GitHub authentication is a machine prerequisite. Nothing in this repository conf
 oauth_client_id = "Iv23liQkKChCS4oXgq10"   # the owner's GitHub App, device flow enabled
 ```
 
+The same token is also used for `git push` and `gh`. mise exports it as `GITHUB_TOKEN`, gh prefers `GITHUB_TOKEN` over its own login, and the git credential helper is `gh auth git-credential`. So the App needs these repository permissions, granted on every installation (Skogix, skogai, skogai2):
+
+| Permission | Access | Used for |
+|---|---|---|
+| Metadata | Read | Required by GitHub |
+| Contents | Read and write | Tool downloads, `git push` |
+| Pull requests | Read and write | `gh pr` |
+| Workflows | Read and write | Pushing changes under `.github/workflows/` |
+| Issues | Read and write | `gh issue` |
+
+With read-only Contents, `git push` fails with `403 Permission … denied`.
+
 A client ID is not a secret. The OAuth token mise caches is a secret. To set this up on another machine:
 
 1. Set `github.oauth_client_id` in the global mise config. Use the owner's GitHub App client ID, or the client ID of your own GitHub App with device flow enabled.
 2. Run `mise token github --oauth` and approve the device code in a browser. This step needs a person.
 3. Check that `mise token github` reports `source: GitHub OAuth`.
 
-While a token is cached, mise exports it as `GITHUB_TOKEN` through `mise activate`, `mise exec` and `mise env`. The `github.oauth_export_env` setting changes the variable name, and `""` turns the export off. A `GITHUB_TOKEN` you set yourself sits higher in the order, so mise will use it instead of OAuth. After you change the app's permissions or installations, run `mise token github --oauth --refresh`. Documentation: <https://mise.jdx.dev/dev-tools/github-tokens.html>.
+While a token is cached, mise exports it as `GITHUB_TOKEN` through `mise activate`, `mise exec` and `mise env`. The `github.oauth_export_env` setting changes the variable name, and `""` turns the export off. A `GITHUB_TOKEN` you set yourself sits higher in the order, so mise will use it instead of OAuth. After you change the app's permissions or installations, run `mise token github --oauth --refresh`. The refresh revokes the old token. A shell that still holds the old token gets `401 Bad credentials` until mise updates the variable at the next prompt, or until you run `unset GITHUB_TOKEN`. Documentation: <https://mise.jdx.dev/dev-tools/github-tokens.html>.
 
 ## Secrets
 
