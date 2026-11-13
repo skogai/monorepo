@@ -17,13 +17,14 @@ _.skogai = {}
 [tools]
 gh = { version = "2.104.0", minimum_release_age = "0s", lazy = true }
 usage = { version = "7.3.0", workflow = "publish-cli.yml" }
-worktrunk = { version = "0.81.0", workflow = "release.yaml" }
+worktrunk = { version = "latest", workflow = "release.yaml" }
 actionlint = "latest"
 hk = "latest"
 lua = "5.5.1"
 lua-language-server = "latest"
 pkl = "latest"
 stylua = "latest"
+jq = "latest"
 
 
 # GitHub OAuth for mise, gh and git push. See AGENTS.md, "GitHub authentication for mise".

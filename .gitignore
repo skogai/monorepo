@@ -12,3 +12,4 @@ mise.*.local.toml
 # T3 databases, credentials, logs and local experiments
 /.t3/
 /.t3-local-test-*/
+/.skogai/logs/log.jsonl
