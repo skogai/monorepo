@@ -17,3 +17,23 @@ The tracked shared fragment uses the installed CLI from PATH, state in
 
 Browser pairing and a live agent turn were not run. Start the installed
 T3 instance before checking live workflows.
+
+## Shared backend follow-up
+
+Same checkout and workstation, starting from `166529c`. The tracked base
+moved from `/home/skogix/Work/.t3` to `/home/skogix/Work/t3`. With no T3
+listener or native T3 unit present, the stopped checkout-local state was
+copied to the new base. Runtime files are ignored.
+
+| Command | Expected | Actual and verdict |
+| --- | --- | --- |
+| `bash -n t3/install-service.sh` | Valid installer syntax | Exit 0. Pass. |
+| `systemd-analyze --user verify "$PWD/t3/skogai-t3.service"` | Valid unit | Exit 0. Pass. |
+| `./t3/install-service.sh` | Install, enable and start the backend | Enabled and started. Pass. |
+| `systemctl --user show skogai-t3 -p ActiveState -p SubState -p WorkingDirectory` | Active and running from `/home/skogix/Work/t3` | As expected. Pass. |
+| `mise run t3:health` | HTTP 200 after startup | HTTP 200 after initial connection refusals and one HTTP 503. Pass. |
+| `mise run t3:projects` | Existing Monorepo project | Listed at `/home/skogix/Work`. Pass. |
+| `t3 pair --base-dir /home/skogix/Work/t3 --label 'Codex Browser'` | Pair browser to the backend | Browser accepted token and showed Monorepo. Pass. |
+
+User lingering was already enabled on this workstation. Reboot, remote
+pairing and a live agent turn were not tested.

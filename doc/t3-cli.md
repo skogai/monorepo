@@ -151,17 +151,12 @@ The repository now includes an interactive picker described below. It does not a
 
 ## Repository interactive playground
 
-The shared `.config/mise/conf.d/t3.toml` provides the picker and CLI tasks in every mise environment. They use the workstation T3 installation and state in the checkout’s `.t3` directory.
+The shared `.config/mise/conf.d/t3.toml` provides the picker and CLI tasks in every mise environment. They use the workstation T3 installation and state in the checkout’s `t3` directory.
 
 Prerequisites: mise, a working `t3` executable, Python 3, curl and sqlite3. The picker installs Gum 2.0.2 through mise. Provider setup remains machine-dependent; the picker does not configure credentials. Global/system mise configuration still applies.
 
-If T3 is already running, use that instance. To start T3 in the foreground when the service is stopped, run:
-
-```bash
-mise run t3:serve
-```
-
-Register the checkout once if it is missing from T3, then open the picker:
+Install and pair the [shared T3 service](../t3/README.md). Register this
+checkout once if it is missing from T3, then open the picker:
 
 ```bash
 mise run t3:init

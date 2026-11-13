@@ -1,0 +1,7 @@
+# T3 creates runtime data and credentials in its base directory.
+/*
+!/.gitignore
+!/README.md
+!/config/
+!/install-service.sh
+!/skogai-t3.service
