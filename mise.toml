@@ -5,6 +5,14 @@ monorepo_root = true
 [monorepo]
 config_roots = ["mise-plugin"]
 
+# Basic facts about where mise is running, set for every environment.
+# Templates are rendered by mise each time it computes the environment; see doc/mise.md.
+[env]
+SKOGAI_HOST = "{{ exec(command='uname -n') }}"
+SKOGAI_OS = "{{ os() }}"
+SKOGAI_ARCH = "{{ arch() }}"
+SKOGAI_MISE_ENV = "{{ mise_env | default(value=[]) | join(sep=',') | replace(from=' ', to='') }}"
+
 [tools]
 gh = { version = "2.104.0", minimum_release_age = "0s", lazy = true }
 usage = { version = "7.3.0", workflow = "publish-cli.yml" }
