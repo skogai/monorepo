@@ -38,6 +38,19 @@ Run: as above, base commit `449745b`.
 
 Not run: a real push or `gh pr create` with the new token before this PR. Opening this PR is that test.
 
+## Client ID in the repository and the `github:auth` task
+
+Run: as above, on branch `github-oauth-write/claude-skogix-laptop`, parent commit `ea6f8df`.
+
+| Command | Expected | Actual | Verdict |
+|---|---|---|---|
+| `MISE_GITHUB_OAUTH_CLIENT_ID=test-env mise settings get github.oauth_client_id` | Variable overrides the config | `test-env` | pass |
+| Scratch project with `[settings.github] oauth_client_id = "from-project"`, then `mise settings get …` | Project value wins over the global one | `from-project` | pass |
+| Scratch project with `[env] MISE_GITHUB_OAUTH_CLIENT_ID = "from-env-section"` | Unknown | Global value returned; `[env]` is not read for settings | fail (documented) |
+| `mise tasks info github:auth` in the worktree | Task resolves | `Task: //:github:auth`, source `mise.toml` | pass |
+
+Not run: `mise run github:auth`. Running it refreshes the token, which revokes the token in the owner's open shells. It also had no way to show that the repository value took effect, because the global config sets the same client ID.
+
 ## Next action
 
 None. AGENTS.md now describes the setup as a machine prerequisite.
