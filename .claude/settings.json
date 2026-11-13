@@ -1,0 +1,5 @@
+{
+  "enabledPlugins": {
+    "skogai-core@skogai-marketplace": true
+  }
+}
