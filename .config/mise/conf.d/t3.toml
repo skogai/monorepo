@@ -1,6 +1,6 @@
 # T3 tasks for the workstation installation
 [env]
-T3CODE_HOME = "{{env.HOME}}/.t3"
+T3CODE_HOME = "{{config_root}}/.t3"
 T3_LOCAL_ROOT = "{{config_root}}"
 T3_LOCAL_PORT = "3773"
 

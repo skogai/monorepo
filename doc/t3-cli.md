@@ -151,7 +151,7 @@ The repository now includes an interactive picker described below. It does not a
 
 ## Repository interactive playground
 
-The shared `.config/mise/conf.d/t3.toml` provides the picker and CLI tasks in every mise environment. They use the workstation T3 installation and its state in `~/.t3`.
+The shared `.config/mise/conf.d/t3.toml` provides the picker and CLI tasks in every mise environment. They use the workstation T3 installation and state in the checkout’s `.t3` directory.
 
 Prerequisites: mise, a working `t3` executable, Python 3, curl and sqlite3. The picker installs Gum 2.0.2 through mise. Provider setup remains machine-dependent; the picker does not configure credentials. Global/system mise configuration still applies.
 
