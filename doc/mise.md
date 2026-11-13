@@ -30,6 +30,7 @@ env_conf_d = true
 |---|---|---|
 | `skogai` | nothing, it is the default | The `skogai` plugin, installed from `https://github.com/skogai/mise-plugin` at a pinned commit. |
 | `develop` | `mise -E develop …` | The `skogai-develop` plugin, linked to the `mise-plugin` submodule, and the `//:plugin:link` task. |
+| `t3` | `mise -E t3 run` | Local T3 playground and interactive picker; see [T3 guide](t3-cli.md#repository-interactive-playground). |
 | none | `MISE_ENV= mise …` | Nothing. Tools and tasks only. |
 
 `-E` and `MISE_ENV` replace the default, they do not add to it. `mise -E develop` loads `develop` only. To combine, list both: `mise -E skogai,develop`. The last one listed wins where they set the same thing.
