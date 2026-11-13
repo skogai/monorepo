@@ -8,6 +8,7 @@ The starting workspace for SkogAI 3.0: document the setup already in use, test i
 - [Setup plan](doc/plan.md)
 - [mise configuration: environments, conf.d, plugin](doc/mise.md)
 - [mise toolkit plan](doc/mise-toolkit-plan.md) (separate track, [project](https://github.com/orgs/skogai/projects/4))
+- [T3 Code CLI guide](doc/t3-cli.md) (installed-version snapshot and thread workflows)
 - [Starting tools decision](doc/adr/0001-starting-tools.md)
 - [Setup evidence and next experiments](.skogai/tests/2026-11-10-setup.md)
 - [Research](.skogai/research/)
