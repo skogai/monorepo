@@ -10,6 +10,15 @@ It is at an early stage. There is no application code, no chosen language, and n
 
 Start from the [README](README.md), then read the [decisions](doc/adr/). The plan and current work are GitHub issues on the [project board](https://github.com/orgs/skogai/projects/4); its README gives the order and the owner's direction.
 
+## Starting a session: "hi"
+
+When the owner opens a session with just "hi" (or a similar bare greeting), it means: present the next thing on the list. Do this:
+
+1. Run `mise run next`. It lists open pull requests, project 4 items in progress, and the first open item per track (`roadmap`, `mise-toolkit`, `backlog`).
+2. Present the state briefly. Open pull requests come first: they are waiting on review or merge. Then work in progress, then the next item per track.
+3. Recommend one next item, following the order in the project 4 README. Say whether it suits a subagent: a self-contained issue with a clear checklist, no open pull request touching it, and no open decision that needs the owner. If it does not, say what is blocking it or what the owner must decide.
+4. Stop and wait. Do not start work or spawn a subagent until the owner picks.
+
 ## Prefer mise
 
 The goal is to use mise as much as possible. A tool or dependency that mise can install is free to use and comes first. Before you write tooling, rules, or a workflow of your own, look for a mise tool that already does the job. For example, manage decision records with `adr-tools` through mise instead of inventing a format and process. [ADR 0001](doc/adr/0001-starting-tools.md) records this.
