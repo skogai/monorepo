@@ -38,6 +38,25 @@ env_conf_d = true
 
 To add an environment, add `.config/mise/conf.d/<name>.<env>.toml`. To see what a selection loads, run `mise -E <env> cfg`.
 
+## Basic environment variables
+
+`mise.toml` sets these for every environment, including `MISE_ENV=`:
+
+| Variable | Value | Example |
+|---|---|---|
+| `SKOGAI_HOST` | `uname -n`, run through the `exec()` template function | `skogix-workstation` |
+| `SKOGAI_OS` | `os()`: `linux`, `macos`, `windows` | `linux` |
+| `SKOGAI_ARCH` | `arch()`: `x64`, `arm64` | `x64` |
+| `SKOGAI_MISE_ENV` | The selected environments, comma-separated, empty when none | `skogai` |
+
+mise has no `hostname()` template function, so the host comes from `uname -n`, which exists on Linux and macOS. `/etc/hostname` was not used because macOS lacks it. The values are rendered whenever mise computes the environment: `mise activate`, `mise exec`, `mise env` and tasks. To check them:
+
+```sh
+mise env | grep SKOGAI_
+```
+
+`SKOGAI_MISE_ENV` strips spaces because `mise -E develop env` passes the name as ` develop` with mise 2026.11.5. `--env=develop`, `MISE_ENV=develop` and `mise -E develop exec` do not. Other variables, such as `SKOGAI_MONOREPO_DIR`, come from the SkogAI plugin below.
+
 ## Tools
 
 Tools in `mise.toml` are pinned to exact versions, and `mise.lock` records the download URL, checksum and signer for each platform. To change a version:
