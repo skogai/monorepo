@@ -144,3 +144,32 @@ The snippet is a bootstrap: it sets a quiet systemd environment, then runs `bash
 
 If you tell me where you saw it (which command or tool), I can search atuin history for the exact invocation and pin down the source.
 
+## 2026-11-13 23:10 · turn 0a14647f
+
+**User**
+
+> i have changed shell, how and what should be added to .zshrc?
+
+**Assistant**
+
+Put this at the **top** of `~/.zshrc`:
+
+```zsh
+# Hand interactive terminals over to fish; scripts, ssh commands and `zsh -c` stay in zsh
+if [[ -o interactive && -z $NO_FISH ]] && command -v fish >/dev/null \
+   && [[ $(ps -o comm= -p $PPID) != fish ]]; then
+  if [[ -o login ]]; then exec fish --login; else exec fish; fi
+fi
+```
+
+How it works:
+- **`.zshrc` only runs for interactive shells.** Commands like `ssh host 'cmd'` and `zsh -c '…'` never read it, so tools get plain zsh, and that `if … then … fi` bootstrap works.
+- **The `$PPID` check** means typing `zsh` from inside fish gives you a real zsh instead of bouncing you back to fish.
+- **`NO_FISH=1 zsh`** is an escape hatch if your fish config breaks.
+- **`exec`** replaces zsh, so you don't stack two shells.
+- **`--login`** is passed on when zsh was a login shell, so fish's login-time behaviour still works.
+
+Put environment setup (PATH and other exports) in `~/.zprofile` or `~/.zshenv`, not after this block. Anything below the `exec` never runs in interactive sessions, and fish inherits whatever was exported before it.
+
+To check it, open a new terminal: `ps -p $$ -o comm=` should print `fish`. Then `ssh localhost 'if true; then echo ok; fi'` (or `zsh -c` with the same string) should print `ok`.
+
