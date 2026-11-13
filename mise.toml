@@ -10,3 +10,15 @@ gh = { version = "2.104.0", minimum_release_age = "0s", lazy = true }
 usage = { version = "7.3.0", workflow = "publish-cli.yml" }
 worktrunk = { version = "0.81.0", workflow = "release.yaml" }
 
+
+# GitHub OAuth for mise, gh and git push. See AGENTS.md, "GitHub authentication for mise".
+[settings.github]
+oauth_client_id = "Iv23liQkKChCS4oXgq10"
+
+[tasks."github:auth"]
+description = "Log in to GitHub with mise OAuth, or refresh the token"
+run = [
+  "mise token github --oauth --refresh",
+  "mise token github",
+  "echo 'The old token is now revoked. In open shells, run: unset GITHUB_TOKEN (or wait for the next prompt).'",
+]
