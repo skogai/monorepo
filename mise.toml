@@ -5,13 +5,14 @@ monorepo_root = true
 [monorepo]
 config_roots = ["mise-plugin"]
 
-# Basic facts about where mise is running, set for every environment.
-# Templates are rendered by mise each time it computes the environment; see doc/mise.md.
 [env]
-SKOGAI_HOST = "{{ exec(command='uname -n') }}"
-SKOGAI_OS = "{{ os() }}"
-SKOGAI_ARCH = "{{ arch() }}"
+# The plugin cannot see an environment chosen in .miserc.toml, so this stays a template.
 SKOGAI_MISE_ENV = "{{ mise_env | default(value=[]) | join(sep=',') | replace(from=' ', to='') }}"
+# The skogai plugin, in every environment once installed. Its source and pin are in
+# .config/mise/conf.d/plugin.skogai.toml; with no source loaded, mise skips it with a warning
+# instead of failing. It sets SKOGAI_MONOREPO_DIR, SKOGAI_CONFIG_DIR and the SKOGAI_HOST,
+# SKOGAI_OS and SKOGAI_ARCH defaults. A value set above this line, or in mise.local.toml, wins.
+_.skogai = {}
 
 [tools]
 gh = { version = "2.104.0", minimum_release_age = "0s", lazy = true }
@@ -36,3 +37,52 @@ run = [
   "mise token github",
   "echo 'The old token is now revoked. In open shells, run: unset GITHUB_TOKEN (or wait for the next prompt).'",
 ]
+
+# Basic environment variables: see doc/mise.md, "Basic environment variables".
+[tasks."env:show"]
+description = "Show the SKOGAI_ variables mise sets here"
+quiet = true
+run = "env | grep '^SKOGAI_' | sort -t= -k1,1 | awk '{ i = index($0, \"=\"); printf \"%-28s %s\\n\", substr($0, 1, i - 1), substr($0, i + 1) }'"
+
+[tasks."env:test"]
+description = "Check that the skogai plugin loaded and the basic variables are valid"
+quiet = true
+run = """
+fail=0
+ok() { echo "ok   $1"; }
+bad() { echo "FAIL $1"; fail=1; }
+if [ -z "${SKOGAI_MONOREPO_DIR:-}" ]; then
+  bad "skogai plugin loaded: SKOGAI_MONOREPO_DIR is unset. Install it with: mise plugins install skogai"
+else
+  ok "skogai plugin loaded"
+fi
+[ "${SKOGAI_MONOREPO_DIR:-}" = "{{config_root}}" ] && ok "SKOGAI_MONOREPO_DIR is this checkout"   || bad "SKOGAI_MONOREPO_DIR is '${SKOGAI_MONOREPO_DIR:-}', expected '{{config_root}}'"
+[ -n "${SKOGAI_HOST:-}" ] && ok "SKOGAI_HOST is set: $SKOGAI_HOST" || bad "SKOGAI_HOST is empty; set it in mise.local.toml"
+case "${SKOGAI_OS:-}" in linux | macos | windows) ok "SKOGAI_OS is valid: $SKOGAI_OS" ;; *) bad "SKOGAI_OS is '${SKOGAI_OS:-}'" ;; esac
+case "${SKOGAI_ARCH:-}" in x64 | arm64 | x86) ok "SKOGAI_ARCH is valid: $SKOGAI_ARCH" ;; *) bad "SKOGAI_ARCH is '${SKOGAI_ARCH:-}'" ;; esac
+[ -n "${SKOGAI_MISE_ENV+set}" ] && ok "SKOGAI_MISE_ENV is defined: '$SKOGAI_MISE_ENV'" || bad "SKOGAI_MISE_ENV is not defined"
+host=$(uname -n)
+[ "${SKOGAI_HOST:-}" = "$host" ] || echo "note SKOGAI_HOST differs from uname -n ($host): overridden in config or the shell"
+exit $fail
+"""
+
+[tasks."env:context"]
+description = "Print where this runs, for agents and commit messages"
+quiet = true
+usage = 'flag "--trailers" help="Print git commit trailers instead"'
+run = """
+dir="{{config_root}}"
+branch=$(git -C "$dir" branch --show-current 2>/dev/null || true)
+commit=$(git -C "$dir" rev-parse --short HEAD 2>/dev/null || true)
+if [ "${usage_trailers:-false}" = true ]; then
+  echo "Host: ${SKOGAI_HOST:-}"
+  echo "Platform: ${SKOGAI_OS:-}-${SKOGAI_ARCH:-}"
+  echo "Mise-Env: ${SKOGAI_MISE_ENV:-none}"
+else
+  echo "host:     ${SKOGAI_HOST:-}"
+  echo "platform: ${SKOGAI_OS:-}-${SKOGAI_ARCH:-}"
+  echo "mise env: ${SKOGAI_MISE_ENV:-none}"
+  echo "checkout: $dir"
+  echo "git:      ${branch:-detached} at ${commit:-unknown}"
+fi
+"""
