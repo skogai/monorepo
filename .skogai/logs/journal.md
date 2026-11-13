@@ -82,3 +82,37 @@ Everything is clean now, so I didn't change anything. The `status 127` errors st
 - Bash: `jq -c '.hooks' ~/.claude/settings.json; grep -E 'status [1-9]|\[ERROR\]' ~/.claude/debug/93194e3a-8bfa-4020-9ea3-8290d8b…`
 - Bash: `grep -E 'ToolUse:Bash \[command hook' ~/.claude/debug/93194e3a-8bfa-4020-9ea3-8290d8bf642d.txt | tail -4 | cut -c1-200`
 
+## 2026-11-13 22:00 · turn f5346f6f
+
+**User**
+
+> perfect! now /tmp/example.jsonl is the "last turn" i copied from the jsonl logs and most things got ran i believe? :)
+
+**Assistant**
+
+Yes, everything that could fire did. The file holds 15 events; line 16 is just an empty trailing line.
+
+| Hook | Fired | What it did |
+|---|---|---|
+| SessionStart | 1 | wrote state |
+| UserPromptSubmit | 2 | `git add -A`, `wt merge`, wrote state |
+| PreToolUse / PostToolUse | 5 pairs, all Bash | logged only |
+| Stop | 2 | journal entry, committed the journal, `git add -A`, `wt merge`, wrote state |
+
+It's actually two turns, not one: 20:55 and 20:58, plus the session start at the top.
+
+skogai-core registers 13 hook events. The other 8 had nothing to trigger them:
+- **PostToolUseFailure:** no tool call failed.
+- **StopFailure:** no turn failed.
+- **PreCompact, PostCompact:** the conversation was never compacted.
+- **SubagentStart, SubagentStop:** no subagent was spawned.
+- **Notification:** nothing triggered a notification.
+- **SessionEnd:** the session hasn't ended.
+
+If you want to see some of those fire too, I can spawn a trivial subagent (SubagentStart/Stop) and run a command that fails (PostToolUseFailure).
+
+**Actions**
+
+- Bash: `f=/tmp/example.jsonl; wc -lc $f; jq -r '[.ts, .event, (.action // ""), (.input.tool_name // ""), (.input.hook_event_name…`
+- Bash: `jq -c 'select(.event==null)|keys' /tmp/example.jsonl 2>&1 | head; awk 'length($0)<5{print NR": empty"}' /tmp/example.jso…`
+
