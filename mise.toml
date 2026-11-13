@@ -6,6 +6,6 @@ monorepo_root = true
 config_roots = ["mise-plugin"]
 
 [tools]
-usage = { version = "latest", workflow = "publish-cli.yml" }
-worktrunk = { version = "latest", workflow = "release.yaml" }
+usage = { version = "7.3.0", workflow = "publish-cli.yml" }
+worktrunk = { version = "0.81.0", workflow = "release.yaml" }
 
