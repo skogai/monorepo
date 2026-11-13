@@ -2,7 +2,6 @@
 set -euo pipefail
 
 base_dir=$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)
-unit_dir="${XDG_CONFIG_HOME:-$HOME/.config}/systemd/user"
 
 if [[ "$base_dir" != "$(realpath -m "$HOME/Work/t3")" ]]; then
     printf 'Install this service from %s/Work/t3.\n' "$HOME" >&2
@@ -16,7 +15,8 @@ for file in settings.json keybindings.json; do
     fi
 done
 
-install -d "$unit_dir"
-install -m 644 "$base_dir/skogai-t3.service" "$unit_dir/skogai-t3.service"
-systemctl --user daemon-reload
-systemctl --user enable --now skogai-t3.service
+if systemctl --user cat skogai-t3.service >/dev/null 2>&1; then
+    systemctl --user disable --now skogai-t3.service
+fi
+t3 service install --base-dir "$base_dir"
+systemctl --user enable --now t3code.service
