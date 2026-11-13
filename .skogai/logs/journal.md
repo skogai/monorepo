@@ -173,3 +173,39 @@ Put environment setup (PATH and other exports) in `~/.zprofile` or `~/.zshenv`, 
 
 To check it, open a new terminal: `ps -p $$ -o comm=` should print `fish`. Then `ssh localhost 'if true; then echo ok; fi'` (or `zsh -c` with the same string) should print `ok`.
 
+## 2026-11-13 23:19 · turn d89d7c51
+
+**User**
+
+> but however we should find the origin for that i guess right?
+
+**Assistant**
+
+I found where it comes from: **Termix**, the web SSH manager you run in podman (container `termix`, image `ghcr.io/termix-ssh/termix:beta`).
+
+The snippet is built in its plugin SDK, at `app/packages/plugin-sdk/dist/host-scripts/shell.js` inside the image:
+
+```js
+const ENV = "SYSTEMD_COLORS=0 SYSTEMD_PAGER=cat LC_ALL=C TZ=UTC";
+...
+case "root":
+  return `${SCRIPT_PRELUDE}if [ "$(id -u)" = "0" ]; then exec bash -s; else exec ${SUDO} bash -s; fi`;
+```
+
+Your error text matches the `"root"` mode exactly. Termix uses that mode when a host has **"Use sudo for this host"** turned on. Its host plugins (systemd/journal views and similar) send this string as the SSH exec command, and SSH runs it with the remote user's login shell. That was fish, which can't parse `if … then … fi`.
+
+**Termix's bug:** it assumes the login shell is POSIX. The fix on their side is to wrap the command in `sh -c '…'`, or to call `bash -s` directly and put the logic in the stdin script. Worth reporting upstream against termix-ssh/termix. All four modes (`plain`, `auto`, `root`, `root-only`) have the same problem.
+
+**Your side:** now that zsh is your login shell, the command parses. To confirm, retry the action in Termix that failed.
+
+The `/dev/tty` warning came from your fish config. Wrap that code in `status is-interactive` anyway, since fish still runs whenever you start it.
+
+**Actions**
+
+- ToolSearch: select:mcp__atuin__atuin_output_search,mcp__atuin__atuin_history,mcp__atuin__atuin_output
+- mcp__atuin__atuin_output_search
+- mcp__atuin__atuin_history: SYSTEMD_PAGER
+- Bash: `grep -rIl --exclude-dir={.git,node_modules,.cache} "SYSTEMD_PAGER=cat" ~/.config ~/.local/bin ~/.local/share ~/Work /usr…`
+- Bash: `D=/home/skogix/.local/share/containers/storage/overlay/71a94940df25710f08f0642875cfa4c63e6617e36f09a7db14f21224b247cfa3/…`
+- Bash: `D=/home/skogix/.local/share/containers/storage/overlay/71a94940df25710f08f0642875cfa4c63e6617e36f09a7db14f21224b247cfa3/…`
+
