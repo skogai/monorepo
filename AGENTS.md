@@ -45,6 +45,35 @@ Your output will be read next to other agents' output for the same task, produce
 
 Add to the dated file in `.skogai/tests/`. For each entry give the date, the run (agent, machine, checkout, commit), the exact command, the expected result, the actual result, a verdict of pass, fail, blocked, or not run, and the decision or next action. Keep failures; they are evidence.
 
+## GitHub authentication for mise
+
+mise calls the GitHub API to resolve and download tools. Without a token those calls hit the anonymous rate limit. To see which token mise uses and where it came from, run `mise token github`. It masks the token. Do not use `--unmask` or `--raw` in logs, files, or pull requests.
+
+mise uses the first token it finds, in this order:
+
+1. `MISE_GITHUB_ENTERPRISE_TOKEN`, for enterprise hosts
+2. `MISE_GITHUB_TOKEN`, then `GITHUB_API_TOKEN`, then `GITHUB_TOKEN`
+3. `github.credential_command`
+4. Native GitHub OAuth
+5. `github_tokens.toml`
+6. The gh CLI `hosts.yml`
+7. `git credential fill`, when `github.use_git_credentials` is on
+
+GitHub authentication is a machine prerequisite. Nothing in this repository configures it. On the owner's workstation (`skogix-laptop`), native OAuth is set up in `~/.config/mise/config.toml`:
+
+```toml
+[settings.github]
+oauth_client_id = "Iv23liQkKChCS4oXgq10"   # the owner's GitHub App, device flow enabled
+```
+
+A client ID is not a secret. The OAuth token mise caches is a secret. To set this up on another machine:
+
+1. Set `github.oauth_client_id` in the global mise config. Use the owner's GitHub App client ID, or the client ID of your own GitHub App with device flow enabled.
+2. Run `mise token github --oauth` and approve the device code in a browser. This step needs a person.
+3. Check that `mise token github` reports `source: GitHub OAuth`.
+
+While a token is cached, mise exports it as `GITHUB_TOKEN` through `mise activate`, `mise exec` and `mise env`. The `github.oauth_export_env` setting changes the variable name, and `""` turns the export off. A `GITHUB_TOKEN` you set yourself sits higher in the order, so mise will use it instead of OAuth. After you change the app's permissions or installations, run `mise token github --oauth --refresh`. Documentation: <https://mise.jdx.dev/dev-tools/github-tokens.html>.
+
 ## Secrets
 
 Do not write credentials, tokens, or full environment dumps into files, logs, commit messages, or pull requests. The repository currently has no `.gitignore`, so check `git status` before every commit.
