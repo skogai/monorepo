@@ -147,40 +147,34 @@ None of these maintenance operations was run during documentation work.
 
 The installed `thread` group has exactly four advertised subcommands: `list`, `start`, `send`, `show`. It does not advertise rename, archive, settle, pin, interrupt or search subcommands. Agent tools in this T3 session expose additional thread operations, but those tool names are not shell commands.
 
-The repository now includes an opt-in interactive playground described below. It does not add missing operations to the upstream T3 CLI.
+The repository now includes an interactive picker described below. It does not add missing operations to the upstream T3 CLI.
 
 ## Repository interactive playground
 
-The opt-in `t3` mise environment, defined in `.config/mise/conf.d/setup.t3.toml`, provides a tracked picker and CLI tasks. Runtime state is ignored in `/.t3/`; no database or credentials are committed. This remains a playground against the schema of the installed version above, not a fully isolated agent sandbox.
+The shared `.config/mise/conf.d/t3.toml` provides the picker and CLI tasks in every mise environment. They use the workstation T3 installation and its state in `~/.t3`.
 
 Prerequisites: mise, a working `t3` executable, Python 3, curl and sqlite3. The picker installs Gum 2.0.2 through mise. Provider setup remains machine-dependent; the picker does not configure credentials. Global/system mise configuration still applies.
 
-For a new checkout, start the server in one terminal:
+If T3 is already running, use that instance. To start T3 in the foreground when the service is stopped, run:
 
 ```bash
-mise -E t3 run t3:serve
+mise run t3:serve
 ```
 
-Then register the checkout and open the picker in another terminal:
+Register the checkout once if it is missing from T3, then open the picker:
 
 ```bash
-mise -E t3 run t3:init
-mise -E t3 run
+mise run t3:init
+mise run t3
 ```
 
 Type to filter projects and threads by title; press Enter to select. Read messages, start a thread or compose a follow-up. The composer supports Enter to submit, Ctrl+J for newlines and Ctrl+E for an external editor, then asks before sending. Back entries return to the previous menu; Ctrl+C cancels a picker. Duplicate titles remain distinct selections. An empty project offers a new thread.
 
-The default base is the checkout's `.t3`, and the server binds `127.0.0.1:3778`. Stop the foreground server with Ctrl+C. If the port is occupied, choose another in an ignored `mise.t3.local.toml`:
+The default URL is `http://127.0.0.1:3773`. Run `mise run t3:info` to check
+the selected state directory and URL. For a custom installation, override
+`T3CODE_HOME` and `T3_LOCAL_PORT` in an ignored `mise.local.toml`.
 
-```toml
-[env]
-T3CODE_HOME = "{{config_root}}/.t3"
-T3_LOCAL_PORT = "3779"
-```
-
-The current workstation retains its existing temporary directory and port through that local override; it uses the same tracked picker. `mise -E t3 run t3:info` shows the actual target. Do not move a live database to change this path: stop its server first. Each checkout gets its own default state. Selecting `t3` replaces the default mise environment; use `-E skogai,t3` to combine them.
-
-Other tasks: `t3:health` checks HTTP; `t3:status` reports settings; `t3:projects`, `t3:threads` and `t3:threads-all` print inventories. `t3:show`, `t3:start` and `t3:send` retain explicit argument interfaces with `--help`. The picker is also available as `mise -E t3 run t3`. Outside the `t3` environment the default picker task is not loaded.
+Other tasks: `t3:health` checks HTTP; `t3:status` reports settings; `t3:projects`, `t3:threads` and `t3:threads-all` print inventories. `t3:show`, `t3:start` and `t3:send` retain explicit argument interfaces with `--help`. The picker is also available as `mise run t3`.
 
 Project discovery and cross-project thread discovery query internal SQLite tables read-only. Agent actions go through the CLI with an explicit base directory. T3 upgrades may require query updates. No live provider execution is covered by the focused checks:
 

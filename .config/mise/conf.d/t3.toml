@@ -1,9 +1,8 @@
-# Opt-in local T3 environment: mise -E t3 run
+# T3 tasks for the workstation installation
 [env]
-T3CODE_HOME = "{{config_root}}/.t3"
-T3CODE_LAN = "false"
+T3CODE_HOME = "{{env.HOME}}/.t3"
 T3_LOCAL_ROOT = "{{config_root}}"
-T3_LOCAL_PORT = "3778"
+T3_LOCAL_PORT = "3773"
 
 [tasks."t3:serve"]
 description = "Start the local T3 server in the foreground (stop existing instance first)"

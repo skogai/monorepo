@@ -34,14 +34,14 @@ The goal is to use mise as much as possible. A tool or dependency that mise can 
 
 ## mise configuration and conf.d
 
-Read [the mise guide](doc/mise.md) before changing configuration. Keep shared root policy in `mise.toml` and environment-specific tools, variables and tasks in `.config/mise/conf.d/<name>.<env>.toml`. T3 variables and playground tasks live together in `setup.t3.toml`; do not recreate `mise.t3.toml`.
+Read [the mise guide](doc/mise.md) before changing configuration. Keep shared root policy in `mise.toml` and environment-specific tools, variables and tasks in `.config/mise/conf.d/<name>.<env>.toml`. T3 variables and tasks live in the shared fragment `.config/mise/conf.d/t3.toml`.
 
 - `.miserc.toml` is read before configuration discovery. It selects `skogai` by default and enables `env_conf_d = true`. Keep that setting there, not in a mise `[env]` table.
 - With that setting, `<name>.toml` is shared and `<name>.<env>.toml` loads only for the selected environment. Avoid dots in the fragment's name itself; use hyphens.
-- `mise -E t3` replaces the default selection. Use `mise -E skogai,t3` to combine environments; later selected environments win conflicts.
+- `mise -E develop` replaces the default selection. Use `mise -E skogai,develop` to combine environments. Later selected environments win conflicts.
 - Shared conf.d fragments load alphabetically before root `mise.toml`; environment fragments override base configuration. Keep personal overrides in ignored `mise.local.toml` or `mise.<env>.local.toml`, rather than editing shared fragments.
 - `{{config_root}}` in these project fragments identifies the checkout root. Keep checkout-relative paths templated and verify them after moving configuration.
-- Inspect discovery with `mise -E t3 cfg` and task availability with `mise -E t3 tasks ls`. Use `mise -E t3 run t3:info` to check paths without starting a server. Also check default and combined selections.
+- Inspect discovery with `mise cfg` and task availability with `mise tasks ls`. Use `mise run t3:info` to check paths without starting a server. Also check an explicit environment selection.
 - Global/system mise configuration and installed tools still apply. Record those machine prerequisites; conf.d organization does not provide isolation. Never dump the full environment as validation.
 
 Upstream reference: [mise configuration](https://mise.jdx.dev/configuration.html).
