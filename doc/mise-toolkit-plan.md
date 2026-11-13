@@ -37,6 +37,6 @@ Order: #13 first, because the other issues need known tool versions. #14, #15 an
 
 ## Open questions
 
-- Which `mise` binary is the bootstrap prerequisite, and should pacman copies of jdx tools be removed? Proposed in [ADR 0002](adr/0002-mise-binary-and-tool-source.md): the `mise-bin` package, and yes. Waiting for the owner.
+- Which `mise` binary is the bootstrap prerequisite, and should pacman copies of jdx tools be removed? Decided in [ADR 0002](adr/0002-mise-binary-and-tool-source.md): any working `mise` on PATH, and the other jdx tools come from mise only.
 - Repo vs global config vs plugin: where does each part of the workstation setup belong? (#17)
 - Which fnox provider: age in `fnox.toml`, or an external store? (#18)

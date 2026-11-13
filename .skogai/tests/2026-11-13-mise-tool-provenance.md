@@ -64,4 +64,4 @@ env -i HOME="$HOME" PATH=/usr/bin:/bin \
 
 ## Next action
 
-The owner decides [ADR 0002](../../doc/adr/0002-mise-binary-and-tool-source.md), then runs the removal commands listed there.
+The owner accepted [ADR 0002](../../doc/adr/0002-mise-binary-and-tool-source.md) on 2026-11-13 with any working `mise` as the prerequisite. The machine cleanup commands listed there are optional and not run.

@@ -46,7 +46,7 @@ Tools in `mise.toml` are pinned to exact versions, and `mise.lock` records the d
 mise lock usage@7.4.0
 ```
 
-That updates both `mise.toml` and `mise.lock`. Commit them together. `mise install --locked` installs only what the lockfile lists. Which `mise` binary is the prerequisite, and where the other jdx tools come from, is proposed in [ADR 0002](adr/0002-mise-binary-and-tool-source.md); the checks are in the [evidence](../.skogai/tests/2026-11-13-mise-tool-provenance.md).
+That updates both `mise.toml` and `mise.lock`. Commit them together. `mise install --locked` installs only what the lockfile lists. Which `mise` binary is the prerequisite, and where the other jdx tools come from, is decided in [ADR 0002](adr/0002-mise-binary-and-tool-source.md); the checks are in the [evidence](../.skogai/tests/2026-11-13-mise-tool-provenance.md).
 
 ## The SkogAI plugin
 
