@@ -151,7 +151,7 @@ The repository now includes an opt-in interactive playground described below. It
 
 ## Repository interactive playground
 
-The opt-in `t3` mise environment now provides a tracked picker and CLI tasks. Runtime state is ignored in `/.t3/`; no database or credentials are committed. This remains a playground against the schema of the installed version above, not a fully isolated agent sandbox.
+The opt-in `t3` mise environment, defined in `.config/mise/conf.d/setup.t3.toml`, provides a tracked picker and CLI tasks. Runtime state is ignored in `/.t3/`; no database or credentials are committed. This remains a playground against the schema of the installed version above, not a fully isolated agent sandbox.
 
 Prerequisites: mise, a working `t3` executable, Python 3, curl and sqlite3. The picker installs Gum 2.0.2 through mise. Provider setup remains machine-dependent; the picker does not configure credentials. Global/system mise configuration still applies.
 
