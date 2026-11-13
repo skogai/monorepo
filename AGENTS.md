@@ -19,6 +19,15 @@ When the owner opens a session with just "hi" (or a similar bare greeting), it m
 3. Recommend one next item, following the order in the project 4 README. Say whether it suits a subagent: a self-contained issue with a clear checklist, no open pull request touching it, and no open decision that needs the owner. If it does not, say what is blocking it or what the owner must decide.
 4. Stop and wait. Do not start work or spawn a subagent until the owner picks.
 
+## Delivering work
+
+Work on a branch, then decide how it lands:
+
+- **Input needed: open a pull request and stop.** Input is needed when the change has an open question, makes or changes a decision (an ADR), cannot be verified on this machine, or is one of several parallel runs of the same task. Put the questions in the pull request description.
+- **No input needed: merge to `master`.** Open the pull request for the record, squash-merge it, and delete the branch. The change must be verified, with the checks you ran stated in the pull request.
+
+When unsure, treat it as input needed.
+
 ## Prefer mise
 
 The goal is to use mise as much as possible. A tool or dependency that mise can install is free to use and comes first. Before you write tooling, rules, or a workflow of your own, look for a mise tool that already does the job. For example, manage decision records with `adr-tools` through mise instead of inventing a format and process. [ADR 0001](doc/adr/0001-starting-tools.md) records this.
@@ -49,7 +58,7 @@ Your output will be read next to other agents' output for the same task, produce
 4. **Make machine dependencies explicit.** If a step needs anything outside the checkout, record it as a prerequisite. A check that passes on one workstation does not show the setup is reproducible.
 5. **Do not turn proposals into decisions.** Decisions are the records in `doc/adr/`. Research notes, files removed from Git history, and tools that happen to be installed outside mise are inputs. If something is undecided, list it as an open question.
 6. **Keep the shared layout.** Put files where the table below says, so that parallel runs produce diffs of the same paths.
-7. **Deliver a pull request and stop.** Leave merging to the owner. Leave other agents' branches and pull requests alone.
+7. **Deliver a pull request and stop.** When several agents run the same task, the owner's comparison is input, so open a pull request and leave merging to the owner (see Delivering work). Leave other agents' branches and pull requests alone.
 
 ## Where things live
 
