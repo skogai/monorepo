@@ -116,3 +116,31 @@ If you want to see some of those fire too, I can spawn a trivial subagent (Subag
 - Bash: `f=/tmp/example.jsonl; wc -lc $f; jq -r '[.ts, .event, (.action // ""), (.input.tool_name // ""), (.input.hook_event_name…`
 - Bash: `jq -c 'select(.event==null)|keys' /tmp/example.jsonl 2>&1 | head; awk 'length($0)<5{print NR": empty"}' /tmp/example.jso…`
 
+## 2026-11-13 23:03 · turn 0ff7fd4c
+
+**User**
+
+> anything you recognize? 
+>
+>
+> ```
+> warning: An error occurred while redirecting file '/dev/tty' open: No such device or address fish: Missing end to balance this if statement export PATH="$PATH:/usr/sbin:/sbin:/usr/local/sbin"; export SYSTEMD_COLORS=0 SYSTEMD_PAGER=cat LC_ALL=C TZ=UTC; if [ "$(id -u)" = "0" ]; then exec bash -s; else exec sudo -n env PATH="$PATH" SYSTEMD_COLORS=0 SYSTEMD_PAGER=cat LC_ALL=C TZ=UTC bash -s; fi ^^
+> ```
+
+**Assistant**
+
+Yes, I recognize the pattern but not the exact tool. A program is running a POSIX `sh` snippet over SSH, or through something like `$SHELL -c`, and your login shell is **fish**. SSH hands the remote command string to the user's login shell. Fish can't parse `if …; then …; fi`, so you get "Missing end to balance this if statement".
+
+The snippet is a bootstrap: it sets a quiet systemd environment, then runs `bash -s` (directly if root, otherwise through `sudo -n`) and pipes a script in on stdin. Remote admin and diagnostic tools that inspect systemd/journal on a host use this kind of bootstrap. My guess is that's what triggered it.
+
+**The two errors:**
+1. **`/dev/tty` … No such device or address**: something in your fish config (`config.fish` or `conf.d/*.fish`) reads from or writes to `/dev/tty`. This session has no terminal attached. Wrap that code in `if status is-interactive … end`.
+2. **`Missing end…`**: the actual failure, caused by fish getting `sh` syntax.
+
+**Fixes, best first:**
+- Make the tool wrap its command as `sh -c '…'` or `bash -c '…'` instead of relying on the login shell. This is the proper fix if you control the tool.
+- Keep bash or zsh as the login shell (`chsh -s /bin/zsh`) and start fish from your terminal config or `.zshrc` for interactive sessions only. Many fish users do this because of exactly this problem.
+- Fix item 1 either way, so non-interactive sessions stay clean.
+
+If you tell me where you saw it (which command or tool), I can search atuin history for the exact invocation and pin down the source.
+
