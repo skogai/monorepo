@@ -1,28 +1,44 @@
 # Catalog of SkogAI repos, managed with mani (https://manicli.com).
 # Unpinned and uncoupled: mani records no commits and ties no repos together.
-# Each repo is cloned on demand into repos/<name> (ignored, see .gitignore).
+# Lazy: every project has `sync: false`, so a bare `mani sync` clones nothing.
+# Each project is tagged with its own name; a tag selects exactly one repo.
+# A repo is cloned on demand into repos/<name> (ignored, see .gitignore).
 #
-#   mani list projects        what the catalog holds
-#   mani sync --status        what is cloned here
-#   mani sync -d repos/<name> clone one repo (plain `mani sync` clones all)
-#   mani run agents           print each cloned repo's root AGENTS.md
-#   mise run agents:sync      clone all, then refresh agents/<name>.md (the cached copies)
+#   mani list projects                        what the catalog holds
+#   mani sync --status                        what is cloned here (Synced column)
+#   mani sync -t <name> --ignore-sync-state   clone one repo
+#   mani sync --ignore-sync-state             clone all of them
+#   mani run agents                           print each cloned repo's root AGENTS.md
+#   mise run agents:sync                      clone all, then refresh agents/<name>.md (the cached copies)
+#
+# Do not select a repo with -d: it matches path prefixes, so `-d repos/skogai` also clones
+# skogai-core and skogai-jq. Tags match exactly.
 projects:
   mise-plugin:
     path: repos/mise-plugin
     url: https://github.com/skogai/mise-plugin
+    sync: false
+    tags: [mise-plugin]
   skogai:
     path: repos/skogai
     url: https://github.com/skogai/skogai
+    sync: false
+    tags: [skogai]
   skogai-core:
     path: repos/skogai-core
     url: https://github.com/skogai/skogai-core
+    sync: false
+    tags: [skogai-core]
   skogai-jq:
     path: repos/skogai-jq
     url: https://github.com/skogai/skogai-jq
+    sync: false
+    tags: [skogai-jq]
   skogix:
     path: repos/skogix
     url: https://github.com/skogai/skogix
+    sync: false
+    tags: [skogix]
 tasks:
   agents:
     desc: Print the root AGENTS.md of each cloned repo
