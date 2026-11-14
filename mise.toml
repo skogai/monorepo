@@ -12,7 +12,8 @@ SKOGAI_MISE_ENV = "{{ mise_env | default(value=[]) | join(sep=',') | replace(fro
 # .config/mise/conf.d/plugin.skogai.toml; with no source loaded, mise skips it with a warning
 # instead of failing. It sets SKOGAI_MONOREPO_DIR, SKOGAI_CONFIG_DIR and the SKOGAI_HOST,
 # SKOGAI_OS and SKOGAI_ARCH defaults. A value set above this line, or in mise.local.toml, wins.
-_.skogai = {}
+_.skogai = { paths = ["bin", ".skogai/bin"]}
+SKOGAI_MY_SETTING = "test"
 
 [tools]
 gh = { version = "2.104.0", minimum_release_age = "0s", lazy = true }
