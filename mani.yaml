@@ -1,101 +1,176 @@
 # Catalog of SkogAI repos, managed with mani (https://manicli.com).
 # Unpinned and uncoupled: mani records no commits and ties no repos together.
-# Each repo is cloned on demand into repos/<name> (ignored, see .gitignore).
+# Lazy: every project has `sync: false`, so a bare `mani sync` clones nothing.
+# Each project is tagged with its own name; a tag selects exactly one repo.
+# A repo is cloned on demand into repos/<name> (ignored, see .gitignore).
 #
-#   mani list projects        what the catalog holds
-#   mani sync --status        what is cloned here
-#   mani sync -d repos/<name> clone one repo (plain `mani sync` clones all)
-#   mani run agents           print each cloned repo's root AGENTS.md
+#   mani list projects                        what the catalog holds
+#   mani sync --status                        what is cloned here (Synced column)
+#   mani sync -t <name> --ignore-sync-state   clone one repo
+#   mani sync --ignore-sync-state             clone all of them
+#   mani run agents                           print each cloned repo's root AGENTS.md
+#   mise run agents:sync                      clone all, then refresh agents/<name>.md (the cached copies)
+#
+# Do not select a repo with -d: it matches path prefixes, so `-d repos/skogai` also clones
+# skogai-core and skogai-jq. Tags match exactly.
 projects:
   mise-plugin:
     path: repos/mise-plugin
     url: https://github.com/skogai/mise-plugin
+    sync: false
+    tags: [mise-plugin]
   podman:
     path: repos/podman
     url: https://github.com/skogai/podman
+    sync: false
+    tags: [podman]
   nvim-omarchy:
     path: repos/nvim-omarchy
     url: https://github.com/skogai/nvim-omarchy
+    sync: false
+    tags: [nvim-omarchy]
   cloudflare:
     path: repos/cloudflare
     url: https://github.com/skogai/cloudflare
+    sync: false
+    tags: [cloudflare]
   skogai:
     path: repos/skogai
     url: https://github.com/skogai/skogai
+    sync: false
+    tags: [skogai]
   skogai-core:
     path: repos/skogai-core
     url: https://github.com/skogai/skogai-core
+    sync: false
+    tags: [skogai-core]
   skogai-jq:
     path: repos/skogai-jq
     url: https://github.com/skogai/skogai-jq
+    sync: false
+    tags: [skogai-jq]
   skogix:
     path: repos/skogix
     url: https://github.com/skogai/skogix
+    sync: false
+    tags: [skogix]
   skogai-nov10:
     path: repos/skogai-nov10
     url: https://github.com/skogai/skogai-nov10
+    sync: false
+    tags: [skogai-nov10]
   core:
     path: repos/core
     url: https://github.com/skogai/core
+    sync: false
+    tags: [core]
   docs:
     path: repos/docs
     url: https://github.com/skogai/docs
+    sync: false
+    tags: [docs]
   systemd:
     path: repos/systemd
     url: https://github.com/skogai/systemd
+    sync: false
+    tags: [systemd]
   skogai-routing:
     path: repos/skogai-routing
     url: https://github.com/skogai/skogai-routing
+    sync: false
+    tags: [skogai-routing]
   dash-skogai:
     path: repos/dash-skogai
     url: https://github.com/skogai/dash-skogai
+    sync: false
+    tags: [dash-skogai]
   dot-skogai:
     path: repos/dot-skogai
     url: https://github.com/skogai/dot-skogai
+    sync: false
+    tags: [dot-skogai]
   # skogai2 org: prefixed with skogai2- where names overlap the skogai org
   skogai2-skogai:
     path: repos/skogai2-skogai
     url: https://github.com/skogai2/skogai
+    sync: false
+    tags: [skogai2-skogai]
   skogai2-config:
     path: repos/skogai2-config
     url: https://github.com/skogai2/config
+    sync: false
+    tags: [skogai2-config]
   skogai2-marketplace:
     path: repos/skogai2-marketplace
     url: https://github.com/skogai2/marketplace
+    sync: false
+    tags: [skogai2-marketplace]
   skogai2-skogpunk:
     path: repos/skogai2-skogpunk
     url: https://github.com/skogai2/skogpunk
+    sync: false
+    tags: [skogai2-skogpunk]
   skogai2-core:
     path: repos/skogai2-core
     url: https://github.com/skogai2/core
+    sync: false
+    tags: [skogai2-core]
   skogai2-skogix:
     path: repos/skogai2-skogix
     url: https://github.com/skogai2/skogix
+    sync: false
+    tags: [skogai2-skogix]
   skogai2-aliasflare:
     path: repos/skogai2-aliasflare
     url: https://github.com/skogai2/aliasflare
+    sync: false
+    tags: [skogai2-aliasflare]
   skogai2-dot-skogai:
     path: repos/skogai2-dot-skogai
     url: https://github.com/skogai2/dot-skogai
+    sync: false
+    tags: [skogai2-dot-skogai]
   skogai2-dash-skogai:
     path: repos/skogai2-dash-skogai
     url: https://github.com/skogai2/dash-skogai
+    sync: false
+    tags: [skogai2-dash-skogai]
   skogai2-skogai-runner:
     path: repos/skogai2-skogai-runner
     url: https://github.com/skogai2/skogai-runner
+    sync: false
+    tags: [skogai2-skogai-runner]
   skogai2-skogai-routing:
     path: repos/skogai2-skogai-routing
     url: https://github.com/skogai2/skogai-routing
+    sync: false
+    tags: [skogai2-skogai-routing]
   skogai2-docs:
     path: repos/skogai2-docs
     url: https://github.com/skogai2/docs
+    sync: false
+    tags: [skogai2-docs]
   skogai2-cli:
     path: repos/skogai2-cli
     url: https://github.com/skogai2/cli
+    sync: false
+    tags: [skogai2-cli]
   skogai2-skogai-fleet:
     path: repos/skogai2-skogai-fleet
     url: https://github.com/skogai2/skogai-fleet
+    sync: false
+    tags: [skogai2-skogai-fleet]
 tasks:
   agents:
     desc: Print the root AGENTS.md of each cloned repo
     cmd: cat AGENTS.md 2>/dev/null || echo "(no AGENTS.md)"
+  agents-cache:
+    desc: Copy each cloned repo's root AGENTS.md to agents/<name>.md; delete the copy when the repo has none
+    # Runs in repos/<name>, so ../../agents is the monorepo's agents/ and <name> is the directory name.
+    cmd: |
+      n=$(basename "$PWD"); d=../../agents
+      if [ -f AGENTS.md ]; then
+        mkdir -p "$d" && cp AGENTS.md "$d/$n.md" && echo "cached agents/$n.md"
+      else
+        rm -f "$d/$n.md"; echo "no AGENTS.md: $n"
+      fi
