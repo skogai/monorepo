@@ -14,6 +14,11 @@
 # Do not select a repo with -d: it matches path prefixes, so `-d repos/skogai` also clones
 # skogai-core and skogai-jq. Tags match exactly.
 projects:
+  wiki:
+    path: repos/wiki
+    url: https://github.com/skogai/wiki
+    sync: false
+    tags: [wiki]
   mise-plugin:
     path: repos/mise-plugin
     url: https://github.com/skogai/mise-plugin
