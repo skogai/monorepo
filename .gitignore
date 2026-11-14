@@ -13,20 +13,6 @@ mise.*.local.toml
 /.t3/
 /.t3-local-test-*/
 /.skogai/logs/log.jsonl
-# mani #
-repos/dot-skogai
-repos/dash-skogai
-repos/skogai-routin
-repos/systemd
-repos/docs
-repos/core
-repos/skogai-nov10
-repos/skogix
-repos/skogai-jq
-repos/skogai-core
-repos/skogai
-repos/cloudflare
-repos/nvim-omarchy
-repos/podman
-repos/mise-plugin
-# mani #
+
+# Clones of catalog repos (mani.yaml projects are sync: false, so mani does not maintain this)
+/repos/

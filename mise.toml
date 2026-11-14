@@ -44,7 +44,7 @@ run = [
 [tasks."agents:sync"]
 description = "Clone catalog repos, then refresh the cached root AGENTS.md files in agents/"
 run = [
-  "mani sync",
+  "mani sync --ignore-sync-state",
   "mani run agents-cache --all --ignore-non-existing",
 ]
 

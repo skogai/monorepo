@@ -72,9 +72,16 @@ Your output will be read next to other agents' output for the same task, produce
 | `.skogai/research/` | Research inputs, kept as written by the agent that produced them. |
 | `.skogai/tests/` | Dated experiment records: what was run, where, and the result. |
 | `mani.yaml` | The catalog of SkogAI repos: name, path and URL of each. |
-| `repos/<name>/` | Clones of catalog repos, made with `mani sync`. Ignored by Git. |
+| `repos/<name>/` | Clones of catalog repos, made with `mani sync -t <name> --ignore-sync-state`. Ignored by Git. |
 | `agents/<name>.md` | Cached copy of each catalog repo's root `AGENTS.md`, readable without cloning. A repo with no root `AGENTS.md` has no file. Refresh by hand with `mise run agents:sync` and commit the diff. |
-| `repos/skogix/.skogai/todo.list` | The owner's backlog (needs `mani sync -d repos/skogix`). |
+| `repos/skogix/.skogai/todo.list` | The owner's backlog (needs `mani sync -t skogix --ignore-sync-state`). |
+
+## Fetching a catalog repo
+
+Every project in `mani.yaml` has `sync: false` and a tag equal to its name, so nothing is cloned until someone asks. Clone one with `mani sync -t <name> --ignore-sync-state`; an unknown name fails with `cannot find tags`. Do not use `-d`: it matches path prefixes, so `-d repos/skogai` also clones `skogai-core` and `skogai-jq`. `mani sync --status` shows what is cloned. `mani.yaml` does not maintain `.gitignore`; `/repos/` is written there by hand.
+
+- **Container.** `mise install mani` gives the pinned mani. If mise or the release download is not available, the baseline still holds with git alone: `git clone <url> repos/<name>`, with the URL from `mani.yaml`. All listed repos are public, so no credentials are needed to read. In a non-interactive container set `GIT_TERMINAL_PROMPT=0` so a repo that needs credentials fails instead of waiting at a prompt. Not yet run in a real container.
+- **Read-only.** Reading is the baseline; a push or a pull request against a child works only when the environment's credentials allow it. mani adds no handling: a failed `git push` in the child is the sign. `git -C repos/<name> push --dry-run` may show it in advance (not verified).
 
 ## Recording evidence
 
