@@ -1,13 +1,9 @@
-# T3 tasks for the workstation installation
+# T3 tasks for the workstation installation.
+# The T3 Code desktop app runs the backend on port 3773 with state in ~/.t3.
 [env]
-T3CODE_HOME = "{{config_root}}/t3"
+T3CODE_HOME = "{{env.HOME}}/.t3"
 T3_LOCAL_ROOT = "{{config_root}}"
 T3_LOCAL_PORT = "3773"
-
-[tasks."t3:serve"]
-description = "Run the shared T3 backend in the foreground"
-interactive = true
-run = 't3 serve --base-dir "$T3CODE_HOME" --host 127.0.0.1 --port "$T3_LOCAL_PORT" "$T3_LOCAL_ROOT"'
 
 [tasks."t3:info"]
 description = "Show the selected local T3 directory and URL"

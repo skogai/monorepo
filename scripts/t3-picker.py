@@ -75,7 +75,7 @@ def main():
         raise RuntimeError('Open the picker in an interactive terminal.')
     base = Path(os.environ['T3CODE_HOME']).resolve()
     if not (base / 'userdata/statev2.sqlite').is_file():
-        raise RuntimeError('Start the server with mise -E t3 run t3:serve, then run t3:init.')
+        raise RuntimeError('Open the T3 Code desktop app to start the backend, then run mise run t3:init.')
     while True:
         projects = query(base, '''SELECT project_id, title, workspace_root
             FROM projection_projects WHERE deleted_at IS NULL ORDER BY title''')
