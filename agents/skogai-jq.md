@@ -46,7 +46,7 @@ skogai-jq/
 
 ## COMMANDS
 ```bash
-# From plugins/dot-core/skills/skogai-jq
+# From the skogai-jq checkout or installed skill root
 ./test-all.sh
 ./crud-get/test.sh
 echo '{"user":{"name":"skogix"}}' | jq -f crud-get/transform.jq --arg path "user.name"
@@ -56,3 +56,8 @@ echo '{"user":{"name":"skogix"}}' | jq -f crud-get/transform.jq --arg path "user
 - `scripts/` is the only non-transform code subdirectory; keep utilities reusable and minimal.
 - `references/IMPLEMENTATION_SPEC.md` duplicates the root spec content; avoid divergent edits.
 - Existing docs may claim all transforms have 8-17 tests, but the observed tree includes smaller harnesses. Preserve coverage quality over a fixed count.
+
+## Source of truth
+
+This repository owns the reusable `skogai-jq` skill. Do not restore the retired
+copy under `skogai-core/todo/skills/skogai-jq`; contribute changes here.
