@@ -265,3 +265,21 @@ result: 6 of 15 council providers are connected (Kimi CLI, Claude CLI, Copilot C
 
 - Bash: `bash /home/skogix/.claude/plugins/cache/skogai-marketplace/skogai-council/2026.10.13/scripts/check-status.sh; echo ---JO…`
 
+## 2026-11-14 18:54 · turn 4a500d83
+
+**User**
+
+> /skogai-council:provider-integration
+
+**Assistant**
+
+The council plugin (version 2026.10.13) has 15 providers. Seven call an API directly: gemini, openai, grok, perplexity, kimi, ollama and openrouter. Eight run an installed CLI: codex, antigravity, grok-cli, kimi-cli, cursor-cli, claude-cli, copilot-cli and opencode.
+
+Your message only loaded the provider guide, so I don't know which change you want yet. I also haven't found a checkout of the council source in `~/Work/repos/`, and edits made in the plugin cache would be overwritten on the next update. Before writing anything I'd fetch the source repo with `mani sync -t <name> --ignore-sync-state`, if it's in the catalog.
+
+needs input: Which change do you want: a new provider (which one, and is it an API key or a CLI?), a fix for a provider that isn't working (which one, and what error), or a status check of every provider?
+
+**Actions**
+
+- Bash: `ls /home/skogix/.claude/plugins/cache/skogai-marketplace/skogai-council/2026.10.13/scripts/providers/; ls /home/skogix/W…`
+
