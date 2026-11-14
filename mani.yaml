@@ -75,8 +75,8 @@ projects:
     sync: false
     tags: [systemd]
   skogai-routing:
-    path: repos/skogai-routin
-    url: https://github.com/skogai/skogai-routin
+    path: repos/skogai-routing
+    url: https://github.com/skogai/skogai-routing
     sync: false
     tags: [skogai-routing]
   dash-skogai:
@@ -89,6 +89,7 @@ projects:
     url: https://github.com/skogai/dot-skogai
     sync: false
     tags: [dot-skogai]
+  # skogai2 org: prefixed with skogai2- where names overlap the skogai org
   skogai2-skogai:
     path: repos/skogai2-skogai
     url: https://github.com/skogai2/skogai
