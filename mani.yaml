@@ -10,6 +10,15 @@ projects:
   mise-plugin:
     path: repos/mise-plugin
     url: https://github.com/skogai/mise-plugin
+  podman:
+    path: repos/podman
+    url: https://github.com/skogai/podman
+  nvim-omarchy:
+    path: repos/nvim-omarchy
+    url: https://github.com/skogai/nvim-omarchy
+  cloudflare:
+    path: repos/cloudflare
+    url: https://github.com/skogai/cloudflare
   skogai:
     path: repos/skogai
     url: https://github.com/skogai/skogai
@@ -22,6 +31,42 @@ projects:
   skogix:
     path: repos/skogix
     url: https://github.com/skogai/skogix
+  skogai-nov10:
+    path: repos/skogai-nov10
+    url: https://github.com/skogai/skogai-nov10
+  core:
+    path: repos/core
+    url: https://github.com/skogai/core
+  docs:
+    path: repos/docs
+    url: https://github.com/skogai/docs
+  systemd:
+    path: repos/systemd
+    url: https://github.com/skogai/systemd
+  skogai-routing:
+    path: repos/skogai-routin
+    url: https://github.com/skogai/skogai-routin
+  dash-skogai:
+    path: repos/dash-skogai
+    url: https://github.com/skogai/dash-skogai
+  dot-skogai:
+    path: repos/dot-skogai
+    url: https://github.com/skogai/dot-skogai
+# todo
+#skogai2/skogai
+#skogai2/config
+#skogai2/marketplace
+#skogai2/skogpunk
+#skogai2/core
+#skogai2/skogix
+#skogai2/aliasflare
+#skogai2/dot-skogai
+#skogai2/dash-skogai
+#skogai2/skogai-runner
+#skogai2/skogai-routing
+#skogai2/docs
+#skogai2/cli
+#skogai2/skogai-fleet
 tasks:
   agents:
     desc: Print the root AGENTS.md of each cloned repo

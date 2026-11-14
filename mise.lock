@@ -260,7 +260,7 @@ url_api = "https://api.github.com/repos/LuaLS/lua-language-server/releases/asset
 [[tools.mani]]
 version = "0.32.1"
 backend = "aqua:alajmo/mani"
-specifiers = ["0.32.1"]
+specifiers = ["latest"]
 
 [tools.mani."platforms.linux-arm64"]
 checksum = "sha256:19d28407d2c81be9c2ba844dad4ef5ad59764a44be5356af8fa0e99ed5dab817"

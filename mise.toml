@@ -1,9 +1,9 @@
 # Base configuration: loaded for every environment.
 # Environment-specific fragments live in .config/mise/conf.d/, see doc/mise.md.
-monorepo_root = true
+# monorepo_root = true
 
-[monorepo]
-config_roots = ["repos/mise-plugin"]
+# [monorepo]
+# config_roots = ["repos/mise-plugin"]
 
 [env]
 # The plugin cannot see an environment chosen in .miserc.toml, so this stays a template.
@@ -25,7 +25,7 @@ lua-language-server = "latest"
 pkl = "latest"
 stylua = "latest"
 jq = "latest"
-mani = "0.32.1"
+mani = "latest"
 
 
 # GitHub OAuth for mise, gh and git push. See AGENTS.md, "GitHub authentication for mise".
