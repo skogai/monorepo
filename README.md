@@ -10,6 +10,7 @@ The starting workspace for SkogAI 3.0: document the setup already in use, test i
 - [T3 Code CLI guide](doc/t3-cli.md) (installed-version snapshot and thread workflows)
 - [T3 Code upstream docs and first run](.skogai/research/t3-code.md)
 - [Decisions](doc/adr/)
+- [Open questions for the owner](doc/questions.md) and the [repo survey](doc/surveys/2026-11-14-repo-survey.md) behind them
 - [Setup evidence and next experiments](.skogai/tests/2026-11-10-setup.md)
 - [Research](.skogai/research/)
 - [Backlog](repos/skogix/.skogai/todo.list)
