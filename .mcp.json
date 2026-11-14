@@ -1,0 +1,22 @@
+{
+  "mcpServers": {
+    "mise": {
+      "type": "stdio",
+      "command": "mise",
+      "args": [
+        "--cd",
+        "/home/skogix/Work",
+        "mcp"
+      ],
+      "env": {}
+    },
+    "atuin": {
+      "type": "stdio",
+      "command": "atuin",
+      "args": [
+        "mcp"
+      ],
+      "env": {}
+    }
+  }
+}
