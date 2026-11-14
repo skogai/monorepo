@@ -75,8 +75,8 @@ projects:
     sync: false
     tags: [systemd]
   skogai-routing:
-    path: repos/skogai-routin
-    url: https://github.com/skogai/skogai-routin
+    path: repos/skogai-routing
+    url: https://github.com/skogai/skogai-routing
     sync: false
     tags: [skogai-routing]
   dash-skogai:
@@ -89,21 +89,77 @@ projects:
     url: https://github.com/skogai/dot-skogai
     sync: false
     tags: [dot-skogai]
-# todo
-#skogai2/skogai
-#skogai2/config
-#skogai2/marketplace
-#skogai2/skogpunk
-#skogai2/core
-#skogai2/skogix
-#skogai2/aliasflare
-#skogai2/dot-skogai
-#skogai2/dash-skogai
-#skogai2/skogai-runner
-#skogai2/skogai-routing
-#skogai2/docs
-#skogai2/cli
-#skogai2/skogai-fleet
+  # skogai2 org: prefixed with skogai2- where names overlap the skogai org
+  skogai2-skogai:
+    path: repos/skogai2-skogai
+    url: https://github.com/skogai2/skogai
+    sync: false
+    tags: [skogai2-skogai]
+  skogai2-config:
+    path: repos/skogai2-config
+    url: https://github.com/skogai2/config
+    sync: false
+    tags: [skogai2-config]
+  skogai2-marketplace:
+    path: repos/skogai2-marketplace
+    url: https://github.com/skogai2/marketplace
+    sync: false
+    tags: [skogai2-marketplace]
+  skogai2-skogpunk:
+    path: repos/skogai2-skogpunk
+    url: https://github.com/skogai2/skogpunk
+    sync: false
+    tags: [skogai2-skogpunk]
+  skogai2-core:
+    path: repos/skogai2-core
+    url: https://github.com/skogai2/core
+    sync: false
+    tags: [skogai2-core]
+  skogai2-skogix:
+    path: repos/skogai2-skogix
+    url: https://github.com/skogai2/skogix
+    sync: false
+    tags: [skogai2-skogix]
+  skogai2-aliasflare:
+    path: repos/skogai2-aliasflare
+    url: https://github.com/skogai2/aliasflare
+    sync: false
+    tags: [skogai2-aliasflare]
+  skogai2-dot-skogai:
+    path: repos/skogai2-dot-skogai
+    url: https://github.com/skogai2/dot-skogai
+    sync: false
+    tags: [skogai2-dot-skogai]
+  skogai2-dash-skogai:
+    path: repos/skogai2-dash-skogai
+    url: https://github.com/skogai2/dash-skogai
+    sync: false
+    tags: [skogai2-dash-skogai]
+  skogai2-skogai-runner:
+    path: repos/skogai2-skogai-runner
+    url: https://github.com/skogai2/skogai-runner
+    sync: false
+    tags: [skogai2-skogai-runner]
+  skogai2-skogai-routing:
+    path: repos/skogai2-skogai-routing
+    url: https://github.com/skogai2/skogai-routing
+    sync: false
+    tags: [skogai2-skogai-routing]
+  skogai2-docs:
+    path: repos/skogai2-docs
+    url: https://github.com/skogai2/docs
+    sync: false
+    tags: [skogai2-docs]
+  skogai2-cli:
+    path: repos/skogai2-cli
+    url: https://github.com/skogai2/cli
+    sync: false
+    tags: [skogai2-cli]
+  skogai2-skogai-fleet:
+    path: repos/skogai2-skogai-fleet
+    url: https://github.com/skogai2/skogai-fleet
+    sync: false
+    tags: [skogai2-skogai-fleet]
 tasks:
   agents:
     desc: Print the root AGENTS.md of each cloned repo
