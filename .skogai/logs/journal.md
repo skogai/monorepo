@@ -873,3 +873,95 @@ The S7 questions were never answered, so the down `skognet-cloudflare` and the c
 - mcp__plugin_claude-mem_mcp-search__work_state_write: pathfinder-2026-11-14
 - mcp__plugin_claude-mem_mcp-search__work_state_write: pathfinder-2026-11-14
 
+## 2026-11-14 23:18 · turn c28084ce
+
+**User**
+
+> # Pathfinder Phase 2 — Within-system duplication
+>
+> READ-ONLY on all repos. Your only write: `/home/skogix/Work/repos/PATHFINDER-2026-11-14/02a-within.md`.
+>
+> Inputs (read all): `/home/skogix/Work/repos/PATHFINDER-2026-11-14/00-features.md` (esp. Revision 1: systems S1–S7), `/home/skogix/Work/repos/PATHFINDER-2026-11-14/skogfences-reference.md`, and every flowchart in `/home/skogix/Work/repos/PATHFINDER-2026-11-14/01-flowcharts/s*.md` (each has a "Duplication seen" section and owner answers). Verify claims against source; flowcharts can be wrong.
+>
+> ## Owner answers gathered in Phase 1 (binding for Phase 2)
+> - **Composition, not winner-takes-all** (S1): "whatever helps us out in the end is what we will use. hopefully they all can work together at different levels." So overlapping implementations are NOT automatically accidental duplication. Ask: do they occupy different *levels* (workstation / agent home / repo / container / remote) and can they compose? Only call it accidental when two things do the same job at the same level.
+> - **SKOGAI_CONFIG_DIR** = "whatever you set it to" — configurable, no fixed path.
+> - **Interface rule** (S5): "commands runnable via mise tasks." Mise tasks are the required command interface.
+> - **Orchestration** (S2): owner points at `~/Work/repos/harness/` (skogharness plugin, orchestrate-worktrees.js) as the canonical direction.
+> - **skoghooks** (S6): "on hold for later", not retired.
+> - **Unused code** (S3): owner tentatively: if unused, probably not intended to be used. Label "present in source; usage not established".
+> - **/skogai** is owned by skogai2-dash-skogai; agents are meant to be unix users with private homes (skogfences). Note: /skogai does NOT currently exist on this machine.
+> - **.skogai** = base config + project-bootstrap submodule (skogfences/dot-skogai intent).
+> - docs archive is in scope.
+> - Owner: "this is enough for this question time" — only ask if truly blocking.
+>
+> ## Contract
+> Every duplication claim cites ≥2 `repo/path:line` locations you actually read. Include: sources consulted, confidence + gaps. Rank findings by consolidation value (impact × how cheap). Ignore trivial repetition.
+>
+> ## Task
+> For EACH system S1–S7, find repeated logic *inside that system only* worth consolidating (e.g. S1: 4–5 config resolvers; S5: 6 registry files in 3 formats; S7: unit files in podman/units vs systemd/user vs cloudflare/old-systemd-solution; S6: ~6 CC docs mirrors, 3 copies of claude-code-documentation.sh; S4: .skogai layouts diverging across 23 repos; S2: 2 work-order formats + harness).
+> For each: concern, every location, accidental vs legit (apply the "levels" rule), smallest consolidation (prefer deletion).
+
+**Assistant**
+
+I wrote [02a-within.md](/home/skogix/Work/repos/PATHFINDER-2026-11-14/02a-within.md). It ranks 23 findings (W1–W23) across S1–S7. Every claim cites at least two locations, and I opened each one in this pass. No repo was modified.
+
+Nine of the findings are pure deletions: W1, W4, W5, W6, W9, W10, W12, W13, W16. The top items:
+
+- **W1:** `skogai2-dash-skogai/admin/install-coordination.sh:13` still sets `2775` on `/skogai/bin`. The README forbids that mode, and `install-tools.sh:14-17` exists to undo it. The old script is superseded, so deleting it is the cheapest fix with the most value.
+- **W2:** `~/.claude/settings.json:156,158` sends the journal and state into `.skogai/logs/`. The owner's own rule (`skogai2-skogai/.skogai/memory/temporary-paths.md:10-21`) says `logs/` is disposable. As a result `~/Work` has two journal files (30 and 875 lines).
+- **W3:** `SKOGAI_CONFIG_DIR` is set at three levels (workstation, `/skogai`, repo), which fits your "different levels" rule. But `mise-plugin/hooks/mise_env.lua:15` ignores a value that is already set, unlike the lines below it and unlike the runner. A one-line `default()` wrap would make "whatever you set it to" true everywhere.
+- **W4:** The marketplace's `scripts/config` is a verbatim fork of the runner's config CLI. Its own commit message says so ("copied out as is"), `_frontmatter`/`_resolve` exist three times, and nothing calls the marketplace copy.
+
+Things the flowcharts got wrong or missed:
+
+- **New finding (W16):** `harness/bin` is byte-identical to `skogai-nov10/bin`. It carries the `skogcli`, `gita` and `gptodo` wrappers, and `skogcli` is the one that overwrites `SKOGAI_CONFIG_DIR`. Phase 1 only read `harness/marketplace/`, so it missed this.
+- **S1 #4:** the `SKOGAI_STAGE_ON_STOP` / `ONSTOP` clash is not live in the repos. It only exists in commented-out lines in `~/.config/mise/config.toml:85-88`.
+- **S4 #8:** the 5 OpenWiki workflows are 2 variants, not 5 different files.
+- **S6:** the `skogai2-marketplace/docs` snapshot has 223 files, not 139.
+- **S2 (W7):** harness has no `owns` concept. So the work-order spec and harness sit at different levels and can be combined, rather than one replacing the other.
+
+Not verified: whether mise's `[env]` overrides the plugin in practice (W3), and callers outside `~/Work/repos` for any "no caller" claim. The owner calls the report needs (W2 journal, W5 `core/HANDOVER.md`, W8 docs snapshots, W20 OpenWiki, the S5 registry choice) are listed at the end of the file.
+
+**Actions**
+
+- Bash: `cd /home/skogix/Work/repos/PATHFINDER-2026-11-14 && ls -la . 01-flowcharts && wc -l 00-features.md skogfences-reference.…`
+- Bash: `cat 00-features.md skogfences-reference.md; ls prompts`
+- Bash: `cat prompts/owner-answers.md; for f in 01-flowcharts/*.md; do echo "=== $f"; awk '/^#+ .*[Dd]uplication/{p=1} p' $f | he…`
+- Read `/home/skogix/.claude/projects/-home-skogix-Work/9f7775cb-693a-41b4-ada1-aa12c28787e9/tool-results/b8dym1p7i.txt`
+- Read `/home/skogix/.claude/projects/-home-skogix-Work/9f7775cb-693a-41b4-ada1-aa12c28787e9/tool-results/b8dym1p7i.txt`
+- Bash: `cd /home/skogix/Work/repos; ls; cat PATHFINDER-2026-11-14/prompts/p2a.md | head -20; diff <(sed -n 1,200p PATHFINDER-202…`
+- Bash: `cd /home/skogix/Work/repos`
+- Bash: `cd /home/skogix/Work/repos`
+- Bash: `cd /home/skogix/Work/repos`
+- Bash: `cd /home/skogix/Work/repos; which rg >/dev/null && rg -n --no-ignore -g '!**/.git/**' -g '!**/openwiki/**' -g '!skogai2-…`
+- Bash: `cd /home/skogix/Work; grep -n -B1 -A4 'harness:\|systemd:\|dash-skogai:' mani.yaml | head -40; git show HEAD~0 --stat | …`
+- Bash: `cd /home/skogix/Work/repos` (failed)
+- Bash: `cd /home/skogix/Work/repos; diff -rq dash-skogai/bin harness/bin; diff -rq skogai-nov10/bin harness/bin; ls harness/bin;…`
+- Bash: `cd /home/skogix/Work/repos; sed -n 10,40p skogai2-marketplace/plugins/skogai-core/scripts/settings.sh; echo ----; sed -n…`
+- Bash: `cd /home/skogix/Work/repos; rg -n --no-ignore -g '!**/.git/**' -g '!**/logs/**' -g '!PATHFINDER*/**' 'STAGE_ON_STOP|STAG…`
+- Bash: `cd /home/skogix/Work/repos; sed -n 200,210p ~/.config/mise/config.toml; grep -n 'skogai config\|SKOGAI_' skogai2-marketp…`
+- Bash: `cd /home/skogix/Work/repos; grep -n 'STAGE_ON\|COMMIT_ON' ~/.config/mise/config.toml; grep -n 'config\|SKOGAI' skogai2-m…` (failed)
+- Bash: `cd /home/skogix/Work/repos; bash -c '`
+- Bash: `cd /home/skogix/Work/repos; bash -c '`
+- Bash: `cd /home/skogix/Work/repos; bash -c '`
+- Bash: `cd /home/skogix/Work/repos; bash -c '`
+- Bash: `cd /home/skogix/Work/repos; bash -c '`
+- Bash: `cd /home/skogix/Work/repos; bash -c '` (failed)
+- Bash: `cd /home/skogix/Work/repos; bash -c '`
+- Bash: `cd /home/skogix/Work/repos; bash -c '`
+- Bash: `cd /home/skogix/Work/repos; bash -c '`
+- Bash: `cd /home/skogix/Work/repos; bash -c 'fd -H -I temporary-paths . 2>/dev/null | grep -v "\.git/" | head; f=$(fd -H -I temp…`
+- Bash: `cd /home/skogix/Work/repos; bash -c 'ls -d */openwiki; ls wiki/decisions | head -20; ls dot-skogai/knowledge/decisions |…`
+- Bash: `cd /home/skogix/Work/repos; bash -c 'cmp core/Argcfile.sh skogai2-core/Argcfile.sh && echo ARGC-IDENT; diff -rq core sko…`
+- Bash: `cd /home/skogix/Work/repos; bash -c 'cat skogai2-core/.skogai/repo/gita/repos.csv; sed -n 1,20p skogai2-core/.skogai/rep…`
+- Bash: `cd /home/skogix/Work/repos; bash -c 'cmp ~/.config/gita/repos.csv skogai2-core/.skogai/repo/gita/repos.csv && echo IDENT…`
+- Bash: `cd /home/skogix/Work/repos; bash -c '`
+- Bash: `cd /home/skogix/Work/repos; bash -c 'jq -r "to_entries[]|\"\(.key) \(.value.source|tostring)\"" ~/.claude/plugins/known_…`
+- Bash: `cd /home/skogix/Work/repos; bash -c 'cat skogai2-skogix/.claude-plugin/marketplace.json skogai2-skogix/plugins/skogdocs/…` (failed)
+- Bash: `cd /home/skogix/Work/repos; bash -c 'O=cloudflare/old-systemd-solution; ls $O | head; diff -rq systemd $O -x .git -x .sk…`
+- Bash: `cd /home/skogix/Work/repos; bash -c 'ls cloudflare/pangolin; cmp cloudflare/pangolin/a.yml cloudflare/pangolin/docker-co…`
+- Bash: `cd /home/skogix/Work/repos; bash -c 'sed -n 143,151p dash-skogai/bin/skogai-paseo; echo "####"; sed -n 30,37p dash-skoga…`
+- Bash: `cd /home/skogix/Work/repos; bash -c 'grep -n "SKOGAI_CONFIG_DIR\|local function default\|existing(key)" mise-plugin/hook…`
+- Write `repos/PATHFINDER-2026-11-14/02a-within.md`
+
