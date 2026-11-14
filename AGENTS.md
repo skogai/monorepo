@@ -73,6 +73,7 @@ Your output will be read next to other agents' output for the same task, produce
 | `.skogai/tests/` | Dated experiment records: what was run, where, and the result. |
 | `mani.yaml` | The catalog of SkogAI repos: name, path and URL of each. |
 | `repos/<name>/` | Clones of catalog repos, made with `mani sync`. Ignored by Git. |
+| `agents/<name>.md` | Cached copy of each catalog repo's root `AGENTS.md`, readable without cloning. A repo with no root `AGENTS.md` has no file. Refresh by hand with `mise run agents:sync` and commit the diff. |
 | `repos/skogix/.skogai/todo.list` | The owner's backlog (needs `mani sync -d repos/skogix`). |
 
 ## Recording evidence
