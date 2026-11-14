@@ -1,13 +1,13 @@
-# Environment `develop` (`mise -E develop`): the plugin from the mise-plugin submodule.
+# Environment `develop` (`mise -E develop`): the plugin from the mise-plugin clone.
 # The link is shared by every checkout that uses the same mise data directory.
 # Run `mise -E develop run //:plugin:link` to point it at this checkout.
 [plugins]
-skogai-develop = "./mise-plugin"
+skogai-develop = "./repos/mise-plugin"
 
 [env]
 _.skogai-develop = {}
 
 [tasks."plugin:link"]
-description = "Link this checkout's mise-plugin submodule as the skogai-develop plugin"
+description = "Link this checkout's mise-plugin clone as the skogai-develop plugin"
 dir = "{{config_root}}"
-run = "mise plugins link --force skogai-develop mise-plugin"
+run = "mise plugins link --force skogai-develop repos/mise-plugin"

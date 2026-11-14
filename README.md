@@ -11,8 +11,8 @@ The starting workspace for SkogAI 3.0: document the setup already in use, test i
 - [Decisions](doc/adr/)
 - [Setup evidence and next experiments](.skogai/tests/2026-11-10-setup.md)
 - [Research](.skogai/research/)
-- [Backlog](skogix/.skogai/todo.list)
+- [Backlog](repos/skogix/.skogai/todo.list)
 
-The workspace is composed of the `skogai`, `skogix`, and `mise-plugin` Git submodules. Several agents work here in parallel on different machines; `AGENTS.md` explains what that requires.
+The repo is a catalog of SkogAI repos, [`mani.yaml`](mani.yaml), managed with [mani](https://manicli.com). Child repos are cloned on demand into `repos/` and are not pinned: `mani list projects` shows the catalog, `mani sync --status` what is cloned, `mani sync -d repos/<name>` clones one. Several agents work here in parallel on different machines; `AGENTS.md` explains what that requires.
 
 The mise configuration no longer needs a hand-made plugin link, but the machine's global and system mise configuration still applies on top of it. A verified fresh-clone quickstart is [roadmap 1](https://github.com/skogai/monorepo/issues/31) and will be added here once it has been tested.

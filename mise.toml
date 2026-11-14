@@ -3,7 +3,7 @@
 monorepo_root = true
 
 [monorepo]
-config_roots = ["mise-plugin"]
+config_roots = ["repos/mise-plugin"]
 
 [env]
 # The plugin cannot see an environment chosen in .miserc.toml, so this stays a template.
@@ -25,6 +25,7 @@ lua-language-server = "latest"
 pkl = "latest"
 stylua = "latest"
 jq = "latest"
+mani = "0.32.1"
 
 
 # GitHub OAuth for mise, gh and git push. See AGENTS.md, "GitHub authentication for mise".

@@ -257,6 +257,53 @@ checksum = "sha256:4a3dc851b3b31e7b75a23f645d1ba4a2137579a55f5fa4edbb17a3e2a6254
 url = "https://github.com/LuaLS/lua-language-server/releases/download/3.19.2/lua-language-server-3.19.2-win32-x64.zip"
 url_api = "https://api.github.com/repos/LuaLS/lua-language-server/releases/assets/635856461"
 
+[[tools.mani]]
+version = "0.32.1"
+backend = "aqua:alajmo/mani"
+specifiers = ["0.32.1"]
+
+[tools.mani."platforms.linux-arm64"]
+checksum = "sha256:19d28407d2c81be9c2ba844dad4ef5ad59764a44be5356af8fa0e99ed5dab817"
+checksum_source = "mise-versions"
+url = "https://github.com/alajmo/mani/releases/download/v0.32.1/mani_0.32.1_linux_arm64.tar.gz"
+url_api = "https://api.github.com/repos/alajmo/mani/releases/assets/421176659"
+
+[tools.mani."platforms.linux-arm64-musl"]
+checksum = "sha256:19d28407d2c81be9c2ba844dad4ef5ad59764a44be5356af8fa0e99ed5dab817"
+checksum_source = "mise-versions"
+url = "https://github.com/alajmo/mani/releases/download/v0.32.1/mani_0.32.1_linux_arm64.tar.gz"
+url_api = "https://api.github.com/repos/alajmo/mani/releases/assets/421176659"
+
+[tools.mani."platforms.linux-x64"]
+checksum = "sha256:b4aee0b35938bc76a387c4baa7b68cc11287ceca6a8e8b3de8fdc7fae182fb81"
+checksum_source = "mise-versions"
+url = "https://github.com/alajmo/mani/releases/download/v0.32.1/mani_0.32.1_linux_amd64.tar.gz"
+url_api = "https://api.github.com/repos/alajmo/mani/releases/assets/421176647"
+
+[tools.mani."platforms.linux-x64-musl"]
+checksum = "sha256:b4aee0b35938bc76a387c4baa7b68cc11287ceca6a8e8b3de8fdc7fae182fb81"
+checksum_source = "mise-versions"
+url = "https://github.com/alajmo/mani/releases/download/v0.32.1/mani_0.32.1_linux_amd64.tar.gz"
+url_api = "https://api.github.com/repos/alajmo/mani/releases/assets/421176647"
+
+[tools.mani."platforms.macos-arm64"]
+checksum = "sha256:c5d98821de05e8b4b519ddc6a84b8dbe56d83017d29a030ef60ea55ef1c75a33"
+checksum_source = "mise-versions"
+url = "https://github.com/alajmo/mani/releases/download/v0.32.1/mani_0.32.1_darwin_arm64.tar.gz"
+url_api = "https://api.github.com/repos/alajmo/mani/releases/assets/421176658"
+
+[tools.mani."platforms.macos-x64"]
+checksum = "sha256:ad6b0850acfecd5ac06ee56b8a285b1221d9642b1b23de072a4c69be647f609b"
+checksum_source = "mise-versions"
+url = "https://github.com/alajmo/mani/releases/download/v0.32.1/mani_0.32.1_darwin_amd64.tar.gz"
+url_api = "https://api.github.com/repos/alajmo/mani/releases/assets/421176653"
+
+[tools.mani."platforms.windows-x64"]
+checksum = "sha256:a8c97b23cb4ad5b162c3305a73fa194a79f1e7441649491a48790d173389d53f"
+checksum_source = "mise-versions"
+url = "https://github.com/alajmo/mani/releases/download/v0.32.1/mani_0.32.1_windows_amd64.zip"
+url_api = "https://api.github.com/repos/alajmo/mani/releases/assets/421176650"
+
 [[tools.pkl]]
 version = "0.33.0"
 backend = "aqua:apple/pkl"

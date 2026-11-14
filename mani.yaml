@@ -1,0 +1,28 @@
+# Catalog of SkogAI repos, managed with mani (https://manicli.com).
+# Unpinned and uncoupled: mani records no commits and ties no repos together.
+# Each repo is cloned on demand into repos/<name> (ignored, see .gitignore).
+#
+#   mani list projects        what the catalog holds
+#   mani sync --status        what is cloned here
+#   mani sync -d repos/<name> clone one repo (plain `mani sync` clones all)
+#   mani run agents           print each cloned repo's root AGENTS.md
+projects:
+  mise-plugin:
+    path: repos/mise-plugin
+    url: https://github.com/skogai/mise-plugin
+  skogai:
+    path: repos/skogai
+    url: https://github.com/skogai/skogai
+  skogai-core:
+    path: repos/skogai-core
+    url: https://github.com/skogai/skogai-core
+  skogai-jq:
+    path: repos/skogai-jq
+    url: https://github.com/skogai/skogai-jq
+  skogix:
+    path: repos/skogix
+    url: https://github.com/skogai/skogix
+tasks:
+  agents:
+    desc: Print the root AGENTS.md of each cloned repo
+    cmd: cat AGENTS.md 2>/dev/null || echo "(no AGENTS.md)"

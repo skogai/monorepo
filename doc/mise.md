@@ -30,7 +30,7 @@ env_conf_d = true
 | Environment | Select with | Adds |
 |---|---|---|
 | `skogai` | nothing, it is the default | The install source of the `skogai` plugin: `https://github.com/skogai/mise-plugin` at a pinned commit. |
-| `develop` | `mise -E develop …` | The `skogai-develop` plugin, linked to the `mise-plugin` submodule, and the `//:plugin:link` task. |
+| `develop` | `mise -E develop …` | The `skogai-develop` plugin, linked to the `repos/mise-plugin` clone, and the `//:plugin:link` task. |
 | none | `MISE_ENV= mise …` | Nothing. The `skogai` plugin still loads once it is installed. |
 
 `-E` and `MISE_ENV` replace the default, they do not add to it. `mise -E develop` loads `develop` only. To combine, list both: `mise -E skogai,develop`. The last one listed wins where they set the same thing.
@@ -64,7 +64,7 @@ To replace a default, set the variable yourself. The plugin keeps a value that i
 SKOGAI_HOST = "laptop"
 ```
 
-An empty value counts as unset. The [plugin README](../mise-plugin/README.md#overriding-the-defaults) has the full rules.
+An empty value counts as unset. The [plugin README](../repos/mise-plugin/README.md#overriding-the-defaults) has the full rules.
 
 The plugin cannot see an environment chosen in `.miserc.toml`, so `SKOGAI_MISE_ENV` is a template in `mise.toml`. It strips spaces because `mise -E develop env` passes the name as ` develop` with mise 2026.11.5.
 
@@ -83,7 +83,7 @@ To add the trailers to a commit:
 git commit -m "subject" -m "$(mise run env:context --trailers)"
 ```
 
-The plugin's own checks run in isolated mise directories with `mise run //mise-plugin:test`.
+The plugin's own checks run in isolated mise directories with `mise run //repos/mise-plugin:test`.
 
 ## Tools
 
@@ -97,7 +97,7 @@ That updates both `mise.toml` and `mise.lock`. Commit them together. `mise insta
 
 ## The SkogAI plugin
 
-The plugin sets `SKOGAI_MONOREPO_DIR` and `SKOGAI_CONFIG_DIR`, and prepends the directories in its `paths` option to `PATH`. Its options are described in the [plugin README](../mise-plugin/README.md).
+The plugin sets `SKOGAI_MONOREPO_DIR` and `SKOGAI_CONFIG_DIR`, and prepends the directories in its `paths` option to `PATH`. Its options are described in the [plugin README](../repos/mise-plugin/README.md).
 
 ```toml
 [env]
@@ -107,9 +107,9 @@ _.skogai = { paths = ["bin"] }
 The two environments differ in where the plugin comes from:
 
 - `skogai` uses the published plugin, pinned to a full commit SHA in `.config/mise/conf.d/plugin.skogai.toml`. mise clones it on first use. An abbreviated SHA is refused. Once installed, it also loads in environments that do not select `skogai`.
-- `develop` adds the submodule in this checkout as `skogai-develop`, so edits to `mise-plugin/` apply at once. It runs after the published plugin, so its `SKOGAI_MONOREPO_DIR`, `SKOGAI_CONFIG_DIR` and `PATH` entries win. It keeps the host defaults the published plugin already set.
+- `develop` adds the `repos/mise-plugin` clone in this checkout as `skogai-develop`, so edits to it apply at once. It runs after the published plugin, so its `SKOGAI_MONOREPO_DIR`, `SKOGAI_CONFIG_DIR` and `PATH` entries win. It keeps the host defaults the published plugin already set.
 
-To move the pin, change the SHA in the fragment to a commit that is reachable in `https://github.com/skogai/mise-plugin`, usually the new `mise-plugin` submodule pointer, then reinstall:
+To move the pin, change the SHA in the fragment to a commit that is reachable in `https://github.com/skogai/mise-plugin`, usually the HEAD of your `repos/mise-plugin` clone, then reinstall:
 
 ```sh
 mise plugins install --force skogai
