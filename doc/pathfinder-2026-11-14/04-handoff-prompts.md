@@ -143,14 +143,15 @@ Evidence: /home/skogix/Work/doc/pathfinder-2026-11-14/01-flowcharts/s6-plugins.m
 Owner rules: mise first, mise tasks as the interface, skogfences (agents are unix users, /skogai shared, .skogai submodule, human $HOME sacred), working first then harden, merge to master when done.
 
 Call sites to rewrite (paths under ~/Work/repos/ unless absolute):
-- `~/.claude/settings.json:154-158`: remove the `journal_path`/`state_dir` overrides (journal back to `.skogai/journal.md`, out of `logs/`)
+- `~/.claude/settings.json:154-158`: set `journal_path=doc/journal.md` relative to the session-start repo, outside logs and the U7 submodule; keep log/state settings separate
 - `~/Work/.skogai/logs/journal.md` (875 lines) vs `~/Work/.skogai/journal.md`: owner decides whether to merge
-- `skogai2-skogai/.claude/hooks/*`, `skogai2-skogai-runner/.claude/hooks/*` (VV, drifted): replace with plugin hooks; `.harness/claude-progress.txt` retires
+- `skogai2-skogai/.claude/hooks/*`, `skogai2-skogai-runner/.claude/hooks/*` (VV, drifted): replace only journal-producing behavior with plugin hooks. Preserve scope enforcement, git identity, staged-secret scanning, staging/commit separation, TaskCompleted gates and lead-owned bookkeeping protection. Retire only the journal role of `.harness/claude-progress.txt`, preserving bookkeeping consumers. Require equivalent allow/deny tests before removing any gate
 - `skogai2-marketplace/plugins/skogai-core/scripts/git-steps.sh`: scope stage/commit/merge to the session's start repo
 - Lesson matchers: keep one of `harness/scripts/match-lessons.py`, `harness/marketplace/plugins/skoghooks/hooks/lesson_matcher.py`, `harness/marketplace/plugins/skogix-hooks/hooks/lesson_matcher.py`; fix `dot-skogai/SKOGAI.md:51,79`
 
 Anti-pattern guards:
 - Features stay off by default, configured through native mod settings with the log location included (owner rule).
+- Verify journal-only commits at `doc/journal.md` in a fresh repo with a `.skogai` submodule: the parent tracks the journal, unrelated staged files remain uncommitted, and the submodule gitlink stays unchanged. Do not commit a path inside the submodule from the parent.
 - Never two runtimes writing repo-level journals. Q1 (skogai-core vs skogharness at R) must be answered first; this prompt assumes skogai-core.
 - skoghooks stays on hold: do not delete it.
 - No new abstraction layer, no feature flag keeping the old path, no registry/factory where a switch suffices.
@@ -174,6 +175,7 @@ Call sites to rewrite (paths under ~/Work/repos/ unless absolute):
 - `wiki/decisions/`: renumber the duplicate `adr-002`
 
 Anti-pattern guards:
+- Bootstrap must configure U6 with parent-owned `doc/journal.md` and ensure it is not ignored. Test a journal-only parent commit with the submodule present; do not write journals to or push them into the shared template repository.
 - Do not move existing `.skogai/` dirs in the 25 repos in this plan; template first.
 - Do not invent a config file format (skogfences: 'not a config file format').
 - Owner calls are not decided here: dot-skogai data migration, OpenWiki, canonical decision store.

@@ -101,8 +101,8 @@ Every concern gets at most one implementation per level. This table is the contr
   - **R (repo journal):** `skogai2-marketplace/plugins/skogai-core`. It is already off by default and configured through native mod settings with the log location, which matches the owner rule exactly. Single entry point: `hooks/hooks.json`.
   - **A (agent session data):** skogharness `$HOME/.claude/session-data`. Under U2, that `$HOME` is the agent's home, so the two stack.
 - **Changes:**
-  1. Remove the `journal_path`/`state_dir` overrides in `~/.claude/settings.json:154-158` so the journal leaves the disposable `logs/` (W2). Merging the 875-line `~/Work/.skogai/logs/journal.md` is the owner's call.
-  2. Replace the vendored per-repo VV hooks (`.claude/hooks/*` in skogai2-skogai and the runner, which have already drifted) with plugin hooks. `.harness/claude-progress.txt` stops being a second repo journal.
+  1. Configure `journal_path=doc/journal.md` through native mod settings, relative to the session-start repo, outside both disposable logs and the U7 submodule (W2). Keep log/state settings separate; do not reset the journal to the incompatible `.skogai/journal.md` default. Merging the 875-line `~/Work/.skogai/logs/journal.md` is the owner's call.
+  2. Replace only journal-producing behavior in the vendored VV hooks in skogai2-skogai and the runner with plugin hooks. Preserve scope enforcement, git-identity checks, staged-secret scanning, the staging/commit gate, TaskCompleted checks, and lead-owned bookkeeping protection (see `agents/skogai2-skogai-runner.md:71`). Retire only the journal role of `.harness/claude-progress.txt`; retain any bookkeeping consumers. Remove a gate only after an equivalent replacement passes allow/deny tests.
   3. Git steps (stage/commit/merge) apply only to the session's start repo. This addresses S6 Q1, which was never answered; the safe default is to scope them.
   4. One lesson matcher in harness. Delete the other two. skoghooks stays on hold, inside `harness/marketplace/plugins/skoghooks`, which already exists, so the old marketplace entry is not needed. Fix the stale doc at `dot-skogai/SKOGAI.md:51,79` (X10).
 - **Open (Q1):** if the owner prefers skogharness for R as well, swap the R owner. Two runtimes at R is not an option.
@@ -112,7 +112,7 @@ Every concern gets at most one implementation per level. This table is the contr
 - **Component:** `skogai2-dot-skogai`, as the dot-skogai intent says. It holds the one layout doc and *is* the bootstrap submodule. Single entry point: `git submodule add <skogai2-dot-skogai> .skogai`, wrapped as `mise run skogai:init`.
 - **Changes:**
   1. Copy the live layout from `skogai2-skogai/.skogai/README.md:7-20` in as the template, and mark the other two layouts historical (W19).
-  2. `/usr/share/skogai/base` (skogai2-cli package, level W) provides defaults, and the submodule (level R) pins per project. Those two compose.
+  2. `/usr/share/skogai/base` (skogai2-cli package, level W) provides defaults, and the submodule (level R) pins per project. The journal is parent-owned at `doc/journal.md`, outside this submodule; bootstrap must configure U6 accordingly and ensure that path is not ignored. Verify a journal-only parent commit leaves the submodule gitlink unchanged. No journal commits or pushes go to the shared template repository.
   3. Uninstall the stale `skogai-runner-git` package, which ships the deleted `main.sh` (X13).
 - **Owner calls:** whether the old dot-skogai knowledge, memory and journal migrate or freeze; OpenWiki revive or delete; one decision store; renumbering one `adr-002` (W20).
 
