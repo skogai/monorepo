@@ -155,12 +155,20 @@ projects:
     url: https://github.com/skogai2/cli
     sync: false
     tags: [skogai2-cli]
+  repomix:
+    path: repos/repomix
+    url: https://github.com/skogai/repomix
+    sync: false
+    tags: [repomix]
   skogai2-skogai-fleet:
     path: repos/skogai2-skogai-fleet
     url: https://github.com/skogai2/skogai-fleet
     sync: false
     tags: [skogai2-skogai-fleet]
 tasks:
+  repomix:
+    desc: repomix
+    cmd: repomix
   agents:
     desc: Print the root AGENTS.md of each cloned repo
     cmd: cat AGENTS.md 2>/dev/null || echo "(no AGENTS.md)"

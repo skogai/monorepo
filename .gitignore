@@ -18,6 +18,7 @@ mise.*.local.toml
 /repos/
 # mani #
 repos/skogai2-skogai-fleet
+repos/repomix
 repos/skogai2-cli
 repos/skogai2-docs
 repos/skogai2-skogai-routing

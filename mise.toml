@@ -41,6 +41,13 @@ run = [
   "echo 'The old token is now revoked. In open shells, run: unset GITHUB_TOKEN (or wait for the next prompt).'",
 ]
 
+[tasks."agents:repomix"]
+description = "repomix"
+run = [
+  "mani sync --ignore-sync-state",
+  "mani run repomix --all",
+]
+
 # Cache of each catalog repo's root AGENTS.md in agents/<name>.md. The tasks are in mani.yaml.
 [tasks."agents:sync"]
 description = "Clone catalog repos, then refresh the cached root AGENTS.md files in agents/"
