@@ -29,7 +29,7 @@ jq = "latest"
 mani = "latest"
 
 
-# GitHub OAuth for mise, gh and git push. See AGENTS.md, "GitHub authentication for mise".
+# GitHub OAuth for mise, gh and git push. See doc/github-auth.md.
 [settings.github]
 oauth_client_id = "Iv23liQkKChCS4oXgq10"
 
@@ -98,7 +98,7 @@ else
 fi
 """
 
-# Session start: what "hi" means in AGENTS.md, "Starting a session".
+# Session start: what "hi" means in doc/agent-workflow.md, "Starting a session".
 [tasks.next]
 description = "Show open PRs and project 4 work, and the next item per track"
 quiet = true
