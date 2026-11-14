@@ -108,3 +108,13 @@ tasks:
   agents:
     desc: Print the root AGENTS.md of each cloned repo
     cmd: cat AGENTS.md 2>/dev/null || echo "(no AGENTS.md)"
+  agents-cache:
+    desc: Copy each cloned repo's root AGENTS.md to agents/<name>.md; delete the copy when the repo has none
+    # Runs in repos/<name>, so ../../agents is the monorepo's agents/ and <name> is the directory name.
+    cmd: |
+      n=$(basename "$PWD"); d=../../agents
+      if [ -f AGENTS.md ]; then
+        mkdir -p "$d" && cp AGENTS.md "$d/$n.md" && echo "cached agents/$n.md"
+      else
+        rm -f "$d/$n.md"; echo "no AGENTS.md: $n"
+      fi
