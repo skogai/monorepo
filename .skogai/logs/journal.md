@@ -229,3 +229,39 @@ When it reports back I'll check the feature boundaries with you before fanning o
 - Bash: `cd /home/skogix/Work/repos && for d in */; do n=$(find "$d" -path '*/.git' -prune -o -path '*/node_modules' -prune -o -t…`
 - Agent: Pathfinder Phase 0 discovery
 
+## 2026-11-14 18:53 · turn 58fd633a
+
+**User**
+
+> /skogai-council:status
+
+**Assistant**
+
+6 of 15 council providers are available. None of the API-key providers are set up, so every working seat is a local CLI.
+
+| Provider | Status | Detail / fix |
+|---|---|---|
+| Kimi CLI | ✓ Connected (3906ms) | 2.4.0 |
+| Claude CLI | ✓ Connected (769ms) | 2.1.325, use `--providers=claude-cli` |
+| Copilot CLI | ✓ Connected (1819ms) | 1.0.112, use `--providers=copilot-cli` |
+| Ollama | ✓ Connected (38ms) | 0.40.16 |
+| Codex CLI | ✓ Connected (610ms) | 0.169.0 |
+| Antigravity | ✓ Connected (307ms) | 1.5.4 |
+| Cursor CLI | ✗ Installed, not logged in | `cursor-agent login` |
+| OpenCode | ✗ Installed, not logged in | `opencode auth login` |
+| Grok CLI | ✗ Installed, not logged in | `grok login` |
+| Gemini | -- API key not set | `export GEMINI_API_KEY=<key>` |
+| OpenAI | -- API key not set | `export OPENAI_API_KEY=<key>` |
+| Grok | -- API key not set | `export XAI_API_KEY=<key>` |
+| Perplexity | -- API key not set | `export PERPLEXITY_API_KEY=<key>` |
+| Kimi | -- API key not set | `export KIMI_API_KEY=<key>` |
+| OpenRouter | -- API key not set | `export OPENROUTER_API_KEY=<key>` |
+
+There are no background council jobs.
+
+result: 6 of 15 council providers are connected (Kimi CLI, Claude CLI, Copilot CLI, Ollama, Codex CLI, Antigravity); Cursor, OpenCode and Grok CLI need a login, the 6 API-key providers have no key set, and no council jobs are running.
+
+**Actions**
+
+- Bash: `bash /home/skogix/.claude/plugins/cache/skogai-marketplace/skogai-council/2026.10.13/scripts/check-status.sh; echo ---JO…`
+
