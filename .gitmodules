@@ -1,9 +1,0 @@
-[submodule "skogai"]
-	path = skogai
-	url = https://github.com/skogai/skogai
-[submodule "skogix"]
-	path = skogix
-	url = https://github.com/skogai/skogix
-[submodule "mise-plugin"]
-	path = mise-plugin
-	url = https://github.com/skogai/mise-plugin

@@ -2,7 +2,7 @@
 
 Status: accepted tool selection. Integration details remain open.
 Date: 2026-11-10.
-Source: [backlog](../../skogix/.skogai/todo.list), item `adr;the main starting tools`.
+Source: [backlog](../../repos/skogix/.skogai/todo.list), item `adr;the main starting tools`.
 
 ## Context
 

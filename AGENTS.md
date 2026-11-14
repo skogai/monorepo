@@ -4,9 +4,9 @@ Instructions for every agent working in this repository, whichever model and har
 
 ## What this repository is
 
-`skogai/monorepo` is the SkogAI 3.0 base: the generic setup that should always work and follow the simplest intended workflow. It is a root repository with three Git submodules (`skogai`, `skogix`, `mise-plugin`), configured with mise.
+`skogai/monorepo` is the SkogAI 3.0 base: the generic setup that should always work and follow the simplest intended workflow. It is a manifest-style meta-repo: a catalog of SkogAI repos in [`mani.yaml`](mani.yaml), configured with mise. It is unpinned (no submodules, no version pinning), lazy (child repos are cloned on demand into the ignored `repos/<name>/`, as independent repos), and uncoupled (nothing ties cross-repo commits together). The catalog tool is [mani](https://manicli.com), installed by mise.
 
-It is at an early stage. There is no application code, no chosen language, and no root CI. Do not invent build, lint, or test commands. The commands that exist are in `mise.toml`, `.config/mise/conf.d/*.toml`, and `mise-plugin/mise.toml`.
+It is at an early stage. There is no application code, no chosen language, and no root CI. Do not invent build, lint, or test commands. The commands that exist are in `mise.toml`, `.config/mise/conf.d/*.toml`, and `repos/mise-plugin/mise.toml` once that repo is cloned.
 
 Start from the [README](README.md), then read the [decisions](doc/adr/). The plan and current work are GitHub issues on the [project board](https://github.com/orgs/skogai/projects/4); its README gives the order and the owner's direction.
 
@@ -54,7 +54,7 @@ Your output will be read next to other agents' output for the same task, produce
 
 1. **Identify the run.** State the agent, harness, machine, checkout path, and base commit in the pull request description and in any evidence you record. Name the branch so the agent and machine are visible, as in `t3/claude-laptop`.
 2. **Separate what you read from what you ran.** A source observation is not a passing test. For each claim say which it is, and list what you did not run.
-3. **Say where each fact lives.** A fact comes from tracked files in this repository, from a submodule, or from the machine: `~/.config/mise`, `/etc/mise`, dotfiles, operating system packages, installed tools. A machine fact holds for that machine only. Other agents may not be able to see it or reproduce it.
+3. **Say where each fact lives.** A fact comes from tracked files in this repository, from a cloned repo under `repos/`, or from the machine: `~/.config/mise`, `/etc/mise`, dotfiles, operating system packages, installed tools. A machine fact holds for that machine only. Other agents may not be able to see it or reproduce it.
 4. **Make machine dependencies explicit.** If a step needs anything outside the checkout, record it as a prerequisite. A check that passes on one workstation does not show the setup is reproducible.
 5. **Do not turn proposals into decisions.** Decisions are the records in `doc/adr/`. Research notes, files removed from Git history, and tools that happen to be installed outside mise are inputs. If something is undecided, list it as an open question.
 6. **Keep the shared layout.** Put files where the table below says, so that parallel runs produce diffs of the same paths.
@@ -71,7 +71,9 @@ Your output will be read next to other agents' output for the same task, produce
 | `doc/adr/` | Decisions, as Context / Decision / Consequences with a status. |
 | `.skogai/research/` | Research inputs, kept as written by the agent that produced them. |
 | `.skogai/tests/` | Dated experiment records: what was run, where, and the result. |
-| `skogix/.skogai/todo.list` | The owner's backlog. |
+| `mani.yaml` | The catalog of SkogAI repos: name, path and URL of each. |
+| `repos/<name>/` | Clones of catalog repos, made with `mani sync`. Ignored by Git. |
+| `repos/skogix/.skogai/todo.list` | The owner's backlog (needs `mani sync -d repos/skogix`). |
 
 ## Recording evidence
 
