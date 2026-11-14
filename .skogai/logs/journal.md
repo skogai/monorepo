@@ -1070,3 +1070,39 @@ I did not read `~/skogai/`, the `~/.local/src` clones, or the `harness/skills` s
 - Bash: `cd ~/Work/repos; grep -n "install-skogcli" -A1 harness/mise.toml; grep -n "SKOGAI_LOG" skogai2-skogai-runner/src/core/lo…`
 - Bash: `cd ~/Work/repos/PATHFINDER-2026-11-14; sed -i 's|`run.jsonl` via \*\*`SKOGAI_LOG`\*\*, the same name as `settings.sh:34`…`
 
+## 2026-11-15 00:39 · turn f409c9c3
+
+**User**
+
+> i mostlry want claude and codex to be runnable via the council to start
+
+**Assistant**
+
+Claude and Codex both run through the council today, so no code changes were needed. I tested each seat on its own and in a full council query. Both `claude-cli.sh` and `codex.sh` answered "pong" with status `success`.
+
+How each one joins:
+- **codex** is on your default roster already. The council seats it automatically when it finds the `codex` binary on PATH.
+- **claude-cli** never joins by default. The plugin leaves it out on purpose, because every user has `claude` on PATH. To include it, name it in a call: `/skogai-council:ask --providers=claude-cli,codex "<question>"`.
+
+Your current default roster is `antigravity codex cursor-cli grok-cli kimi-cli ollama`. If you want Claude and Codex as the only default seats, I can add this to the `[env]` section of `~/.config/mise/config.toml` (line 83):
+
+```toml
+COUNCIL_PROVIDERS = "claude-cli,codex"
+```
+
+To check it afterwards: `~/.claude/plugins/cache/skogai-marketplace/skogai-council/2026.10.13/scripts/query-council.sh --list-default` should print `claude-cli codex`. I haven't changed your config.
+
+result: Claude and Codex both answer through the council now (tested on their own and in a full council query). Codex joins by default; Claude only when named with `--providers=claude-cli,codex`.
+
+Should I add that line so Claude and Codex are your default council?
+
+**Actions**
+
+- Bash: `D=/home/skogix/.claude/plugins/cache/skogai-marketplace/skogai-council/2026.10.13; command -v claude codex; ls -l $D/scr…`
+- Bash: `D=/home/skogix/.claude/plugins/cache/skogai-marketplace/skogai-council/2026.10.13/scripts/providers; export COUNCIL_TIME…`
+- Bash: `D=/home/skogix/.claude/plugins/cache/skogai-marketplace/skogai-council/2026.10.13; ls $D/scripts; grep -rn "COUNCIL_PROV…`
+- Bash: `D=/home/skogix/.claude/plugins/cache/skogai-marketplace/skogai-council/2026.10.13/scripts; cd /home/skogix/.claude/jobs/…`
+- Bash: `D=/home/skogix/.claude/plugins/cache/skogai-marketplace/skogai-council/2026.10.13/scripts; cd /home/skogix/.claude/jobs/…`
+- Bash: `D=/home/skogix/.claude/plugins/cache/skogai-marketplace/skogai-council/2026.10.13/scripts; cd /home/skogix/.claude/jobs/…`
+- Bash: `grep -rn "COUNCIL_\|^\[env\]" ~/.config/mise/config.toml ~/.config/mise/conf.d/ /home/skogix/Work/mise.toml /home/skogix…`
+
