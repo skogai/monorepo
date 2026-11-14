@@ -665,3 +665,53 @@ The inventory is in `/home/skogix/Work/repos/PATHFINDER-2026-11-14/00-features.m
 - AskUserQuestion
 - Bash: `cd /home/skogix/Work/repos/PATHFINDER-2026-11-14 && python3 - <<'EOF'`
 
+## 2026-11-14 19:46 · turn 42f9496e
+
+**User**
+
+> 1. envs are both runner, machine/workstation, configuration and how the cli works all the way out to remote containers such as the ones you sometimes use. (this is why mise, the cli modules etc are so important)
+> 2. skogai-runner, orchestration, modules and routing are quite tight together
+> 3. @/tmp/skogfences.md gives some hint about what dot-skogai and dash-skogai is all about i think 🙂
+
+**Assistant**
+
+The seven flowchart threads are running in T3 under the Work project, all titled "Pathfinder S1 ENV" through "Pathfinder S7 SERVICES". Answer their questions directly in T3. Each one is told to ask you whenever intent is unclear and to keep working on what it can check meanwhile.
+
+| System | What it covers | Thread |
+|---|---|---|
+| S1 ENV | One settings plane: mise-plugin, CLI config, machine config, runner containers | `mcp:76ca35c3…` |
+| S2 RUN | Runner, modules, routing walk, work orders, herdr | `mcp:17e7fa20…` |
+| S3 DASH | `/skogai` as shared ground plus agent homes (skogfences), owned by skogai2-dash-skogai | `mcp:43064c9b…` |
+| S4 DOT | `.skogai` layout, project bootstrap, knowledge, including the docs archive | `mcp:e91e5dac…` |
+| S5 FLEET | The 4 registries, including `mani.yaml` | `mcp:3e88c011…` |
+| S6 PLUGINS | Marketplace, hook journal, jq, the 6 docs mirrors | `mcp:db126bbe…` |
+| S7 SERVICES | podman, systemd, cloudflare | `mcp:420812f0…` |
+
+- **Output:** each thread writes `/home/skogix/Work/repos/PATHFINDER-2026-11-14/01-flowcharts/sN-*.md` and nothing else. All repos are read-only.
+- **Watching:** I'm checking their status, so I'll see when each one finishes or stops to wait for you.
+- **Review:** I'll reject any flowchart that lacks `file:line` evidence. After that comes Phase 2, the duplication hunt.
+- **Model:** the Work project had no default model in T3, so all seven run on `claudeAgent` / `claude-opus-5-5`.
+- **Files:** the prompts and thread IDs are in `/home/skogix/Work/repos/PATHFINDER-2026-11-14/prompts/`.
+
+**Actions**
+
+- Bash: `cp /tmp/skogfences.md ./skogfences-reference.md && cat >> 00-features.md <<'EOF'`
+- AskUserQuestion
+- Bash: `cd /home/skogix/Work && cat doc/t3-cli.md 2>/dev/null | head -120; ls conf.d; grep -n "t3" conf.d/t3.toml | head -40`
+- Bash: `t3 --version; ss -ltnp 2>/dev/null | grep 3773; t3 thread list --project /home/skogix/Work 2>&1 | head -8`
+- Bash: `set -e; P=/home/skogix/Work/repos/PATHFINDER-2026-11-14; mkdir -p $P/01-flowcharts $P/prompts; cd $P/prompts`
+- Bash: `cd /home/skogix/Work/repos/PATHFINDER-2026-11-14/prompts; for i in 1 2 3 4 5 6 7; do t=$(sed -n '1s/^# Pathfinder Phase …`
+- Bash: `t3 thread start --help 2>&1 | sed -n '1,60p'; t3 --help 2>&1 | grep -i -A2 capab`
+- Bash: `ls ~/.t3 ~/.t3/userdata 2>/dev/null | head -30; grep -rhoE '"(providerInstanceId|instanceId|provider|model)"\s*:\s*"[^"]…`
+- Bash: `cd ~/.t3/userdata; python3 -c "`
+- Bash: `cd ~/.t3/userdata; python3 -c "`
+- Bash: `cd ~/.t3/userdata; sqlite3 -readonly statev2.sqlite ".tables" | tr -s ' ' '\n' | grep -i thread; sqlite3 -readonly state…`
+- Bash: `cd ~/.t3/userdata; sqlite3 -readonly statev2.sqlite "pragma table_info(projection_threads)" | cut -d'|' -f2 | tr '\n' ' …`
+- Bash: `cd ~/.t3/userdata; sqlite3 -readonly statev2.sqlite "select model_selection_json, count(*) from projection_threads where…`
+- Bash: `cd ~/.t3/userdata; for t in orchestration_v2_projection_threads orchestration_v2_projection_provider_threads; do echo "=…`
+- Bash: `cd /home/skogix/Work/repos/PATHFINDER-2026-11-14/prompts; t3 thread start /home/skogix/Work - --title "Pathfinder S1 ENV…`
+- Bash: `cd /home/skogix/Work/repos/PATHFINDER-2026-11-14/prompts; echo "S1 mcp:76ca35c3-d916-43c2-a706-8b6c479cb6c7" > threads.t…`
+- ToolSearch: select:Monitor,mcp__plugin_claude-mem_mcp-search__work_state_write
+- Monitor: Pathfinder T3 thread status changes
+- mcp__plugin_claude-mem_mcp-search__work_state_write: pathfinder-2026-11-14
+
