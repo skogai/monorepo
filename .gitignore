@@ -14,9 +14,23 @@ mise.*.local.toml
 /.t3-local-test-*/
 /.skogai/logs/log.jsonl
 # mani #
+repos/skogai2-skogai-fleet
+repos/skogai2-cli
+repos/skogai2-docs
+repos/skogai2-skogai-routing
+repos/skogai2-skogai-runner
+repos/skogai2-dash-skogai
+repos/skogai2-dot-skogai
+repos/skogai2-aliasflare
+repos/skogai2-skogix
+repos/skogai2-core
+repos/skogai2-skogpunk
+repos/skogai2-marketplace
+repos/skogai2-config
+repos/skogai2-skogai
 repos/dot-skogai
 repos/dash-skogai
-repos/skogai-routin
+repos/skogai-routing
 repos/systemd
 repos/docs
 repos/core
