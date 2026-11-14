@@ -780,3 +780,44 @@ Hela kartan: [owner-map.md](/home/skogix/.claude-mem/work-view/owner-goals/2026-
 - Bash: `O=~/.claude-mem/work-view/owner-goals/2026-11-14-evening; S=/home/skogix/.claude/plugins/cache/thedotmack/claude-mem/15.…`
 - Bash: `O=~/.claude-mem/work-view/owner-goals/2026-11-14-evening; S=/home/skogix/.claude/plugins/cache/thedotmack/claude-mem/15.…`
 
+## 2026-11-14 20:16 · turn 52d78324
+
+**User**
+
+> <task-notification>
+> <task-id>b17bl01tt</task-id>
+> <summary>Monitor event: "Pathfinder T3 thread status changes"</summary>
+> <event>[Monitor expired after 30m with 1 event delivered. Re-arm it if you still need the watch.]</event>
+> </task-notification>
+
+**Assistant**
+
+All seven flowcharts are written, and about 90% of the 533 diagram nodes cite `file:line`. Each T3 thread has now stopped to wait for your answer to its first question.
+
+Three findings may need action outside this mapping work:
+- **S7, live incident:** `skognet-cloudflare` is down. An IP address it needs (10.89.7.2) is still held by a container that no longer exists (`5996074a`). Nothing was touched.
+- **S7, secrets:** Pangolin/newt credentials are committed in the cloudflare and systemd repos. Both are private, but the thread asks whether to rotate the credentials and move them to env files.
+- **S3, home exposure:** your primary group is `skogai` and `/home/skogix` is `0755`, so every agent user can read your home. That goes against skogfences.
+
+The threads want your decision on these questions; each has 5–6 more queued behind it:
+
+| Thread | First question |
+|---|---|
+| S1 ENV | Which `SKOGAI_CONFIG_DIR` is canonical: `~/.config/skogai`, `~/skogai/config` or `/skogai/config`? |
+| S2 RUN | Which is the canonical orchestration source: the vv-harness or `orchestration/README.md`? |
+| S3 DASH | Should launchers run under the agent's own uid (user `claude`) instead of skogix with `env -i`? |
+| S4 DOT | Which bootstrap model is the target: a submodule, skogcli writing `.skogai/`, or a package copy? |
+| S5 FLEET | Which registry is canonical: `mani.yaml` or skogai2-core's `repo` module? |
+| S6 PLUGINS | The hook git steps stage, commit and merge in any repo an agent works in, for every user. Is that intended? |
+| S7 SERVICES | Is the systemd repo dead? None of its 26 units are installed. |
+
+The flowcharts are in `/home/skogix/Work/repos/PATHFINDER-2026-11-14/01-flowcharts/`. When all seven threads finish I'll start Phase 2, the duplication hunt.
+
+**Actions**
+
+- Bash: `t3 thread list --project /home/skogix/Work | grep "Pathfinder S"; ls -la /home/skogix/Work/repos/PATHFINDER-2026-11-14/0…`
+- Bash: `for id in $(awk '{print $2}' /home/skogix/Work/repos/PATHFINDER-2026-11-14/prompts/threads.txt); do echo "=== $id"; t3 t…`
+- Bash: `cd /home/skogix/Work/repos/PATHFINDER-2026-11-14/01-flowcharts; for f in *.md; do n=$(grep -c '```mermaid' $f); nodes=$(…`
+- Monitor: Pathfinder T3 threads leaving waiting/running
+- mcp__plugin_claude-mem_mcp-search__work_state_write: pathfinder-2026-11-14
+
