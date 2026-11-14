@@ -16,3 +16,34 @@ mise.*.local.toml
 
 # Clones of catalog repos (mani.yaml projects are sync: false, so mani does not maintain this)
 /repos/
+# mani #
+repos/skogai2-skogai-fleet
+repos/skogai2-cli
+repos/skogai2-docs
+repos/skogai2-skogai-routing
+repos/skogai2-skogai-runner
+repos/skogai2-dash-skogai
+repos/skogai2-dot-skogai
+repos/skogai2-aliasflare
+repos/skogai2-skogix
+repos/skogai2-core
+repos/skogai2-skogpunk
+repos/skogai2-marketplace
+repos/skogai2-config
+repos/skogai2-skogai
+repos/dot-skogai
+repos/dash-skogai
+repos/skogai-routin
+repos/systemd
+repos/docs
+repos/core
+repos/skogai-nov10
+repos/skogix
+repos/skogai-jq
+repos/skogai-core
+repos/skogai
+repos/cloudflare
+repos/nvim-omarchy
+repos/podman
+repos/mise-plugin
+# mani #
