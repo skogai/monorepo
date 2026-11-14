@@ -965,3 +965,108 @@ Not verified: whether mise's `[env]` overrides the plugin in practice (W3), and 
 - Bash: `cd /home/skogix/Work/repos; bash -c 'grep -n "SKOGAI_CONFIG_DIR\|local function default\|existing(key)" mise-plugin/hook…`
 - Write `repos/PATHFINDER-2026-11-14/02a-within.md`
 
+## 2026-11-14 23:20 · turn 58e0df90
+
+**User**
+
+> # Pathfinder Phase 2 — Cross-system duplication
+>
+> READ-ONLY on all repos. Your only write: `/home/skogix/Work/repos/PATHFINDER-2026-11-14/02b-cross.md`.
+>
+> Inputs (read all): `/home/skogix/Work/repos/PATHFINDER-2026-11-14/00-features.md` (esp. Revision 1: systems S1–S7), `/home/skogix/Work/repos/PATHFINDER-2026-11-14/skogfences-reference.md`, and every flowchart in `/home/skogix/Work/repos/PATHFINDER-2026-11-14/01-flowcharts/s*.md` (each has a "Duplication seen" section and owner answers). Verify claims against source; flowcharts can be wrong.
+>
+> ## Owner answers gathered in Phase 1 (binding for Phase 2)
+> - **Composition, not winner-takes-all** (S1): "whatever helps us out in the end is what we will use. hopefully they all can work together at different levels." So overlapping implementations are NOT automatically accidental duplication. Ask: do they occupy different *levels* (workstation / agent home / repo / container / remote) and can they compose? Only call it accidental when two things do the same job at the same level.
+> - **SKOGAI_CONFIG_DIR** = "whatever you set it to" — configurable, no fixed path.
+> - **Interface rule** (S5): "commands runnable via mise tasks." Mise tasks are the required command interface.
+> - **Orchestration** (S2): owner points at `~/Work/repos/harness/` (skogharness plugin, orchestrate-worktrees.js) as the canonical direction.
+> - **skoghooks** (S6): "on hold for later", not retired.
+> - **Unused code** (S3): owner tentatively: if unused, probably not intended to be used. Label "present in source; usage not established".
+> - **/skogai** is owned by skogai2-dash-skogai; agents are meant to be unix users with private homes (skogfences). Note: /skogai does NOT currently exist on this machine.
+> - **.skogai** = base config + project-bootstrap submodule (skogfences/dot-skogai intent).
+> - docs archive is in scope.
+> - Owner: "this is enough for this question time" — only ask if truly blocking.
+>
+> ## Contract
+> Every duplication claim cites ≥2 `repo/path:line` locations you actually read. Include: sources consulted, confidence + gaps. Rank findings by consolidation value (impact × how cheap). Ignore trivial repetition.
+>
+> ## Task
+> Compare flowcharts ACROSS systems for concerns appearing in multiple systems. Look for e.g.: multiple CLI frameworks (argc vs usage vs mise tasks vs node scripts); repeated "project-name / repo-root" helpers; agent identity resolved 3 ways (uid vs SKOGAI_USER vs FNOX_PROFILE); secrets (fnox/age vs env files vs committed); journal/log writers (S6 hooks vs S4 .skogai vs S2 harness/.trail); health/check scripts (skogai2-config health, podman quadlet-health, systemd check, check-routes ×2); bootstrap/install paths (S3 create-agents vs mise bootstrap.users vs S4 dot bootstrap vs S1 skogai2-config bootstrap); worktree creation (core tools::wt, herdr, harness orchestrate-worktrees.js, wt); packaging (PKGBUILD in runner + cli, Containerfile).
+> For each: (a) concern (b) every location file:line (c) why they diverged (d) legitimate specialization (different level/trust model) or accidental (e) which one already best matches owner direction (mise tasks, skogfences, harness).
+
+**Assistant**
+
+I wrote the Phase 2 cross-system report to [02b-cross.md](/home/skogix/Work/repos/PATHFINDER-2026-11-14/02b-cross.md). It has 13 findings (X1–X13), ranked by consolidation value, and each cites at least two `repo/path:line` locations I opened. I did not touch any repo.
+
+Several things in the source contradict the flowcharts or what Phase 1 assumed:
+
+- **X1, agent identity:** the agent unix users already exist on this machine. `getent group skogai` lists claude, dot, amy, goose and codex. So the three env-var identity models (`SKOGAI_USER`, `SKOGAI_AGENT_NAME`, `FNOX_PROFILE`) exist only because agents are launched as skogix. Worse, the per-agent settings in `skogai2-skogix/claude/settings.json:23-77` point into `/home/skogix/.config`. This is the cheapest high-value fix: launch agents as their own users.
+- **X2, `SKOGAI_CONFIG_DIR`:** the definers are not layered. Whichever config mise loads for the current directory wins. `mise env` gives `/home/skogix/skogai/config` in `~`, `/home/skogix/.config/skogai` in `~/Work`, and `.skogai/config` in dot-skogai.
+- **X4, hooks:** no SkogAI hook runtime is active for you today. skogai-core is installed but disabled (`~/.claude/settings.json:104`), and skogharness is not installed. Hooks copied in from an outside template ("VV Claude Code Harness") are live in skogai2-skogai and the runner, and the two copies have drifted apart. Those two repos also each carry two session journals.
+- **X5, worktrees:** your canonical choice, `orchestrate-worktrees.js`, was last changed on 2026-07-14. It puts worktrees next to the repo and briefs workers in `task.md`/`handoff.md`/`status.md`, with no `owns` field. The herdr hub (2026-11-07) and the runner's work orders both rely on `owns` to hand tasks out in parallel safely. The hub also calls itself authoritative.
+- **The `harness` repo itself:**
+  - It carries a third byte-identical copy of the `gita`/`gptodo`/`skogcli` wrappers (X7).
+  - It contains three different lesson matchers (X10).
+  - It has a `/tmp`-based hook plugin, `skogix-hooks`. That is the third hook runtime S6 could only see through a skill.
+- **X13, packaging:** the installed `skogai-runner-git` package ships `src/core/main.sh`, which the runner's own `AGENTS.md:14` says was deleted.
+- **Stale or contradicting docs:**
+  - `skogai2-config/mise/bootstrap.md:30` says the machine still has `/skogai`. It does not.
+  - `/etc/skogai/fnox.toml` is `root:skogix`, while the decision text says root-owned.
+
+A committed `NEWT_SECRET` sits in `cloudflare/pangolin/NEWT.env` and `newt.quadlet.container:9`. I left the value out of the report and did not check whether it is still valid.
+
+Decisions for you:
+- **Q1** (the only blocking one): should the repo-level hook runtime be skogai-core (installed, disabled) or skogharness (canonical, not installed)? This decides where the journal goes.
+- **Q2:** if harness orchestration is canonical, should its plan format gain an `owns` field, and should the hub's "authoritative" line be withdrawn?
+- **Q3:** should the project name stay the same across worktrees (the remote name) or follow the checkout?
+
+I did not read `~/skogai/`, the `~/.local/src` clones, or the `harness/skills` submodule (not checked out). X3 and X4 are medium confidence.
+
+**Actions**
+
+- Bash: `cd /home/skogix/Work/repos/PATHFINDER-2026-11-14 && ls -la . 01-flowcharts && wc -l *.md 01-flowcharts/*.md`
+- Bash: `cat 00-features.md skogfences-reference.md; ls prompts`
+- Bash: `cat prompts/owner-answers.md; for f in 01-flowcharts/*.md; do echo "=== $f"; awk '/^#+ .*[Dd]uplicat/{p=1} p&&/^#+ /&&!/…`
+- Read `/home/skogix/.claude/projects/-home-skogix-Work/2b53256e-8bd6-4be0-bcc1-acde1b6c5699/tool-results/bmgjx3c0n.txt`
+- Bash: `cd /home/skogix/Work/repos; ls; echo; ls harness; git -C harness log --oneline | head -5; git -C harness remote -v`
+- Bash: `cd /home/skogix/Work/repos; for n in gita gptodo skogcli; do for r in harness dash-skogai skogai-nov10; do echo "$n $r $…`
+- Bash: `cd /home/skogix/Work/repos; sed -n 1,30p skogai2-dash-skogai/mise.toml | cat -n; echo ---; cat -n skogai2-skogix/bin/cla…`
+- Bash: `cd /home/skogix/Work/repos; grep -n SKOGAI_AGENT_NAME skogai2-skogai/config/config.json | head -3; for u in claude dot a…`
+- Bash: `cd /home/skogix/Work/repos; ls mise-plugin mise-plugin/lib mise-plugin/hooks; cat -n mise-plugin/hooks/mise_env.lua; gre…`
+- Bash: `cd /home/skogix/Work/repos; ls -ld /skogai /etc/skogai 2>&1; sed -n 40,70p mise-plugin/lib/skogai.lua | cat -n | sed 's/…`
+- Bash: `cd /home/skogix/Work/repos; grep -n "SKOGAI_USER\|SKOGAI_AGENT\|FNOX_PROFILE" skogai2-core/scripts/context/context-start…`
+- Bash: `cd /home/skogix/Work/repos; sed -n 40,85p skogai2-config/secrets/fnox.md | cat -n | awk '{$1="L"$1+39; print}'; ls -la /…`
+- Bash: `cd /home/skogix/Work/repos; cat /etc/skogai/config; echo; grep -n "CLOUDFLARE_ACCOUNT_ID" podman/mise.toml cloudflare/mi…`
+- Bash: `cd /home/skogix/Work/repos; git -C podman ls-files termix; git -C podman check-ignore -v termix/termix-claude.env; git -…`
+- Bash: `cd /home/skogix/Work/repos; sed 's/=.*/=<redacted>/' cloudflare/pangolin/NEWT.env; grep -n "fnox" skogai2-skogai/mise.to…`
+- Bash: `cd /home/skogix/Work/repos; grep -h "NEWT_SECRET=" cloudflare/pangolin/NEWT.env cloudflare/pangolin/newt.quadlet.contain…`
+- Bash: `sed -n 136,172p ~/.config/mise/config.toml | cat -n | awk '{n=$1+135; $1=""; print "L" n ":" $0}'; sed -n 214,253p ~/.co…`
+- Bash: `cd /home/skogix/Work/repos; sed -n 120,145p skogai2-config/mise/bootstrap.md | cat -n | awk '{n=$1+119; $1=""; print "L"…`
+- Bash: `cd /home/skogix/Work/repos; grep -n "removed\|2026-10-31\|why\|Why" skogai2-config/mise/bootstrap.md | head -20; sed -n …`
+- Bash: `cd /home/skogix/Work/repos; sed -n 13,40p skogai2-config/mise/bootstrap.md | cat -n | awk '{n=$1+12; $1=""; print "L" n …`
+- Bash: `cd /home/skogix/Work/repos; ls skogai2-config/bin; grep -n "quadlet-health\|check-routes\|^# @\|^check_\|mise run" skoga…` (failed)
+- Bash: `cd /home/skogix/Work/repos; sed -n 1,15p skogai2-config/bin/health; grep -n "quadlet" skogai2-config/bin/health skogai2-…`
+- Bash: `cd /home/skogix/Work/repos; ls skogai2-config/*/health; grep -ln "quadlet-health" skogai2-config/*/health; grep -n "quad…`
+- Bash: `cd /home/skogix/Work/repos; printf "%-24s %6s %6s %6s %6s %6s\n" repo argcF usage miseT miseTd binN; for r in */; do r=$…`
+- Bash: `cd /home/skogix/Work/repos; sed -n 1,30p cloudflare/mise.toml; echo ----; cat -n skogai2-skogai-runner/mise.toml | head …`
+- Bash: `cd /home/skogix/Work/repos; for r in */; do r=${r%/}; git -C $r ls-files 2>/dev/null | grep -E '^\.(trail|harness|orches…`
+- Bash: `cd /home/skogix/Work/repos; ls harness/marketplace/plugins/skogharness/hooks/memory-persistence; grep -n '"command"' har…`
+- Bash: `cd /home/skogix/Work/repos; sed -n 46,49p ~/.config/worktrunk/config.toml; sed -n 5,14p skogai2-core/Argcfile.sh | cat -…`
+- Bash: `cd /home/skogix/Work/repos; sed -n 24,75p skogai2-skogai/orchestration/README.md | cat -n | awk '{n=$1+23;$1="";print "L…`
+- Bash: `cd /home/skogix/Work/repos; cat -n skogai2-skogai/.skogai/scripts/get-project-name.sh; git -C dot-skogai show 55312d8:sc…`
+- Bash: `cd /home/skogix/Work/repos; for f in commit-gate.sh enforce-scope.sh verify-git-identity.sh verify-task-quality.sh harne…`
+- Bash: `jq '.enabledPlugins' ~/.claude/settings.json 2>/dev/null; jq -r '.plugins|keys[]' ~/.claude/plugins/installed_plugins.js…`
+- Bash: `cd /home/skogix/Work/repos; for r in */; do r=${r%/}; git -C $r ls-files 2>/dev/null | grep -E '(^|/)(PKGBUILD|Container…`
+- Bash: `cd /home/skogix/Work/repos; cat -n skogai2-skogai-runner/packaging/arch/PKGBUILD | sed -n 1,45p; cat -n skogai2-skogai-r…` (failed)
+- Bash: `cd /home/skogix/Work/repos; pacman -Ql skogai-runner-git | head; A=skogai2-skogai-runner/best-argc-version/modules/core/…`
+- Bash: `cd /home/skogix/Work/repos; sed -n 90,95p ~/.config/mise/config.toml; sed -n 1,12p skogai2-skogix/mise.toml | cat -n; gr…`
+- Bash: `grep -n "SKOGAI_CONFIG_DIR" ~/.config/mise/config.toml; for d in ~ ~/Work ~/Work/repos/harness ~/Work/repos/dot-skogai ~…`
+- Bash: `cd ~/Work/repos; for r in skogai2-core core skogai2-skogix skogai2-dash-skogai podman systemd cloudflare skogai2-config …`
+- Bash: `cd ~/Work/repos; git -C harness grep -n "/home/skogix" -- ':!*.jsonl' ':!*journal*' ':!*.md' | cut -c1-140 | head -8; gi…`
+- Bash: `cd ~/Work/repos; for r in */; do r=${r%/}; git -C $r ls-files 2>/dev/null | grep -E 'claude-code-documentation\.sh|downl…`
+- Bash: `cd ~/Work/repos; sed -n 1,20p harness/scripts/match-lessons.py; grep -n "lesson" dot-skogai/SKOGAI.md | head -5; sed -n …`
+- Bash: `cd ~/Work/repos; for r in dot-skogai harness skogai-nov10 docs dash-skogai skogai2-skogai; do git -C $r ls-files 2>/dev/…`
+- Bash: `cd ~/Work/repos; sed -n 21p skogai2-skogai/.skogai/rules/herdr-orchestration.md; sed -n 133,138p skogai2-config/agents/h…`
+- Bash: `cd ~/Work/repos; grep -n "install-skogcli" -A1 harness/mise.toml; grep -n "SKOGAI_LOG" skogai2-skogai-runner/src/core/lo…`
+- Bash: `cd ~/Work/repos/PATHFINDER-2026-11-14; sed -i 's|`run.jsonl` via \*\*`SKOGAI_LOG`\*\*, the same name as `settings.sh:34`…`
+
