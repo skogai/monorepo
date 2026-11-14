@@ -19,6 +19,21 @@ projects:
     url: https://github.com/skogai/mise-plugin
     sync: false
     tags: [mise-plugin]
+  podman:
+    path: repos/podman
+    url: https://github.com/skogai/podman
+    sync: false
+    tags: [podman]
+  nvim-omarchy:
+    path: repos/nvim-omarchy
+    url: https://github.com/skogai/nvim-omarchy
+    sync: false
+    tags: [nvim-omarchy]
+  cloudflare:
+    path: repos/cloudflare
+    url: https://github.com/skogai/cloudflare
+    sync: false
+    tags: [cloudflare]
   skogai:
     path: repos/skogai
     url: https://github.com/skogai/skogai
@@ -39,17 +54,57 @@ projects:
     url: https://github.com/skogai/skogix
     sync: false
     tags: [skogix]
+  skogai-nov10:
+    path: repos/skogai-nov10
+    url: https://github.com/skogai/skogai-nov10
+    sync: false
+    tags: [skogai-nov10]
+  core:
+    path: repos/core
+    url: https://github.com/skogai/core
+    sync: false
+    tags: [core]
+  docs:
+    path: repos/docs
+    url: https://github.com/skogai/docs
+    sync: false
+    tags: [docs]
+  systemd:
+    path: repos/systemd
+    url: https://github.com/skogai/systemd
+    sync: false
+    tags: [systemd]
+  skogai-routing:
+    path: repos/skogai-routin
+    url: https://github.com/skogai/skogai-routin
+    sync: false
+    tags: [skogai-routing]
+  dash-skogai:
+    path: repos/dash-skogai
+    url: https://github.com/skogai/dash-skogai
+    sync: false
+    tags: [dash-skogai]
+  dot-skogai:
+    path: repos/dot-skogai
+    url: https://github.com/skogai/dot-skogai
+    sync: false
+    tags: [dot-skogai]
+# todo
+#skogai2/skogai
+#skogai2/config
+#skogai2/marketplace
+#skogai2/skogpunk
+#skogai2/core
+#skogai2/skogix
+#skogai2/aliasflare
+#skogai2/dot-skogai
+#skogai2/dash-skogai
+#skogai2/skogai-runner
+#skogai2/skogai-routing
+#skogai2/docs
+#skogai2/cli
+#skogai2/skogai-fleet
 tasks:
   agents:
     desc: Print the root AGENTS.md of each cloned repo
     cmd: cat AGENTS.md 2>/dev/null || echo "(no AGENTS.md)"
-  agents-cache:
-    desc: Copy each cloned repo's root AGENTS.md to agents/<name>.md; delete the copy when the repo has none
-    # Runs in repos/<name>, so ../../agents is the monorepo's agents/ and <name> is the directory name.
-    cmd: |
-      n=$(basename "$PWD"); d=../../agents
-      if [ -f AGENTS.md ]; then
-        mkdir -p "$d" && cp AGENTS.md "$d/$n.md" && echo "cached agents/$n.md"
-      else
-        rm -f "$d/$n.md"; echo "no AGENTS.md: $n"
-      fi
