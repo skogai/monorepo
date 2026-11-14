@@ -735,3 +735,48 @@ The seven flowchart threads are running in T3 under the Work project, all titled
 
 All seven Pathfinder threads have started and are still running; none has finished or stopped to ask you anything yet.
 
+## 2026-11-14 19:49 · turn b4691282
+
+**User**
+
+> /claude-mem:owner-goals
+
+**Assistant**
+
+Målen är uppdaterade och sparade: 14 fokusområden, 23 önskemål och 9 regler, varav 1 nytt fokusområde, 3 nya önskemål och inga nya regler. Öppna My Work på http://127.0.0.1:37700/#cards.
+
+De tre översta fokusområdena:
+
+1. **Terminalstyrning av t3 och verktyg** – eftermiddagens försök att koppla ihop T3-miljöerna via T3 Connect; skogix-1080 bad du att ta bort och glömma.
+2. **Kartläggning av SkogAI-systemen över alla repon** (nytt, väntar som förslag under My Focus) – pathfinder över `repos/` och dina rättelser om hur envs, runner, orkestrering, dot-skogai och dash-skogai hänger ihop.
+3. **Termix och fjärråtkomst via CLI** – oförändrat sedan i morse.
+
+Nya önskemål:
+- Kör pathfinder över `repos/` och kartlägg systemen.
+- Koppla ihop t3-miljöerna, MCP-servrarna och mobilkopplingarna (utan skogix-1080).
+- Koppla in fler leverantörer i skogai-council. Detta bygger bara på att du körde de två council-kommandona, så vad du vill ändra där är oklart.
+
+Dagens export hittade bara 151 prompter mot 181 i morse, främst för att Codex-sessioner från 13 november inte längre finns kvar på disk. Det hade tagit bort sex äldre önskemål och regeln om verktyg användbara för en människa. Jag verifierade därför citaten mot morgonens och kvällens export tillsammans, så inget föll bort.
+
+Inget äldre önskemål är markerat som klart, eftersom de nya prompterna inte säger något om dem.
+
+Hela kartan: [owner-map.md](/home/skogix/.claude-mem/work-view/owner-goals/2026-11-14-evening/owner-map.md). Det är kartan från 11 november med ett tillägg för i dag, inte en omskriven karta.
+
+**Actions**
+
+- Bash: `ls -la .scratch/owner-goals/ 2>/dev/null; python3 "/home/skogix/.claude/plugins/cache/thedotmack/claude-mem/15.18.3/skil…`
+- ToolSearch: select:mcp__plugin_claude-mem_mcp-search__work_state_read
+- mcp__plugin_claude-mem_mcp-search__work_state_read: owner-goals
+- Bash: `ls -d ~/.claude-mem/work-view 2>/dev/null && ls ~/.claude-mem/work-view | head; find ~ -maxdepth 6 -name owner-goals.jso…`
+- Bash: `cd ~/.claude-mem/work-view/owner-goals && ls -la 2026-11-14 2026-11-13 && python3 -c "`
+- Bash: `date '+%F %H:%M %z'; S=/home/skogix/.claude/plugins/cache/thedotmack/claude-mem/15.18.3/skills/owner-goals/scripts; O=~/…`
+- Read `/home/skogix/.claude-mem/work-view/owner-goals/2026-11-14-evening/new-owner-prompts.md`
+- Read `/home/skogix/.claude-mem/work-view/owner-goals/2026-11-14-evening/focus-areas.json`
+- Read `/home/skogix/.claude-mem/work-view/owner-goals/2026-11-14-evening/owner-goals.prev.json`
+- Bash: `O=~/.claude-mem/work-view/owner-goals/2026-11-14-evening; S=/home/skogix/.claude/plugins/cache/thedotmack/claude-mem/15.…`
+- Bash: `python3 -c "`
+- Bash: `O=~/.claude-mem/work-view/owner-goals/2026-11-14-evening; python3 -c "`
+- Bash: `O=~/.claude-mem/work-view/owner-goals/2026-11-14-evening; P=~/.claude-mem/work-view/owner-goals/2026-11-14/owner-prompts…`
+- Bash: `O=~/.claude-mem/work-view/owner-goals/2026-11-14-evening; S=/home/skogix/.claude/plugins/cache/thedotmack/claude-mem/15.…`
+- Bash: `O=~/.claude-mem/work-view/owner-goals/2026-11-14-evening; S=/home/skogix/.claude/plugins/cache/thedotmack/claude-mem/15.…`
+
