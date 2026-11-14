@@ -74,11 +74,11 @@ projects:
     url: https://github.com/skogai/docs
     sync: false
     tags: [docs]
-  systemd:
-    path: repos/systemd
-    url: https://github.com/skogai/systemd
+  harness:
+    path: repos/harness
+    url: https://github.com/skogai/harness
     sync: false
-    tags: [systemd]
+    tags: [harness]
   skogai-routing:
     path: repos/skogai-routing
     url: https://github.com/skogai/skogai-routing
