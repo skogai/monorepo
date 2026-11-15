@@ -19,6 +19,7 @@ mise.*.local.toml
 # mani #
 repos/skogfleet
 repos/skogai2-skogai-fleet
+repos/skogfleet
 repos/repomix
 repos/skogai2-cli
 repos/skogai2-docs
