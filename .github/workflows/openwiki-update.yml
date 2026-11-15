@@ -1,0 +1,100 @@
+name: OpenWiki Update
+
+# Regenerates openwiki/ with the OpenWiki CLI and opens a pull request with the result.
+# The wiki covers the mani.yaml projects tagged `openwiki`, not only this repository, so the
+# job clones them into repos/ first. Setup, in the repository's Actions settings:
+#   secret   OPENAI_API_KEY                    provider key (required)
+#   secret   OPENWIKI_REPOS_TOKEN              token with read access to the private covered repos
+#   variable OPENWIKI_ENABLE_SCHEDULED_UPDATE  "true" to arm the daily schedule
+# Without the variable only a manual run (workflow_dispatch) does anything, so a missing
+# secret cannot produce a failing run every day.
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "17 3 * * *"
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  update:
+    if: github.event_name == 'workflow_dispatch' || vars.OPENWIKI_ENABLE_SCHEDULED_UPDATE == 'true'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4
+        with:
+          # Full history so `openwiki code --update` can diff HEAD against the
+          # commit it last documented.
+          fetch-depth: 0
+
+      - name: Clone the covered repos
+        run: scripts/openwiki-repos.sh --clone
+        env:
+          OPENWIKI_REPOS_TOKEN: ${{ secrets.OPENWIKI_REPOS_TOKEN }}
+
+      - name: Make the clones visible to OpenWiki
+        # OpenWiki lists source files with `git ls-files --others --exclude-standard`, so it
+        # does not see ignored paths, and it treats a nested repository as one directory.
+        # For this run only: drop the repos/ ignore rules and the clones' .git directories.
+        # .gitignore is restored below and repos/ is never in the pull request's add-paths.
+        run: |
+          sed -i -E '/^\/?repos\//d' .gitignore
+          find repos -mindepth 2 -maxdepth 2 -name .git -exec rm -rf {} +
+
+      - name: Set up Node.js
+        uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4
+        with:
+          node-version: "22"
+
+      - name: Install OpenWiki
+        run: npm install --global openwiki@0.9.0 mermaid@11.16.0 jsdom@29.1.1
+
+      - name: Run OpenWiki
+        id: openwiki
+        continue-on-error: true
+        run: openwiki code --update --print
+        env:
+          OPENWIKI_PROVIDER: openai
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          OPENWIKI_MODEL_ID: "gpt-5.6-terra"
+
+      - name: Restore files OpenWiki must not change
+        # The run regenerates this workflow from its own template
+        # (langchain-ai/openwiki#423); keep ours. Also undo the .gitignore edit.
+        if: ${{ !cancelled() }}
+        run: |
+          git checkout -- .gitignore .github/workflows/openwiki-update.yml
+          rm -f -- openwiki/.run.json
+
+      - name: List OpenWiki update paths
+        id: paths
+        if: ${{ !cancelled() }}
+        run: |
+          paths=openwiki,AGENTS.md
+          if [ -e CLAUDE.md ]; then paths="$paths,CLAUDE.md"; fi
+          echo "list=$paths" >> "$GITHUB_OUTPUT"
+
+      - name: Create OpenWiki update pull request
+        id: create-pr
+        if: ${{ !cancelled() }}
+        uses: peter-evans/create-pull-request@22a9089034f40e5a961c8808d113e2c98fb63676 # v7
+        with:
+          add-paths: ${{ steps.paths.outputs.list }}
+          branch: openwiki/update
+          commit-message: "docs: update OpenWiki"
+          title: "docs: update OpenWiki"
+          body: |
+            Automated OpenWiki documentation update.
+
+            OpenWiki result: ${{ steps.openwiki.outcome }}
+
+            When the result is `failure`, this PR intentionally preserves only the
+            pages completed before the failure. Merge it to make that progress the
+            baseline for the next scheduled run.
+
+      - name: Propagate OpenWiki failure
+        if: ${{ steps.openwiki.outcome == 'failure' }}
+        run: exit 1
