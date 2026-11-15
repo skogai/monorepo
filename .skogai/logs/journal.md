@@ -1257,4 +1257,56 @@ Nothing is merged; the PR stays open.
 - Bash: `B=origin/claude/clever-johnson-8ayb3p; git show "${B}:.github/workflows/openwiki-update.yml"; echo '-----'; git show "${…` (failed)
 - Bash: `B=origin/claude/clever-johnson-8ayb3p; git show "${B}:openwiki/repos/skogai-core.md" | sed -n 1,20p; echo '-----'; git s…`
 - Bash: `cat > /tmp/claude-1000/-home-skogix-Work/cc09b19c-9a69-4bb7-97eb-864f55d47739/scratchpad/rev62.json <<'EOF'`
+## 2026-11-15 07:58 · turn 26913541
+
+**User**
+
+> A process crashed on this Omarchy machine and I want to know why.
+>
+> What systemd-coredump recorded:
+>   process:  t3code
+>   PID:      32350
+>   binary:   /t3code
+>   signal:   SIGTRAP
+>   time:     Sun 2026-11-15 07:57:23 CET
+>
+> Use the diagnose-crash skill: it covers how to investigate, what to report, and
+> when a crash is worth reporting upstream to Omarchy. If your harness has no skill
+> mechanism, read the skill files directly and follow them instead:
+>
+>   /usr/share/omarchy/default/agents/skills/diagnose-crash/SKILL.md
+
+**Assistant**
+
+T3 Code crashed while it was quitting, not while you were using it. The crashing process was a new copy of T3 Code's own Electron binary. It started in the last moment of shutdown and died almost immediately. This is a T3 Code / AppImage bug, not an Omarchy one, and you most likely lost nothing.
+
+**What the evidence shows**
+- **It happened right as the app closed.** The app's systemd scope (`app-com.t3tools.T3Code-14232`, running since 07:47:49) ended in the same second as the crash. PID 32350 was created moments before the coredump handler (PID 32353), so it hadn't been running for the whole session.
+- **It died during startup.** The core has only the main thread, a short stack that goes straight from `__libc_start_main` into the binary, and the core is just 1.9 MB. Its command line has no `--type=` flag, so it wasn't a normal Chromium helper process (renderer, GPU and so on). It was a fresh copy of the main binary.
+- **The binary's location had disappeared.** The core says it was `/tmp/.mount_T3-CodgHkDdE/t3code`, inside the AppImage's temporary mount. By the time systemd-coredump ran, that mount was already gone, which is why the crash shows up as `/t3code`.
+- **It keeps happening the same way.** Crashes on Nov 10 at 11:00:48 and 11:20:17 match exactly: the same faulting offset (`/t3code + 0x519a1ce`), and each one in the same second a T3 Code scope ended. The AppImage itself is dated Nov 14 12:57, but the binary inside it hasn't changed, so this isn't a regression from a recent update.
+- **The boring causes are ruled out.** There was no OOM kill, memory was fine (7.9 GiB available, no swap in use), and the journal shows nothing related.
+
+**What I'm inferring**
+- Electron's built-in fatal checks stop the process with a SIGTRAP, so this is very likely one of them failing. The binary has no symbols and I couldn't extract it, so I can't name which check.
+- The most plausible story: T3 Code re-runs itself on exit (a relaunch, update or single-instance handoff) while the AppImage is tearing down its mount. The new copy then can't load files it needs from inside the mount and stops at a check.
+
+**Data loss:** most likely none. The window was already closing, and the process that crashed was brand new with no work of its own. Anything unsaved in the T3 Code session itself would already have gone with the quit.
+
+**Will it recur:** yes, probably on most quits. It does no harm beyond the notification. To get it fixed, report it to T3 Code with the faulting offset and "SIGTRAP in a freshly spawned main process during AppImage shutdown". This one doesn't belong upstream at Omarchy. I deleted the core copy I extracted and changed nothing else.
+
+I can mute crash notifications for just this program if you want. I'd use the binary path; the watcher keys on the name `t3code`:
+```
+omarchy-crash-mute '/t3code'       # silence it
+omarchy-crash-mute '/t3code' off   # undo
+```
+
+**Actions**
+
+- Skill: diagnose-crash
+- Bash: `coredumpctl info 32350 2>&1 | head -120; echo ----; coredumpctl list --no-pager 2>&1 | tail -30`
+- Bash: `journalctl --user --since "2026-11-15 07:56:30" --until "2026-11-15 07:57:40" --no-pager 2>&1 | tail -60; echo ----; jou…`
+- Bash: `cd ~/.local/share/applications; cat t3code.desktop com.t3tools.T3Code.desktop; echo ----; journalctl --user -u 'app-com.…`
+- Bash: `ls -la --time-style=full-iso ~/.local/share/t3code/ ; echo ----; coredumpctl info 36991 2>/dev/null | grep -E 'Timestamp…`
+- Bash: `core=$(mktemp -p /tmp/claude-1000/-home-skogix-Work/52b09162-0b5c-40cb-85cb-92b84b404378/scratchpad crash-XXXXXX.core); …`
 
