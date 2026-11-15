@@ -39,7 +39,7 @@ sources:
 
 # skogai2-skogai-runner
 
-**skogai-runner is the Bash command runner intended to become the single entry point of "skogai 3.0": commands declared once, used the same way by humans and agents, built from small modules.** It is a work in progress in the middle of a ground-up remake. On 2026-11-07 the config, module-install, run, contract-checker and main entry scripts were deleted on purpose (commit `75beb96`; their last state is commit `2913d23`), leaving one live script, `src/core/log/usage.sh`, and its test. The earlier argc-based module implementation is kept as reference under `best-argc-version/`. 70 commits fall between 2026-11-06 and 2026-11-09; the last three are automatic "skogai-core: journal and log" commits.
+**skogai-runner is the Bash command runner intended to become the single entry point of "skogai 3.0": commands declared once, used the same way by humans and agents, built from small modules.** It is a work in progress in the middle of a ground-up remake. On 2026-11-07 the config, module-install, run, contract-checker and main entry scripts were deleted on purpose (commit `75beb96`; their last state is commit `2913d23`), leaving one live script, `src/core/log/usage.sh`, and its test. The earlier argc-based module implementation is kept as reference under `best-argc-version/`. The 70 commits in the shallow clone fall between 2026-11-06 and 2026-11-09; the last three are automatic "skogai-core: journal and log" commits.
 
 ## Source map
 
@@ -52,8 +52,8 @@ sources:
 | `tests/log.bats`, `tests/fixtures/log/run.jsonl` | The Bats suite for the reader and its 13-line fixture log. |
 | `mise.toml` | Tools (`argc`, `usage`, `jq`, `yq`, `bats`, all `latest`) and three tasks: `image`, `test`, `test:container`. |
 | `Containerfile` | Arch Linux image with a non-root `dev` user and the mise tools; the repo is mounted at `/repo` at run time. |
-| `docs/` | `why.md`, `history.md`, `design.md`, `plan.md`, `markdown-plus.md`, `declarations.md`, `argc-guide.md`, and an index `README.md`. `docs/argc/` and `docs/argc-completions/` are copied upstream argc references of unrecorded revision (24 files). |
-| `best-argc-version/` | The earlier module-based runner (50 files): `bin/skogai`, `modules/{core,runner,memory,type}`, `scripts/main.sh`, `docs/module.md`, `HANDOVER.md`, two skills, a Claude Code plugin manifest (version 0.9.1) and a SessionStart hook. Not run by `bats tests`. |
+| `docs/` | `why.md`, `history.md`, `design.md`, `plan.md`, `markdown-plus.md`, `declarations.md`, `argc-guide.md`, and an index `README.md`. `docs/argc/` and `docs/argc-completions/` are copied upstream argc references of unrecorded revision (23 files). |
+| `best-argc-version/` | The earlier module-based runner (47 files): `bin/skogai`, `modules/{core,runner,memory,type}`, `scripts/main.sh`, `docs/module.md`, `HANDOVER.md`, two skills, a Claude Code plugin manifest (version 0.9.1) and a SessionStart hook. Not run by `bats tests`. |
 | `.skogai/workorders/` | `WORKORDERS.md` (the queue's routing file), `done/` with seven finished workorders, `open/` empty. |
 | `.skogai/TODO.md`, `TODO.md`, `.todo.md` | Three backlogs: the foundation-first plan, open type/config/router design questions, and old implementation todos. |
 | `.skogai/journal.md`, `.skogai/logs/skogai-core/log.jsonl` | Hook-written session journal (1,414 lines) and hook event log. Machine-generated; the log contains absolute paths from the author's machine. |

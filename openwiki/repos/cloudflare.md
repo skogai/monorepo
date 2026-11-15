@@ -110,8 +110,8 @@ Changes go through `node scripts/manage-tunnel.mjs <subcommand> ...`, first with
 
 ## Gaps and stale references
 
-- **Credential-looking values are tracked in git.** `pangolin/NEWT.env`, `pangolin/newt.quadlet.container` and `pangolin/olm.service.legacy` hold long literal ID and secret strings where `newt.env.sample` holds placeholders. The values were not copied here. Whether they are live was not determined; they should be checked and rotated if so. The account ID and an account email also appear in plain text across `AGENTS.md`, `mise.toml` and `inventory/`.
-- `TODO.md` "Do first" items, open since 2026-11-07: rotate the aliasflare `ADMIN_TOKEN` (it appeared in a transcript), decide on Access for `mcp.skogai.se`, restore the `skogai.se` MX records.
+- Open security follow-ups are tracked in the repo itself (`TODO.md`); they are not repeated in this wiki.
+- `TODO.md` "Do first" items, open since 2026-11-07, include the Access decision for `mcp.skogai.se` and restoring the `skogai.se` MX records.
 - `TODO.md` says 13 tunnels exist and 2 are healthy; the rest await a keep, revive or delete decision. It also lists duplicate ingress rules, CNAMEs without rules, rules without DNS and Access apps without hostnames.
 - Podman's `PLAN.md` says `termix.skogai.se` moved to `skognet-cloudflare` on 2026-11-13 and its Access app was deleted on 2026-11-14. `TODO.md` here still shows it with an Access app and counts one hostname on that tunnel.
 - `manage-tunnel.mjs rm` and `prune` are untested live, per `TODO.md` §4.

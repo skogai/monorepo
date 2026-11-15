@@ -1,7 +1,7 @@
 ---
 type: repository
 title: skogai2-skogai-fleet
-description: A stripped copy of the Nelson multi-agent orchestration skill (one skill file and 51 reference documents) with its helper scripts replaced by TODO placeholders, plus six vendored third-party projects under inspiration/. Reshaped on 2026-11-15; no entry file or runnable code of its own.
+description: A stripped copy of the Nelson multi-agent orchestration skill (one skill file and 50 reference documents) with its helper scripts replaced by TODO placeholders, plus six vendored third-party projects under inspiration/. Reshaped on 2026-11-15; no entry file or runnable code of its own.
 tags: [orchestration, multi-agent, skill, nelson, vendored, work-in-progress]
 repo: skogai2/skogai-fleet
 commit: d5f9464
@@ -27,7 +27,7 @@ sources:
 
 # skogai2-skogai-fleet
 
-**skogai-fleet is a working copy of the Nelson skill, a Royal Navy themed procedure for orchestrating several coding agents, kept together with a folder of vendored third-party projects used as inspiration.** Of 2,282 tracked files, 2,227 are vendored under `inspiration/`. The repo's own material is 53 Markdown files (`.NELSON-SKILL.md` and `references/`) and four PNG images. State: work in progress and in flux. Two commits on 2026-11-15 deleted the crew personas, `SKOGAI.md`, `AGENTS.md`, `TODO.md`, `.skogai/config` and `.old-references/` (35 files, 3,702 lines), so HEAD has no entry file, no README and no code. Before that the last change was 2026-10-24.
+**skogai-fleet is a working copy of the Nelson skill, a Royal Navy themed procedure for orchestrating several coding agents, kept together with a folder of vendored third-party projects used as inspiration.** Of 2,282 tracked files, 2,227 are vendored under `inspiration/`. The repo's own material is 51 Markdown files (`.NELSON-SKILL.md` and `references/`) and four PNG images. State: work in progress and in flux. Two commits on 2026-11-15 deleted the crew personas, `SKOGAI.md`, `AGENTS.md`, `TODO.md`, `.skogai/config` and `.old-references/` (35 files, 3,702 lines), so HEAD has no entry file, no README and no code. Before that the last change was 2026-10-24.
 
 ## Source map
 
@@ -36,7 +36,7 @@ Own versus vendored, from `git ls-files | cut -d/ -f1-2 | sort | uniq -c`:
 | Path | Files | Holds |
 |---|---|---|
 | `.NELSON-SKILL.md` | 1 | Own. The skill: 471 lines, an eight-step mission workflow. Hidden dotfile name, so it is not picked up as a `SKILL.md`. |
-| `references/*.md` | 12 | Own. Doctrine: `crew-roles`, `squadron-composition`, `tool-mapping`, `structured-data` (807 lines), `workflow-doctrine`, `the-estimate`, `action-stations`, `goal-alignment`, `model-selection`, `royal-marines`, `commendations`. |
+| `references/*.md` | 11 | Own. Doctrine: `crew-roles`, `squadron-composition`, `tool-mapping`, `structured-data` (807 lines), `workflow-doctrine`, `the-estimate`, `action-stations`, `goal-alignment`, `model-selection`, `royal-marines`, `commendations`. |
 | `references/admiralty-templates/` | 11 | Own. Document templates: sailing orders, estimate, battle plan, ship manifest, crew briefing, quarterdeck report, damage report, turnover brief, red-cell review, marine deployment brief, captain's log. |
 | `references/standing-orders/` | 17 | Own. One file per named anti-pattern (for example `admiral-at-the-helm`, `split-keel`, `wrong-ensign`). |
 | `references/damage-control/` | 11 | Own. Recovery procedures (for example `man-overboard`, `session-resumption`, `hull-integrity`, `circuit-breakers`). |

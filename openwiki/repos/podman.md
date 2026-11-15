@@ -124,8 +124,7 @@ Secrets by name: `TUNNEL_TOKEN`; `JWT_SECRET`, `DB_URL`, `ADMIN_PASSWORD`, `MCPH
 ## Gaps and stale references
 
 - `SECRETS.md` states there is no backup of the gitignored env files. Phase 5 of `PLAN.md` (fnox with age) would fix that and is on hold; tasks 5.1-5.7 and the "who decrypts" question are open.
-- `SECRETS.md` carries a security note dated 2026-10-09: a branch of the public `skogai/skogchattr` repo contains a committed credentials file with a live token pair, to be revoked and scrubbed. The repo does not say whether that was done.
-- `PLAN.md` notes that a `cf` OAuth token was once committed here and later untracked. It may remain in git history; not checked.
+- `SECRETS.md` and `PLAN.md` carry open security follow-ups; they are not repeated in this wiki.
 - `SKOGAI.md` mentions `*.build` files and `config.toml.example`. Neither exists in the tree.
 - `PLAN.md` says `docs/networking.md` is linked from `AGENTS.md` and `CLAUDE.md`. There is no `CLAUDE.md`, and `AGENTS.md` only routes to `SKOGAI.md`.
 - `SKOGAI.md` has `permalink: skogai/skogai`, which looks copied from another repo.
