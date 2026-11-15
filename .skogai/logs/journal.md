@@ -1148,3 +1148,23 @@ You shouldn't be. Every Claude Code session shows up as a hero in the village, a
 
 One thing in the screenshot: there's a flat green band along the bottom of the map pane, under the market stalls. The map image probably isn't scaling to fill the pane's height. Also, the "II · Work" district lists 3 sessions but 0 heroes. That could be stale sessions that never registered a hero, or it could be how the UI shows sessions that aren't attached to anything.
 
+## 2026-11-15 05:40 · turn 53fdd9f6
+
+**User**
+
+
+
+**Assistant**
+
+Yes. A fleet only beats doing it by hand once one crew member can finish one home folder end to end without you watching. So `/home/claude` should be the pilot voyage, not a side chore.
+
+The pilot covers the whole loop once: a crew template, launched with `hc run` on `claude-workstation` in `~/Work` (now I know why that folder exists), with its actions landing in the event store and its card in skogfleet changing state. If that holds, ten home folders means ten runs of the same template with a different `--cwd`, and repo work is just more crew. If it breaks, it breaks on one folder where you can see why.
+
+For scale, the repo map has a long way to go. `mani list projects` gives about 33 entries in `~/Work/mani.yaml` (rough count of the output lines) against the roughly 250 on your list. Getting the rest into the catalog is a good first job for the fleet, because it's read-mostly and easy to check.
+
+I'll wait until you say it's time for the cleanup launch.
+
+**Actions**
+
+- Bash: `cd ~/Work && mani list projects 2>/dev/null | tail -n +3 | grep -c .`
+
