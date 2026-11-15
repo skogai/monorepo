@@ -1136,3 +1136,15 @@ Something else touched the work while you were away. A T3 thread ("Address Pull 
 - Bash: `cd /tmp/claude-1000/-home-skogix-Work/cc09b19c-9a69-4bb7-97eb-864f55d47739/scratchpad/pf-wt/doc/pathfinder-2026-11-14 &&…`
 - Bash: `r() { gh api repos/skogai/monorepo/pulls/61/comments/$1/replies -f body="$2" --jq .html_url; }`
 
+## 2026-11-15 05:14 · turn a59079e2
+
+**User**
+
+> you know what. i m not even even ashamed. [Image #1]
+
+**Assistant**
+
+You shouldn't be. Every Claude Code session shows up as a hero in the village, and the hero changes state when the session does. In your screenshot Barbefer is "Resting" by the campfire while the prompt sits idle, so the map is telling you something real and isn't only decoration.
+
+One thing in the screenshot: there's a flat green band along the bottom of the map pane, under the market stalls. The map image probably isn't scaling to fill the pane's height. Also, the "II · Work" district lists 3 sessions but 0 heroes. That could be stale sessions that never registered a hero, or it could be how the UI shows sessions that aren't attached to anything.
+
