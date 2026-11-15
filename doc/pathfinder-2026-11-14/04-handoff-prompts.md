@@ -152,7 +152,7 @@ Call sites to rewrite (paths under ~/Work/repos/ unless absolute):
 Anti-pattern guards:
 - Features stay off by default, configured through native mod settings with the log location included (owner rule).
 - Verify journal-only commits at `doc/journal.md` in a fresh repo with a `.skogai` submodule: the parent tracks the journal, unrelated staged files remain uncommitted, and the submodule gitlink stays unchanged. Do not commit a path inside the submodule from the parent.
-- Never two runtimes writing repo-level journals. Q1 (skogai-core vs skogharness at R) must be answered first; this prompt assumes skogai-core.
+- Never two runtimes writing repo-level journals. Q1 decided (owner 2026-11-15): the skogai-core plugin from skogai2-marketplace owns R.
 - skoghooks stays on hold: do not delete it.
 - No new abstraction layer, no feature flag keeping the old path, no registry/factory where a switch suffices.
 - Each step ends with a one-line test command that proves it.
@@ -222,10 +222,10 @@ Call sites to rewrite (paths under ~/Work/repos/ unless absolute):
 - `cloudflare/pangolin/a.yml`: delete (≡ `docker-compose.yml`)
 - `systemd/user/{pg-backup,quadlet-health}*` symlinks: delete with the repo
 - Root `cloudflared.service`: owned by skogai2-config
-- Later (hardening): `cloudflare/pangolin/{NEWT.env,newt.quadlet.container:9}` → fnox, rotate
+- Owner decision (2026-11-15), don't use newt: retire `cloudflare/pangolin/` (newt quadlet, `NEWT.env`, `docker-compose.yml`, `a.yml`) and the `skogai-pangolin-*-start.sh` wrappers
 
 Anti-pattern guards:
-- Do not fix the `skognet-cloudflare` IPAM incident in this plan; it is a separate ops task.
+- `skognet-cloudflare` is up (verified 2026-11-15); do not touch the running tunnel.
 - Do not touch other machines.
 - Never delete working dirs or unpushed work: archive repos, don't rm them.
 - No new abstraction layer, no feature flag keeping the old path, no registry/factory where a switch suffices.

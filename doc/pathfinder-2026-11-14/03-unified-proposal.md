@@ -105,7 +105,7 @@ Every concern gets at most one implementation per level. This table is the contr
   2. Replace only journal-producing behavior in the vendored VV hooks in skogai2-skogai and the runner with plugin hooks. Preserve scope enforcement, git-identity checks, staged-secret scanning, the staging/commit gate, TaskCompleted checks, and lead-owned bookkeeping protection (see `agents/skogai2-skogai-runner.md:71`). Retire only the journal role of `.harness/claude-progress.txt`; retain any bookkeeping consumers. Remove a gate only after an equivalent replacement passes allow/deny tests.
   3. Git steps (stage/commit/merge) apply only to the session's start repo. This addresses S6 Q1, which was never answered; the safe default is to scope them.
   4. One lesson matcher in harness. Delete the other two. skoghooks stays on hold, inside `harness/marketplace/plugins/skoghooks`, which already exists, so the old marketplace entry is not needed. Fix the stale doc at `dot-skogai/SKOGAI.md:51,79` (X10).
-- **Open (Q1):** if the owner prefers skogharness for R as well, swap the R owner. Two runtimes at R is not an option.
+- **Decided (Q1, owner 2026-11-15):** "the skogai-core plugin from marketplace". skogai2-marketplace's skogai-core owns level R. skogharness stays at A only.
 
 ## U7 — `.skogai` layout and bootstrap = skogai2-dot-skogai (D7)
 
@@ -134,8 +134,8 @@ Every concern gets at most one implementation per level. This table is the contr
   2. Archive the `systemd` repo, which has 0 of 26 units installed. Anything to keep comes back as a quadlet or podman unit (S7 Q1).
   3. Replace the 3 notify units with one `notify@.service` and delete `a.yml` (W17).
   4. Root `cloudflared` goes to skogai2-config (W level).
-  5. Hardening, afterwards: move the Pangolin `NEWT_SECRET` to fnox and rotate it.
-- **Separate ops item:** the `skognet-cloudflare` IPAM incident is not part of this refactor.
+  5. **Decided (owner 2026-11-15): don't use newt.** Retire `cloudflare/pangolin/` (newt quadlet, `NEWT.env`, compose files) and the `skogai-pangolin-*-start.sh` wrappers. No newt unit is installed (verified 2026-11-15). The committed `NEWT_SECRET` goes with it. Revoke it on the Pangolin side if that server still exists.
+- **Resolved:** the `skognet-cloudflare` IPAM incident. Verified 2026-11-15: `skognet-cloudflare.service` is active with the container up 7h, and root `cloudflared.service` is active.
 
 ---
 
