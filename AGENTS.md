@@ -8,6 +8,7 @@
 - Nothing is checked out by default: every project has `sync: false`, so a bare `mani sync` clones nothing.
 - To get one repo: `mani sync -t <name> --ignore-sync-state`. It lands in `repos/<name>/`, ignored by Git. Do not select with `-d`: it matches path prefixes.
 - Each repo's own AGENTS.md: a cached copy in `agents/<name>.md`, readable without cloning. A repo with no cached copy has no root `AGENTS.md`, or has not been cached yet.
+- What each active repo is and how they relate: the wiki in [`openwiki/`](openwiki/index.md), readable without cloning. It covers the repos tagged `openwiki` in `mani.yaml` and is optional context: the source of each repo is authoritative.
 - Work done inside a fetched repo is committed in that repo, not here. Commits in this repo only change the catalog.
 
 How to work on this repo itself: [doc/agent-workflow.md](doc/agent-workflow.md).

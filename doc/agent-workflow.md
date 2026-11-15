@@ -56,6 +56,7 @@ Your output will be read next to other agents' output for the same task, produce
 | `mani.yaml` | The catalog of SkogAI repos: name, path and URL of each. |
 | `repos/<name>/` | Clones of catalog repos, made with `mani sync -t <name> --ignore-sync-state`. Ignored by Git. |
 | `agents/<name>.md` | Cached copy of each catalog repo's root `AGENTS.md`, readable without cloning. A repo with no root `AGENTS.md` has no file. Refresh by hand with `mise run agents:sync` and commit the diff. |
+| `openwiki/` | Wiki of the catalog repos tagged `openwiki` in `mani.yaml`: one page per repo plus cross-repo pages. `openwiki/INSTRUCTIONS.md` is the brief; `.github/workflows/openwiki-update.yml` regenerates the rest (manual run, or daily once the repository variable `OPENWIKI_ENABLE_SCHEDULED_UPDATE` is `true`). `scripts/openwiki-repos.sh` lists or clones the covered repos. |
 | `repos/skogix/.skogai/todo.list` | The owner's backlog (needs `mani sync -t skogix --ignore-sync-state`). |
 
 ## Fetching a catalog repo

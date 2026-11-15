@@ -50,7 +50,7 @@ sources:
 | `SKOGAI.md` | One route, to `docs/skogix/introduction.md`. |
 | `docs/skogix/introduction.md` | Short overview of layout, herdr workflow, Trail, tests. |
 | `orchestration/` | Herdr hub: `README.md` (CLI reference and workflow), `AGENTS.md` (orchestrator rules), `work-orders/` (`SPECIFICATION.md`, `TEMPLATE.md`, `open/`, `completed/`). |
-| `dash-skogai/` | Type system draft: `type/*.md` (13 types, 13 hook-event schemas, 6 tool pages), `workflows/skogai.md`, `Argcfile.sh`, `config` layers, generated `README.md`, `src/` (future dot), `tmp/` (vendored argc docs, routing copy, graph script, `definitions.md`). |
+| `dash-skogai/` | Type system draft: `type/*.md` (12 types listed in `type/index.md`, 13 hook-event schemas, 6 tool pages), `workflows/skogai.md`, `Argcfile.sh`, `config` layers, generated `README.md`, `src/` (future dot), `tmp/` (vendored argc docs, routing copy, graph script, `definitions.md`). |
 | `.skogai/` | `rules/` (13), `memory/` (25 entries, index `MEMORY.md`), `scripts/` (7), `templates/`, `tasks/`, `journal.md`, and ignored `state/`, `tmp/`, `worktrees/`. Layout documented in `.skogai/README.md`. |
 | `.harness/` | vv-harness state: `harness.json`, `features.json` (F001-F003, all passing), `context_summary.md`, `init.sh`, `mld/` session notes. |
 | `.claude/` | `settings.json` (permissions, hooks, marketplace), `hooks/` (vv-harness gates and statusline), `skills` symlink. |
@@ -90,7 +90,7 @@ A work order (`work-orders/SPECIFICATION.md:18-32`) is a Markdown file with YAML
 
 ### Rules, memory, journal
 
-`.skogai/rules/` holds standing agent rules (for example `herdr-orchestration.md`, `runner-conventions.md`, `scratch-in-repo-tmp.md`). `.skogai/memory/MEMORY.md` indexes 25 short notes, each with a `stale_after`. `.skogai/journal.md` (572 lines, tracked) is an automatic per-turn log of user prompts, assistant summaries and Bash commands written by the `skogai-core` plugin; the commit subjects "skogai-core: journal and log" come from it. I read the index and a sample, not every rule or memory file.
+`.skogai/rules/` holds standing agent rules (for example `herdr-orchestration.md`, `runner-conventions.md`, `scratch-in-repo-tmp.md`). `.skogai/memory/MEMORY.md` indexes 25 short notes; it says each entry carries a `stale_after`, though about half of the entry files have none. `.skogai/journal.md` (572 lines, tracked) is an automatic per-turn log of user prompts, assistant summaries and Bash commands written by the `skogai-core` plugin; the commit subjects "skogai-core: journal and log" come from it. I read the index and a sample, not every rule or memory file.
 
 ### Harness, hooks, Trail
 
