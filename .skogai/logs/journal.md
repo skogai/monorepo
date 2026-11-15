@@ -1227,3 +1227,34 @@ I suggest running the plans in that order, starting with U2.
 - Bash: `cd /home/skogix/Work; f=doc/pathfinder-2026-11-14/03-unified-proposal.md; r=$(grep -n "^## Retirement list" $f | cut -d:…`
 - mcp__plugin_claude-mem_mcp-search__work_state_write: pathfinder-2026-11-14
 
+## 2026-11-15 11:04 · turn 750c5dc9
+
+**User**
+
+> we need to look at ~/Work merge incoming. a big one
+
+**Assistant**
+
+The incoming merge is **PR #62**, from your cloud session. It adds a wiki for the whole catalog under `openwiki/`: 20 repo pages and about 3,300 lines in 34 files, plus a GitHub workflow that regenerates it daily using OpenAI. GitHub says it merges cleanly, but I don't think it should go in as-is, because it conflicts with the Pathfinder decisions already on master. I left six review comments on it ([review](https://github.com/skogai/monorepo/pull/62#pullrequestreview-5910172767)):
+
+1. **The wiki assumes an open question is answered.** Pathfinder lists "OpenWiki: revive or delete" as your call. This PR assumes revive, and there are already five stale `openwiki/` folders in other repos.
+2. **It covers a repo you plan to retire.** It has a page for `skogai/skogai-core`, which is on the retirement list. The repo-level work belongs to the skogai-core plugin in skogai2-marketplace, as you decided.
+3. **It uses outdated Pathfinder labels.** The concept pages use the first-draft feature numbers F1–F14, not the seven systems S1–S7 and changes U1–U9 we settled on. They also say it "cannot be told" which repo owns `/skogai`, but you decided that skogai2-dash-skogai does.
+4. **It commits session noise.** `.skogai/journal.md` gains 136 lines of transcript, although the PR description says the journal was not committed. Under U6 the journal lives at `doc/journal.md`.
+5. **It adds a custom clone script.** `scripts/openwiki-repos.sh` does the same job as `mani sync -t openwiki`; it should be a mise task that calls mani.
+6. **The PR's own three questions still stand.** Six private repos are described in this public repo. The first workflow run would overwrite these hand-written pages. And the workflow has never been run.
+
+Nothing is merged; the PR stays open.
+
+**Actions**
+
+- Bash: `git status -sb | head -20 && git fetch --all -q 2>&1 | tail -3; git log --oneline -5 master; echo ---; git branch -a -vv…`
+- Bash: `gh pr view 62 --json title,body,author,additions,deletions,changedFiles,commits,reviews,comments,mergeable,baseRefName -…`
+- Bash: `B=origin/claude/clever-johnson-8ayb3p; gh pr view 62 --json comments --jq '.comments[]|.author.login+": "+.body' | head …`
+- Bash: `B=origin/claude/clever-johnson-8ayb3p; git show $B:scripts/openwiki-repos.sh; echo ======; git show $B:.github/workflows…` (failed)
+- Bash: `B=origin/claude/clever-johnson-8ayb3p; git show "$B:scripts/openwiki-repos.sh"; echo ======; git show "$B:.github/workfl…` (failed)
+- Bash: `B=origin/claude/clever-johnson-8ayb3p; git show "${B}:scripts/openwiki-repos.sh"; echo ======; git show "${B}:.github/wo…` (failed)
+- Bash: `B=origin/claude/clever-johnson-8ayb3p; git show "${B}:.github/workflows/openwiki-update.yml"; echo '-----'; git show "${…` (failed)
+- Bash: `B=origin/claude/clever-johnson-8ayb3p; git show "${B}:openwiki/repos/skogai-core.md" | sed -n 1,20p; echo '-----'; git s…`
+- Bash: `cat > /tmp/claude-1000/-home-skogix-Work/cc09b19c-9a69-4bb7-97eb-864f55d47739/scratchpad/rev62.json <<'EOF'`
+
