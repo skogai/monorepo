@@ -11,7 +11,7 @@ Required structure:
 
 - `repos/<name>.md`: one page per covered repo. State what the repo is, its current state (active, work in progress, quiet, archive) with the evidence, a source map of its layout, how it works, how it is used, how it relates to the other SkogAI repos, and its gaps and stale references. Cover large archives (`docs`, `dot-skogai`) and repos that are mostly vendored code at overview depth: a map for finding material, not a summary of every file.
 - `repos/index.md`: the list of covered repos, plus the catalog repos that are not covered, one line each with the reason.
-- `concepts/`: pages that cut across repos: which org copy (`skogai` or `skogai2`) is live for each name, which repo implements each shared concern, and the conventions several repos share (`.skogai/` folders, routing files, `SKOGAI_*` variables, mise tasks).
+- `concepts/`: pages that cut across repos: which org copy (`skogai` or `skogai2`) is live for each name, which repo owns each shared concern, and the conventions several repos share (`.skogai/` folders, routing files, `SKOGAI_*` variables, mise tasks).
 - `quickstart.md`: a routing page: which page to open for which question, and how to fetch a repo.
 
 Rules:

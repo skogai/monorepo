@@ -56,6 +56,11 @@ run = [
   "mani run agents-cache --all --ignore-non-existing",
 ]
 
+# The wiki in openwiki/ covers the mani.yaml projects tagged `openwiki`.
+[tasks."openwiki:clone"]
+description = "Clone the repos the wiki (openwiki/) covers into repos/"
+run = "mani sync -t openwiki --ignore-sync-state"
+
 # Basic environment variables: see doc/mise.md, "Basic environment variables".
 [tasks."env:show"]
 description = "Show the SKOGAI_ variables mise sets here"

@@ -25,7 +25,7 @@ State is as of each page's recorded commit. "Last commit" is the date of the clo
 |---|---|---|
 | [skogai2-marketplace](skogai2-marketplace.md) | 2026-11-13 | Live Claude Code marketplace with the `skogai-core` hook runtime plugin. Active. |
 | [skogai-jq](skogai-jq.md) | 2026-11-14 | Skill with 70 jq transforms, each with schema, test and fixtures. Canonical copy. |
-| [skogai-core](skogai-core.md) | 2026-09-11 | Older marketplace around the routing skill, with a large unmigrated `todo/` tree. Quiet. |
+| [skogai-core](skogai-core.md) | 2026-09-11 | Older marketplace around the routing skill, with a large unmigrated `todo/` tree. **Retiring** (successor: skogai2-marketplace). |
 | [skogai2-skogai-routing](skogai2-skogai-routing.md) | 2026-10-31 | The routing-file convention, version 0.1.0. Documentation only. |
 | [harness](harness.md) | 2026-11-09 | Overview workspace for the harness rebuild; about 85% vendored or copied material. |
 
@@ -61,10 +61,10 @@ These catalog repos have no page. The reason comes from the [2026-11-14 repo sur
 
 | Repo | Reason |
 |---|---|
-| skogai-nov10 | Archived on GitHub. Older knowledge and configuration hub. |
-| core | Its head is an ancestor of `skogai2-core`, which continues it. |
-| dash-skogai | Dormant since 2026-09-20; `skogai2-dash-skogai` has the same stated purpose. |
-| skogai-routing | Dormant since 2026-09-27; `skogai2-skogai-routing` is the restart. |
+| skogai-nov10 | On the retirement list; archived on GitHub. Older knowledge and configuration hub. |
+| core | Its head is an ancestor of `skogai2-core`, which continues it. On the retirement list. |
+| dash-skogai | On the retirement list. Dormant since 2026-09-20; `skogai2-dash-skogai` has the same stated purpose. |
+| skogai-routing | On the retirement list. Dormant since 2026-09-27; `skogai2-skogai-routing` is the restart. |
 | wiki | Stubs, dormant since 2026-05-28. |
 | skogai | One-commit README placeholder. |
 | skogai2-dot-skogai | Placeholder: three files, "nothing built yet". |

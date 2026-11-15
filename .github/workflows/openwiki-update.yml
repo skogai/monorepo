@@ -8,6 +8,9 @@ name: OpenWiki Update
 #   variable OPENWIKI_ENABLE_SCHEDULED_UPDATE  "true" to arm the daily schedule
 # Without the variable only a manual run (workflow_dispatch) does anything, so a missing
 # secret cannot produce a failing run every day.
+# Keep it unarmed until the owner settles "OpenWiki: revive or delete" (Pathfinder W20,
+# doc/pathfinder-2026-11-14/02a-within.md). Not run yet: the first run regenerates the
+# hand-written pages from openwiki/INSTRUCTIONS.md.
 
 on:
   workflow_dispatch:
@@ -30,8 +33,20 @@ jobs:
           # commit it last documented.
           fetch-depth: 0
 
+      - name: Set up mise
+        uses: jdx/mise-action@5228313ee0372e111a38da051671ca30fc5a96db # v3.6.3
+        with:
+          install_args: mani
+
       - name: Clone the covered repos
-        run: scripts/openwiki-repos.sh --clone
+        # mani does the cloning (`mise run openwiki:clone`). The token reaches git through a
+        # URL rewrite that is removed again before OpenWiki runs.
+        run: |
+          if [ -n "$OPENWIKI_REPOS_TOKEN" ]; then
+            git config --global url."https://x-access-token:${OPENWIKI_REPOS_TOKEN}@github.com/".insteadOf "https://github.com/"
+          fi
+          GIT_TERMINAL_PROMPT=0 mise run openwiki:clone || echo "::warning::some covered repos could not be cloned"
+          git config --global --unset-all url."https://x-access-token:${OPENWIKI_REPOS_TOKEN}@github.com/".insteadOf 2>/dev/null || true
         env:
           OPENWIKI_REPOS_TOKEN: ${{ secrets.OPENWIKI_REPOS_TOKEN }}
 

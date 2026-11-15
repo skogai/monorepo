@@ -14,7 +14,7 @@ This wiki maps 20 repos from the [catalog](../mani.yaml): what each one is, what
 - [Repo pages](repos/index.md): one page per covered repo, and the list of catalog repos that are not covered.
 - Concepts that cut across repos:
   - [The two orgs: which copy is live](concepts/orgs-and-copies.md)
-  - [Shared concerns: which repo implements what](concepts/shared-concerns.md)
+  - [Shared concerns: which repo owns what](concepts/shared-concerns.md)
   - [Shared conventions](concepts/conventions.md)
 - [Instructions](INSTRUCTIONS.md): the brief OpenWiki reads when it regenerates this wiki.
 

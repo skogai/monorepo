@@ -65,7 +65,7 @@ Many repos only work at a fixed path on the owner's machine. The ones the pages 
 | `~/.config/skogai` | skogai2-config |
 | `~/.config/containers/systemd` | podman |
 | `~/.config/nvim` | nvim-omarchy |
-| `/skogai` | skogai2-dash-skogai or skogai2-skogix (disputed, see [orgs and copies](orgs-and-copies.md)) |
+| `/skogai` | skogai2-dash-skogai (owner decision 2026-11-14; skogai2-skogix still claims it, see [orgs and copies](orgs-and-copies.md)) |
 | `~/skogai` | skogai2-skogai |
 | `~/.local/src/<repo>` | gita-tracked repos, including cloudflare and the skills that dot-skogai symlinks to |
 | `~/Work` | the monorepo |

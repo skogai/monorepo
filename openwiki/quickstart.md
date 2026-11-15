@@ -34,7 +34,7 @@ generated: { by: "claude-code", at: "2026-11-15" }
 ```sh
 mani sync -t <name> --ignore-sync-state      # one repo, into repos/<name>/
 mani sync -t openwiki --ignore-sync-state    # the 20 repos this wiki covers
-scripts/openwiki-repos.sh --clone            # the same 20, with git alone
+mise run openwiki:clone                      # the same, as a mise task
 ```
 
 Six of the covered repos are private (`cloudflare`, `podman`, `nvim-omarchy`, `docs`, `dot-skogai`, `skogai2-core`) and need credentials to clone.
