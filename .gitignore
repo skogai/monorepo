@@ -17,6 +17,7 @@ mise.*.local.toml
 # Clones of catalog repos (mani.yaml projects are sync: false, so mani does not maintain this)
 /repos/
 # mani #
+repos/skogfleet
 repos/skogai2-skogai-fleet
 repos/repomix
 repos/skogai2-cli

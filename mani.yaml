@@ -170,6 +170,11 @@ projects:
     url: https://github.com/skogai2/skogai-fleet
     sync: false
     tags: [skogai2-skogai-fleet]
+  skogfleet:
+    path: repos/skogfleet
+    url: https://github.com/skogai2/skogfleet
+    sync: true
+    tags: [skogfleet]
 tasks:
   repomix:
     desc: repomix
