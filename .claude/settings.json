@@ -1,5 +1,6 @@
 {
   "enabledPlugins": {
-    "skogai-core@skogai-marketplace": true
+    "skogai-core@skogai-marketplace": true,
+    "claude-mem@thedotmack": true
   }
 }
