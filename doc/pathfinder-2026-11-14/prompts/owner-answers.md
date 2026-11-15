@@ -1,0 +1,11 @@
+## Owner answers gathered in Phase 1 (binding for Phase 2)
+- **Composition, not winner-takes-all** (S1): "whatever helps us out in the end is what we will use. hopefully they all can work together at different levels." So overlapping implementations are NOT automatically accidental duplication. Ask: do they occupy different *levels* (workstation / agent home / repo / container / remote) and can they compose? Only call it accidental when two things do the same job at the same level.
+- **SKOGAI_CONFIG_DIR** = "whatever you set it to" — configurable, no fixed path.
+- **Interface rule** (S5): "commands runnable via mise tasks." Mise tasks are the required command interface.
+- **Orchestration** (S2): owner points at `~/Work/repos/harness/` (skogharness plugin, orchestrate-worktrees.js) as the canonical direction.
+- **skoghooks** (S6): "on hold for later", not retired.
+- **Unused code** (S3): owner tentatively: if unused, probably not intended to be used. Label "present in source; usage not established".
+- **/skogai** is owned by skogai2-dash-skogai; agents are meant to be unix users with private homes (skogfences). Note: /skogai does NOT currently exist on this machine.
+- **.skogai** = base config + project-bootstrap submodule (skogfences/dot-skogai intent).
+- docs archive is in scope.
+- Owner: "this is enough for this question time" — only ask if truly blocking.
