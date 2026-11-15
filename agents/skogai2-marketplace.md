@@ -16,6 +16,8 @@ Claude Code plugin marketplace (`skogai-marketplace`). No build step. Tooling (`
 
 ## skogai-core (the one local plugin)
 
+Frozen at 0.11.1 for its current users. Development continues as `skogai-events` in its own repo (skogai/skogai-events, `~/.local/src/skogai-events`), listed here as an external plugin; change that one, not this copy.
+
 - `hooks/hooks.json` maps each hook event to `scripts/events/<Event>.sh`. Each script logs a JSON row through `scripts/append-json.sh` to `.skogai/logs/skogai-core/log.jsonl` at the git root. `hooks/register.ts` is a function-hook module and only drives the status line.
 - Everything is off by default. Settings are mod settings (`userConfig` in `plugin.json`, read from `CLAUDE_PLUGIN_OPTION_<KEY>` by `scripts/settings.sh` and from `options` by `register.ts`): `enabled`, `events`, `log_path`, `journal`/`journal_path` (`Stop.sh` appends the turn and commits only that file, never the log), `write_state`/`state_dir`, `status_line`, and `{stage,commit,merge}_on_{stop,prompt}` (`git add -A` / `wt step commit` / `wt merge`). Set them with `/plugin configure skogai-core`; table in the plugin's README.
 - Tests: `plugins/skogai-core/tests/run.sh` feeds sample hook rows through the scripts in a throwaway git repo. There's no per-test selection. Needs `bash`, `jq`, `git`, `flock`.

@@ -1,5 +1,5 @@
 ---
-permalink: skogai-fleet/agents
+permalink: skogharness/agents
 type: router
 ---
 
