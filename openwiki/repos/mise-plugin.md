@@ -100,7 +100,7 @@ CI runs `mise run lint` and `mise run test` in one job (`.github/workflows/ci.ym
 - **skogai2-config** records `SKOGAI_CONFIG_DIR` as an `[env]` variable in the workstation's global mise config and notes that it points at `~/skogai/config`, not at `~/.config/skogai` (`repos/skogai2-config/PROJECT.md:163-164`). This plugin's default is `$XDG_CONFIG_HOME/skogai`. Because `SKOGAI_CONFIG_DIR` is not read from the environment, the plugin's value replaces a global one unless `config_dir` is set.
 - **skogai2-cli** solves a neighbouring problem (layered `SKOGAI_*` settings held by mise) with no shared code. See [skogai2-cli](skogai2-cli.md).
 - **skogix** lists this plugin as the partial answer to its "config/runner; define paths overall as well as a env-lookup" item (`repos/skogix/.skogai/todo.list:30-31`).
-- The first test fixture was named `skogix-workstation` in commit titles; the files themselves name no host.
+- One commit title carries the tag "(Claude, skogix-workstation)", the host that `skogai2-config` documents; the files themselves name no host.
 
 ## Gaps and stale references
 
