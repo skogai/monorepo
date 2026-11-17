@@ -13,6 +13,7 @@ mise.*.local.toml
 /.t3/
 /.t3-local-test-*/
 /.skogai/logs/log.jsonl
+/.skogai/logs/skogai-core/
 
 # Clones of catalog repos (mani.yaml projects are sync: false, so mani does not maintain this)
 /repos/
