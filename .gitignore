@@ -52,3 +52,5 @@ repos/mise-plugin
 repos/wiki
 # mani #
 /.letta/settings.local.json
+# Added by code-review-graph
+.code-review-graph/
