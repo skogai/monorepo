@@ -1310,3 +1310,57 @@ omarchy-crash-mute '/t3code' off   # undo
 - Bash: `ls -la --time-style=full-iso ~/.local/share/t3code/ ; echo ----; coredumpctl info 36991 2>/dev/null | grep -E 'Timestamp…`
 - Bash: `core=$(mktemp -p /tmp/claude-1000/-home-skogix-Work/52b09162-0b5c-40cb-85cb-92b84b404378/scratchpad crash-XXXXXX.core); …`
 
+## 2026-11-17 17:08 · turn d7a78adc
+
+**User**
+
+> looking over the @openwiki/ in general which just merged. what does it tell us etc?
+
+**Assistant**
+
+The wiki is a reading-only map of 20 repos, taken from clones on 2026-11-15. It's about 3,000 lines: 20 repo pages, 3 concept pages, a quickstart and an index. Nothing in it was run. Here's what it adds up to.
+
+## The big picture
+
+**1. You have two of most things, and the newer copy is usually the live one.**
+The `skogai2-*` repos have mostly replaced their `skogai/*` namesakes. The retirement list (archive, still waiting on your sign-off) is `core`, `dash-skogai`, `marketplace`, `skogai-core`, `skogai-routing`, `skogai-nov10`, `systemd` and `cloudflare/old-systemd-solution/`. Material is also copied between repos, not just forked. The jq skill exists in three places, and `scripts/config` is copied from the runner into the marketplace.
+
+**2. Each concern has a named owner on paper, but most owners are thin.** (`concepts/shared-concerns.md`)
+- **Solid and active:** `mise-plugin` (env vars, tested, v0.2.0), `skogai2-marketplace` (hook runtime), `skogai-jq`, `podman`, `cloudflare`, `skogai2-config`.
+- **Specs, stubs or mid-reset:** `skogai2-skogai` (work orders: one done, none open), `skogai2-skogai-runner` (reset to one live source file), `skogai2-dash-skogai` (its README describes deleted paths), `skogai2-core` (root CLI mostly stubs), `skogai2-skogai-routing` (docs only).
+- **Empty:** the S4 DOT owner, `skogai2-dot-skogai`, is a three-file placeholder.
+
+**3. Shared conventions differ from repo to repo.**
+- **Env variables:** `SKOGAI_*` has no registry. Seven repos set their own sets, and `SKOGAI_CONFIG_DIR` has four different meanings.
+- **Fleet tracking:** `skogai2-core` uses gita and the monorepo uses mani. Nothing reconciles the two.
+- **Paths:** many repos only work at fixed paths on your machine (`/skogai`, `~/skogai`, `~/.local/src/…`).
+
+**4. Router files and docs go stale more than anything else.**
+Almost every repo page lists `SKOGAI.md`, `AGENTS.md` or README routes that point to deleted or moved paths. Only `skogai2-config` has a checker (`bin/check-routes`), and it can only pass on your workstation.
+
+## Things that need action
+
+- **Committed sensitive data:**
+  - `docs` has a live PostgreSQL data directory and a `memory.db` committed.
+  - `skogai2-dash-skogai` has committed `.skogai/logs/hook-tap/log.jsonl` with session content.
+  - `skogai2-config` notes that credentials in the dotfile history are treated as burned, and the history rewrite is still your decision.
+- **Exposure:** `termix.skogai.se` lost its Access app on 2026-11-14 and its second factor is off, so only the Termix password and API key protect it (`repos/podman.md`).
+- **Code that contradicts itself:** `skogai2-cli` HEAD has hard-coded debug defaults pointing into your home directory, which contradict its own spec and tests.
+- **Broken install:** the runner's PKGBUILD installs a file that no longer exists.
+- **Stale `/skogai` claim:** you decided on 2026-11-14 that `skogai2-dash-skogai` owns `/skogai`, but `skogai2-skogix` and `skogai2-config` still say otherwise.
+
+## Problems with the wiki itself
+
+- **The first workflow run will regenerate it.** The pages were hand-written with no OpenWiki claim files, so the first run of `.github/workflows/openwiki-update.yml` regenerates them from `INSTRUCTIONS.md`. The current text may not survive that run.
+- **Its future is undecided.** The S4 open decision (W20) is "OpenWiki: revive or delete". That decides whether this wiki has a future.
+- **It's already behind the catalog.** `skogfleet` is listed as "not surveyed", but the latest commits (`38691bb skogfleet`, and the rename of the fleet router to `harness`) show it's current work.
+- **The source was shallow.** Clones were 50 commits deep, and large archives (`docs`, `dot-skogai`) are only covered at overview depth.
+
+My suggestion for the first decision: settle W20 (revive or delete OpenWiki) before the update workflow runs, because that run will rewrite these pages either way.
+
+**Actions**
+
+- Bash: `cd /home/skogix/Work/openwiki && find . -type f | sort && wc -l $(find . -name '*.md') | tail -1 && cat index.md INSTRUC…`
+- Bash: `cat repos/index.md concepts/*.md`
+- Bash: `cd /home/skogix/Work && grep -c 'openwiki' mani.yaml; grep -B8 'openwiki' mani.yaml | grep -E '^  [a-z0-9-]+:$' | tr -d …`
+
