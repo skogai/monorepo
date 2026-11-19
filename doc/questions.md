@@ -24,7 +24,8 @@ Answered by the owner in one pass. They close or replace the questions listed af
 - **Personal side projects are out of scope for the monorepo for now:** `nvim-omarchy`, `skogix` (the backlog) and `skogai2-skogpunk`. Closes Q2.10, Q4.13 to Q4.15, Q4.29 to Q4.31, Q4.63, Q4.64.
 - **OpenWiki will be tried with LM Studio setups** (a local OpenAI-compatible endpoint) instead of an OpenAI key.
 - **Recorded from earlier decisions:** `/skogai` belongs to `skogai2-dash-skogai` (2026-11-14), which closes Q1.9; the repo journal is `doc/journal.md` (2026-11-15).
-- **Still open:** Pathfinder U5 (work orders and dispatch; Q1.3, Q1.4, Q4.27, Q4.28, Q4.38, Q4.39, Q4.55 to Q4.60), section 2 housekeeping, and the remaining skogai2 per-repo questions.
+- **Pathfinder U5 (work orders and harness dispatch) is deferred.** Nothing is planned around a harness that is not in working order. For now work goes from plain GitHub issues straight to pull requests. Closes Q1.3, Q1.4, Q4.27, Q4.28, Q4.38, Q4.39, Q4.55 to Q4.60 as deferred.
+- **Still open:** section 2 housekeeping and the remaining skogai2 per-repo questions.
 
 ## 1. Decisions that cut across repos
 
