@@ -147,11 +147,11 @@ projects:
     url: https://github.com/skogai/repomix
     sync: false
     tags: [repomix]
-  skogfleet:
-    path: repos/skogfleet
+  skogai-skogfleet:
+    path: repos/skogai-skogfleet
     url: https://github.com/skogai/skogfleet
-    sync: true
-    tags: [skogfleet]
+    sync: false
+    tags: [skogai-skogfleet]
   skogai2-skogai-fleet:
     path: repos/skogai2-skogai-fleet
     url: https://github.com/skogai2/skogai-fleet

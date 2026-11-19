@@ -12,19 +12,20 @@ sources:
 
 # The two orgs: which copy is live
 
-**Several names exist in both `github.com/skogai` and `github.com/skogai2`. In most cases the `skogai2` copy is the newer one, and the [unified proposal](../../doc/pathfinder-2026-11-14/03-unified-proposal.md) puts the older copies `core`, `dash-skogai`, `marketplace`, `skogai-core`, `skogai-routing` and `skogai-nov10` on a retirement list (archive, pending owner sign-off).** This page records what the trees show. In the catalog, a `skogai2` repo is named with the prefix `skogai2-`.
+**Several names exist in both `github.com/skogai` and `github.com/skogai2`. In most cases the `skogai2` copy is the newer one, and the older copies `core`, `dash-skogai`, `marketplace`, `skogai-core`, `skogai-routing` and `skogai-nov10` from the [unified proposal](../../doc/pathfinder-2026-11-14/03-unified-proposal.md)'s retirement list were archived on 2026-11-19 and dropped from the catalog (see [retired repos](../repos/retired.md)).** This page records what the trees show. In the catalog, a `skogai2` repo is named with the prefix `skogai2-`.
 
 ## Name by name
 
 | Name | `skogai` copy | `skogai2` copy | What the files show |
 |---|---|---|---|
-| core | `core`, last commit 2026-10-24, not covered | [skogai2-core](../repos/skogai2-core.md), 2026-11-09 | `skogai2-core` was copied from `skogai/core` on 2026-10-24 and continues it. Its own docs still call it `skogai/core`. |
-| dash-skogai | `dash-skogai`, dormant since 2026-09-20, not covered | [skogai2-dash-skogai](../repos/skogai2-dash-skogai.md), 2026-11-01 | Same stated purpose, the shared `/skogai` workspace. The skogai2 copy is the one being worked on; its README describes paths that were deleted in October. |
-| dot-skogai | [dot-skogai](../repos/dot-skogai.md), 623 files, quiet since 2026-09-27 | `skogai2-dot-skogai`, a three-file placeholder, not covered | The older repo holds all the content. Nothing in it mentions the skogai2 placeholder. |
-| skogai-routing | `skogai-routing`, dormant, on the retirement list, not covered | [skogai2-skogai-routing](../repos/skogai2-skogai-routing.md), version 0.1.0 | The skogai2 copy is a short restart of the convention. Copies of the older skill also sit in [skogai-core](../repos/skogai-core.md) and [harness](../repos/harness.md). |
-| marketplace | `skogai/marketplace`, not in the catalog | [skogai2-marketplace](../repos/skogai2-marketplace.md), active | No shared commits; a reimplementation. The older marketplace role is also played by [skogai-core](../repos/skogai-core.md). |
-| docs | [docs](../repos/docs.md), the knowledge archive | `skogai2-docs`, a Claude Code docs snapshot, not covered | Different collections that share a name. |
+| core | `core`, archived 2026-11-19 | [skogai2-core](../repos/skogai2-core.md), 2026-11-09 | `skogai2-core` was copied from `skogai/core` on 2026-10-24 and continues it. Its own docs still call it `skogai/core`. |
+| dash-skogai | `dash-skogai`, archived 2026-11-19 | [skogai2-dash-skogai](../repos/skogai2-dash-skogai.md), 2026-11-01 | Same stated purpose, the shared `/skogai` workspace. The skogai2 copy is the one being worked on; its README describes paths that were deleted in October. |
+| dot-skogai | [dot-skogai](../repos/dot-skogai.md), 623 files, frozen as a knowledge archive (2026-11-19) | `skogai2-dot-skogai`, a three-file placeholder, not covered | The older repo holds all the content. Nothing in it mentions the skogai2 placeholder. |
+| skogai-routing | `skogai-routing`, archived 2026-11-19 | [skogai2-skogai-routing](../repos/skogai2-skogai-routing.md), version 0.1.0 | The skogai2 copy is a short restart of the convention. Copies of the older skill also sit in [skogai-core](../repos/skogai-core.md) (archived) and [harness](../repos/harness.md). |
+| marketplace | `skogai/marketplace`, archived 2026-11-19; the owner names `skogai/skogai-events` as its remake | [skogai2-marketplace](../repos/skogai2-marketplace.md), active | No shared commits; a reimplementation. The older marketplace role is also played by [skogai-core](../repos/skogai-core.md). |
+| docs | [docs](../repos/docs.md), the knowledge archive | `skogai2-docs`, a Claude Code docs snapshot, not covered | Different collections that share a name. Both are frozen (2026-11-19). |
 | skogai | `skogai`, a README placeholder, not covered | [skogai2-skogai](../repos/skogai2-skogai.md), the orchestration repo | Not duplicates. |
+| skogfleet | `skogai/skogfleet`, last pushed 2026-07-23, not covered | `skogai2/skogfleet`, created 2026-11-15, not covered | Not surveyed. The catalog lists both: `skogai-skogfleet` and `skogfleet`. |
 | skogix | [skogix](../repos/skogix.md), notes and backlog | [skogai2-skogix](../repos/skogai2-skogix.md), agent-config workspace | Different roles, no shared commits. A third `skogix` is a private fork under the owner's personal account. |
 
 Repos that exist only in `skogai2`: [skogai2-config](../repos/skogai2-config.md), [skogai2-cli](../repos/skogai2-cli.md), [skogai2-skogai-runner](../repos/skogai2-skogai-runner.md), [skogai2-skogai-fleet](../repos/skogai2-skogai-fleet.md).
