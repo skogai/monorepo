@@ -25,6 +25,7 @@ Answered by the owner in one pass. They close or replace the questions listed af
 - **OpenWiki will be tried with LM Studio setups** (a local OpenAI-compatible endpoint) instead of an OpenAI key.
 - **Recorded from earlier decisions:** `/skogai` belongs to `skogai2-dash-skogai` (2026-11-14), which closes Q1.9; the repo journal is `doc/journal.md` (2026-11-15).
 - **Pathfinder U5 (work orders and harness dispatch) is deferred.** Nothing is planned around a harness that is not in working order. For now work goes from plain GitHub issues straight to pull requests. Closes Q1.3, Q1.4, Q4.27, Q4.28, Q4.38, Q4.39, Q4.55 to Q4.60 as deferred.
+- **The rest of Pathfinder is tracked as GitHub issues.** Milestones U1–U4 and U6–U9 in this repo (#68–#105, all on project board 4), each issue checked against the source on 2026-11-19. Dropped on the way: fixes that targeted the archived repos (the `dash-skogai`/`skogai-nov10` wrappers and route checker, `core`), the harness `orchestrate-worktrees.js` task (U5), and the `dot-skogai/SKOGAI.md` doc fix (frozen repo). U6 targets `skogai-events`, the successor of the disabled `skogai-core` plugin. Owner calls are issues of their own: #88 (old journals), #96 (decision store), #101 (marketplace `docs/`).
 - **Still open:** section 2 housekeeping and the remaining skogai2 per-repo questions.
 
 ## 1. Decisions that cut across repos
