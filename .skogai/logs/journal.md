@@ -1743,3 +1743,42 @@ I'd start with U1 (env) as the first milestone. It's small and concrete, with fi
 
 Go with that? Or would you rather clear #1 and #2 first?
 
+## 2026-11-19 21:07 · turn cab91347
+
+**User**
+
+> we can go ahead with #3 i believe
+
+**Assistant**
+
+I checked all seven U1 fixes against the current source, and all seven still apply. Two line numbers have moved since the plan was written. None of the U1 work touches an archived repo.
+
+There's already a convention for tracking this: issues live in `skogai/monorepo`, grouped by milestone, on org board 4 ("mise toolkit", 23 items). I'd follow it with a new milestone **"U1: env plane"** and these 7 issues:
+
+| # | Repo | Fix | What I checked |
+|---|---|---|---|
+| 1 | mise-plugin | `SKOGAI_CONFIG_DIR` goes through `default()` so a value you set yourself wins (W3) | `hooks/mise_env.lua:15` is still a literal. I'll link it to #34 (the plugin contract). |
+| 2 | your home mise config | Delete the literal `SKOGAI_CONFIG_DIR` | It's now at `~/.config/mise/config.toml:96` (was :93). Depends on #1. |
+| 3 | skogai2-cli | One rule for turning a key into an env name: drop `-`, the way the runner does (W21) | `lib/config.sh:56-59` keeps `-`; the runner's `argc.sh:645-649` drops it |
+| 4 | skogai2-skogai-runner | Rename `SKOGAI_LOG` to `SKOGAI_RUN_LOG` (W22) | This is a real clash: `skogai-events/scripts/settings.sh:32` uses `SKOGAI_LOG` for its own event log. The runner reads it at `src/core/log/usage.sh:15`, and `tests/log.bats` and `AGENTS.md:34` mention it. |
+| 5 | skogai2-skogai | `whereami.sh` prefers `SKOGAI_HOST/OS/ARCH` (W23) | `.skogai/scripts/whereami.sh:16-21` still calls `hostname` and `uname` directly |
+| 6 | podman, cloudflare | Set `CLOUDFLARE_ACCOUNT_ID` in one place (X12) | It's pinned in 4 places: `podman/mise.toml:3`, `podman/bin/quadlet-health:27`, `cloudflare/mise.toml:10`, and `cloudflare/scripts/lib/cf.mjs:31` as a fallback. About 6 docs and skills also hard-code the value. The issue will name those files, not the ID. |
+| 7 | skogai2-marketplace | Delete `scripts/{config,frontmatter}/` and the paragraph about them in `CLAUDE.md` (W4) | Nothing outside `scripts/` calls them. The paragraph is now at `CLAUDE.md:15` (was :17). |
+
+Each issue will give the file:line, the change, and a one-line test command, following the handoff prompt (e.g. `mise env` in `~`, `~/Work` and `repos/dot-skogai`, with and without a pre-set value). Each fix is then a PR in its own repo that closes the matching monorepo issue.
+
+I cloned the seven repos into `repos/` for this check; nothing in them was changed.
+
+Shall I create the milestone and the 7 issues on board 4 as listed? Once U1 looks right to you, I'll do U2, U3, U4 and U6–U9 the same way, one at a time.
+
+**Actions**
+
+- Bash: `grep -n "U1\|W3\b\|W4\b\|W21\|W22\|W23" doc/pathfinder-2026-11-14/03-unified-proposal.md | head -60; ls repos/`
+- Bash: `sed -n 1,60p doc/pathfinder-2026-11-14/03-unified-proposal.md; grep -n "U1" -A40 doc/pathfinder-2026-11-14/04-handoff-pr…`
+- Bash: `for t in mise-plugin skogai2-cli skogai2-skogai-runner skogai2-skogai skogai2-marketplace podman cloudflare; do mani syn…`
+- Bash: `cd repos`
+- Bash: `cd /home/skogix/Work/repos` (failed)
+- Bash: `cd /home/skogix/Work/repos`
+- Bash: `cd /home/skogix/Work/repos`
+- Bash: `gh issue view 34 -R skogai/monorepo --json body -q .body | head -30; gh issue list -R skogai/monorepo --state open --sea…`
+
