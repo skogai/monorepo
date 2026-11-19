@@ -1418,3 +1418,62 @@ Which one do you want? Once that's settled, I'll bring the retirement list for s
 - Bash: `grep -nE '^#|W[0-9]+|sign-off|owner call' doc/pathfinder-2026-11-14/03-unified-proposal.md | head -80; echo ----; head -…`
 - Bash: `grep -c '^A:$' doc/questions.md; grep -c '^A: .' doc/questions.md; grep -n '^## ' doc/questions.md`
 
+## 2026-11-19 19:28 · turn 7b0fb481
+
+**User**
+
+> is openai-api-keys really the only way to manage openwiki? 
+> and could we go over the questions together / get them squashed together in a meaningful way where they actually can get answered realistically?
+
+**Assistant**
+
+## 1. No, OpenWiki doesn't need an OpenAI key
+
+The workflow only uses OpenAI because whoever wrote it picked that provider (`OPENWIKI_PROVIDER: openai`). OpenWiki can also run in two other ways.
+
+**Inside Claude Code, with no key at all.** This is already set up on your machine. `~/.claude.json` has the `openwiki` MCP server running as `openwiki mcp --host claude`, and the `openwiki` skill is installed. In this mode Claude Code does the writing:
+- I start a run and plan the pages, then write each page and submit its claims.
+- It uses your Claude session, so no API key is involved.
+- It works on your local clones, so no GitHub token is needed for the private repos.
+
+**From the CLI, with any of 13 providers.** The README lists them, including:
+- `ANTHROPIC_API_KEY`
+- ChatGPT login (uses a ChatGPT subscription)
+- GitHub Copilot through your `gh` session
+- OpenRouter
+- Ollama or LM Studio through the OpenAI-compatible endpoint
+
+Two problems if we go the local route:
+- **Version mismatch.** You have `openwiki` 0.7.0 installed, but the workflow pins 0.9.0.
+- **It may not see the clones.** OpenWiki only lists files that aren't gitignored, and it treats a nested repo as a single directory. The workflow works around this by un-ignoring `repos/` and deleting the clones' `.git` folders. A local run would probably hit the same wall. I haven't tested it, and it's the first thing to try.
+
+That changes my earlier recommendation. Update the wiki locally through Claude Code when it's due, and delete the CI workflow. No secrets needed.
+
+## 2. Squashing the questions
+
+`doc/questions.md` holds about 85 questions. Most of them are the same few decisions asked again for each repo. Grouped by what one answer would settle:
+
+| # | Decision | Closes | Kind of answer |
+|---|---|---|---|
+| **D1** | **Retirement list:** archive `core`, `dash-skogai`, `marketplace`, `skogai-core`, `skogai-routing`, `skogai-nov10`, `systemd`, and keep the `skogai2-*` copies | Q1.1, Q1.2, Q1.5, Q4.5, 4.6, 4.19–26, 4.32–35, 4.43, 4.53, Q3.1 (about 20) | Yes/no for each of 7 rows |
+| **D2** | **Knowledge:** old knowledge repos (`docs`, `dot-skogai`, `skogai-nov10`, `skogai2-docs`) are frozen archives, mined only when needed; one live home | Q1.6–1.8, Q4.7–4.12, 4.44–49, the OpenWiki question (W20) (about 16) | One sentence, plus naming the live home |
+| **D3** | **Already decided, just record it:** `/skogai` goes to dash-skogai, journal at `doc/journal.md`, mani over gita | Q1.9, Q1.5, parts of Q4.61 | Nothing to answer; I write it in |
+| **D4** | **Execution path:** accept Pathfinder U5 (work-order spec in skogai2-skogai, runner remake continues, routing stays a doc convention for now) | Q1.3, 1.4, 4.27–28, 4.38–39, 4.55–60 (about 12) | Yes/no on U5 |
+| **D5** | **Monorepo housekeeping:** answers go into ADRs and issues, the AGENTS cache stays as it is, and the unverified items get marked unverified | Q2.1–2.11, Q3.2 | "Use the defaults" or override one |
+| **D6** | **Ops and security:** tunnels, MX records, Access on `mcp`/`termix`, secrets recovery, history rewrite | Q4.1–4.3, 4.16–18, 4.36–37, 4.40–42 | Real per-item calls. Each becomes an issue in its own repo, answered whenever you work on it |
+| **D7** | **Personal and low priority:** nvim, skogpunk, the skogix backlog | Q4.13–15, 4.29–31, 4.63–64 | "Deferred until I touch it" |
+
+After D1–D5 you'd make about 6 decisions instead of 85. D6 becomes about 10 issues that each stay open until you deal with them, and D7 goes to the bottom of the list.
+
+**The first decision is D1, the retirement list.** It does the most, because every later question shrinks once those 7 repos are archived. Before you sign off, I'll put each row in front of you with what the wiki says the repo still holds, so you're not approving blind. `core/HANDOVER.md` needs a look before `core` goes, and `skogai-core#6` is still open.
+
+Want me to go ahead with that? Or would you rather settle the squash shape first? If you do, I'll rewrite `doc/questions.md` into these 7 groups before we answer anything.
+
+**Actions**
+
+- Bash: `sed -n 40,200p .github/workflows/openwiki-update.yml; which openwiki; openwiki --help 2>&1 | head -40; grep -rn openwiki…`
+- Bash: `sed -n 5375,5395p ~/.claude.json; openwiki auth --help 2>&1 | tail -30; d=$(dirname $(readlink -f $(which openwiki))); l…`
+- Bash: `p=$(find ~/.local/share/pnpm -path '*node_modules/openwiki/package.json' 2>/dev/null | head -1); echo $p; dir=$(dirname …`
+- Bash: `d=$(dirname $(find ~/.local/share/pnpm -path '*node_modules/openwiki/package.json' | head -1)); awk '/^#+ Model provider…`
+- Bash: `sed -n 54,400p doc/questions.md`
+
