@@ -1552,3 +1552,65 @@ Separately, archiving the six unarchived repos on GitHub (`skogai-nov10` is alre
 - Bash: `git add doc/questions.md && git commit -q -m "doc: record owner decisions of 2026-11-19 in questions.md`
 - Bash: `git show --stat --oneline HEAD | tail -3`
 
+## 2026-11-19 19:47 · turn f2292c74
+
+**User**
+
+> added skogai-events to mani. 
+>
+> we cannot plan around a harness which is not in working order. that must be way down the line planning wise. for now we must be able to work with simple git issues -> PR's directly
+>
+> archiving / removing the repos is probably the next step and then merge the wikis data into the main one i suppose?
+
+**Assistant**
+
+I've recorded the U5 deferral in `doc/questions.md`: work now goes as plain GitHub issues → PRs. It's pushed to master as `102b251`.
+
+`skogai-events` is in `mani.yaml`, but with `sync: true`. Every other entry uses `sync: false`, so a plain `mani sync` will now clone it. If you didn't mean that, it's a one-word fix.
+
+## Archiving: what would freeze
+
+Archiving makes a repo read-only, including its open issues and PRs. It can be undone (unarchive).
+
+| Repo | Open PRs | Open issues | Branches |
+|---|---|---|---|
+| core | 0 | 3 | 11 |
+| dash-skogai | 1 (Spec Kit bootstrap) | 1 (epic: mirror dot-skogai) | 25 |
+| marketplace | 0 | 3 | 21 |
+| skogai-core | 1 (#6, jq pointer) | 0 | 3 |
+| skogai-routing | 0 | 5 | 5 |
+| systemd | 0 | 0 | 2 |
+
+`skogai-nov10` is already archived.
+
+`core` is the odd one out. It was pushed to today, and you said it should be remade. If the remake happens in that repo, archiving it now would get in the way. I'd hold `core` back and archive the other five.
+
+## Merging the wikis
+
+Five repos have their own `openwiki/` folder. Each is an older generated wiki of that repo:
+
+- `skogai/core` (9 entries)
+- `skogai2/core` (9)
+- `skogai/dash-skogai` (9)
+- `skogai/dot-skogai` (11)
+- `skogai/skogai-nov10` (12)
+
+All of them belong to repos that are now discontinued or frozen. There's also the `wiki` repo, which holds only stubs.
+
+Archived repos stay readable, so archiving first loses nothing. The merge is less "copy them in" and more:
+- read each one,
+- carry over any facts the main wiki lacks into the relevant repo page,
+- then mark the old folders as superseded.
+
+I'd do that as one issue → PR after the archiving.
+
+**Decision:** archive `dash-skogai`, `marketplace`, `skogai-core`, `skogai-routing` and `systemd` now, and keep `core` live until the remake is decided? And should the archived repos stay in `mani.yaml` (like `skogai-nov10` does now), or come out of the catalog?
+
+**Actions**
+
+- Bash: `git pull -q --ff-only && git log --oneline -3 && grep -n -A4 'skogai-events:' mani.yaml; for r in core dash-skogai marke…`
+- Bash: `for u in $(grep -oE 'https://github.com/[^ ]+' mani.yaml | sort -u); do r=${u#https://github.com/}; for d in openwiki wi…`
+- Edit `doc/questions.md`
+- Bash: `git add doc/questions.md && git commit -q -m "doc: record U5 deferral; work runs as issues to PRs`
+- Bash: `git show --stat --oneline HEAD | tail -2`
+
