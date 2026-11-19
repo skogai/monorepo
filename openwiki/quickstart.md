@@ -8,7 +8,7 @@ generated: { by: "claude-code", at: "2026-11-15" }
 
 # Quickstart
 
-**The monorepo holds a catalog, not code.** The repos are separate. This wiki describes 20 of them so you can pick the right one before cloning it.
+**The monorepo holds a catalog, not code.** The repos are separate. This wiki describes the active ones so you can pick the right one before cloning it.
 
 ## Which page for which question
 
@@ -20,6 +20,7 @@ generated: { by: "claude-code", at: "2026-11-15" }
 | What are `SKOGAI.md`, `<routes>`, `.skogai/`, `SKOGAI_*`? | [concepts/conventions.md](concepts/conventions.md) |
 | Where is old knowledge: personas, lore, decisions, journals? | [repos/docs.md](repos/docs.md) and [repos/dot-skogai.md](repos/dot-skogai.md) |
 | Why is repo Y not in this wiki? | [repos/index.md](repos/index.md), "Not covered" |
+| Repo Y was archived. What replaced it? | [repos/retired.md](repos/retired.md) |
 
 ## Where to start by task
 
@@ -27,13 +28,13 @@ generated: { by: "claude-code", at: "2026-11-15" }
 - **Claude Code plugins and hooks**: [skogai2-marketplace](repos/skogai2-marketplace.md) is the live marketplace and holds the hook runtime. [skogai-jq](repos/skogai-jq.md) is the jq skill.
 - **Services and network edge**: [podman](repos/podman.md) for the containers on the workstation, [cloudflare](repos/cloudflare.md) for tunnels, DNS and Access.
 - **Agent workspaces and orchestration**: [skogai2-skogai](repos/skogai2-skogai.md), [skogai2-dash-skogai](repos/skogai2-dash-skogai.md), [skogai2-skogix](repos/skogai2-skogix.md), [skogai2-core](repos/skogai2-core.md).
-- **Backlog**: [skogix](repos/skogix.md).
+- **Retired repos and their old wikis**: [retired](repos/retired.md).
 
 ## Fetch a repo
 
 ```sh
 mani sync -t <name> --ignore-sync-state      # one repo, into repos/<name>/
-mani sync -t openwiki --ignore-sync-state    # the 20 repos this wiki covers
+mani sync -t openwiki --ignore-sync-state    # the repos this wiki covers
 mise run openwiki:clone                      # the same, as a mise task
 ```
 

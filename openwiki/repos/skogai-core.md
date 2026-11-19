@@ -1,7 +1,7 @@
 ---
 type: repository
 title: skogai-core
-description: Older Claude Code plugin marketplace (`core`) built around the skogai-routing skill and its JSON schemas, with a small test plugin and a large `todo/` tree of unmigrated material. Quiet since 2026-09-11, with an unfinished migration.
+description: Older Claude Code plugin marketplace (`core`) built around the skogai-routing skill and its JSON schemas, with a small test plugin and a large `todo/` tree of unmigrated material. Archived on 2026-11-19, with an unfinished migration.
 tags: [claude-code, plugin-marketplace, skills, routing, json-schema, migration]
 repo: skogai/skogai-core
 commit: 5dfb6c1
@@ -38,7 +38,7 @@ sources:
 
 Do not confuse this repo with the plugin `skogai-core` in [skogai2-marketplace](skogai2-marketplace.md). That one is a hook runtime at version 0.10.0 and shares no code with this repo.
 
-> **Retiring.** The [unified proposal](../../doc/pathfinder-2026-11-14/03-unified-proposal.md) (U8.5 and its retirement list, pending owner sign-off) retires this repo: archive, not delete. Successors: [skogai2-marketplace](skogai2-marketplace.md) is the only registered marketplace, and its `skogai-core` *plugin* (a different thing with the same name) owns the repo-level hook journal; [skogai-jq](skogai-jq.md) is the canonical jq skill; the routing convention is [skogai2-skogai-routing](skogai2-skogai-routing.md). This page is kept as a map of what is left to mine from `todo/`.
+> **Archived 2026-11-19.** The owner discontinued this repo ("removed and not used"); it is archived on GitHub and no longer in `mani.yaml`. See [retired repos](retired.md). Successors: [skogai2-marketplace](skogai2-marketplace.md) is the only registered marketplace, and its `skogai-core` *plugin* (a different thing with the same name) owns the repo-level hook journal; [skogai-jq](skogai-jq.md) is the canonical jq skill; the routing convention is [skogai2-skogai-routing](skogai2-skogai-routing.md). This page is kept as a map of what is left to mine from `todo/`.
 
 ## Source map
 

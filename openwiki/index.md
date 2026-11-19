@@ -8,10 +8,11 @@ generated: { by: "claude-code", at: "2026-11-15" }
 
 # SkogAI repos wiki
 
-This wiki maps 20 repos from the [catalog](../mani.yaml): what each one is, what state it is in, and how they relate. It was written from clones taken on 2026-11-15. Each page records the commit it describes. Statements come from reading the source; nothing was run.
+This wiki maps the active repos from the [catalog](../mani.yaml): what each one is, what state it is in, and how they relate. It was written from clones taken on 2026-11-15. Each page records the commit it describes. Statements come from reading the source; nothing was run.
 
 - [Quickstart](quickstart.md): which page answers which question, and how to fetch a repo.
 - [Repo pages](repos/index.md): one page per covered repo, and the list of catalog repos that are not covered.
+- [Retired repos](repos/retired.md): the seven repos archived on 2026-11-19, their successors, and the wikis they carry.
 - Concepts that cut across repos:
   - [The two orgs: which copy is live](concepts/orgs-and-copies.md)
   - [Shared concerns: which repo owns what](concepts/shared-concerns.md)
