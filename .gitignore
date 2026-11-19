@@ -20,7 +20,7 @@ mise.*.local.toml
 # mani #
 repos/skogfleet
 repos/skogai2-skogai-fleet
-repos/skogfleet
+repos/skogai-skogfleet
 repos/repomix
 repos/skogai2-cli
 repos/skogai2-docs
@@ -37,15 +37,10 @@ repos/skogai-events
 repos/skogai2-config
 repos/skogai2-skogai
 repos/dot-skogai
-repos/dash-skogai
-repos/skogai-routing
 repos/harness
 repos/docs
-repos/core
-repos/skogai-nov10
 repos/skogix
 repos/skogai-jq
-repos/skogai-core
 repos/skogai
 repos/cloudflare
 repos/nvim-omarchy
