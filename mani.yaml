@@ -107,6 +107,11 @@ projects:
     url: https://github.com/skogai2/config
     sync: false
     tags: [skogai2-config, openwiki]
+  skogai-events:
+    path: repos/skogai-events
+    url: https://github.com/skogai/skogai-events
+    sync: true
+    tags: [skogai-events]
   skogai2-marketplace:
     path: repos/skogai2-marketplace
     url: https://github.com/skogai2/marketplace
