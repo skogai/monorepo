@@ -1,0 +1,27 @@
+{
+  "mcpServers": {
+    "mise": {
+      "command": "mise",
+      "args": [
+        "--cd",
+        "/home/skogix/Work",
+        "mcp"
+      ]
+    },
+    "atuin": {
+      "command": "atuin",
+      "args": [
+        "mcp"
+      ]
+    },
+    "code-review-graph": {
+      "command": "uvx",
+      "args": [
+        "code-review-graph",
+        "serve",
+        "--repo",
+        "/home/skogix/Work"
+      ]
+    }
+  }
+}
