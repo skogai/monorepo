@@ -1477,3 +1477,78 @@ Want me to go ahead with that? Or would you rather settle the squash shape first
 - Bash: `d=$(dirname $(find ~/.local/share/pnpm -path '*node_modules/openwiki/package.json' | head -1)); awk '/^#+ Model provider…`
 - Bash: `sed -n 54,400p doc/questions.md`
 
+## 2026-11-19 19:40 · turn 7b4e700c
+
+**User**
+
+> 1. we will try some lm-studio setups for openwiki in general
+> 2. they all can be "discontinued".
+>
+> - core; old and should be remade into using mise/usage instead.
+> - dash-skogai; meant for holding all the repo-wide data. can be retired for now.
+> - marketplace have been remade into skogai-events, a single plugin currently.
+> - skogai-core; removed and not used.
+> - skogai-routing; removed and not currently used.
+> - skogai-nov10; the earlier skogai
+> - systemd; removed, only old systemd-services
+>
+> 3. freeze the old docs-knowledge-bases.
+> 4. need to know more about pathfinder u5
+> 5. take ops and security as they come.
+> 6. nvim, skogix-backlog and skogpunk can be put aside / not needed in this monorepo. personal side projects for now.
+
+**Assistant**
+
+I added your decisions to `doc/questions.md` as a "Decisions of 2026-11-19" section. They close about 50 of the questions. It's pushed to master as `0887625`, and the commit touches only that file.
+
+I recorded two things a little differently from what you said:
+- **`core` is down as "to be remade", not dead.** Someone pushed to `skogai/core` today at 18:33 (commit "."), so it's clearly still in use.
+- **`marketplace` points to `skogai/skogai-events` as its replacement.** That repo exists on GitHub ("one script per hook event, each logging a JSON row"), but it isn't in `mani.yaml` yet.
+
+## Pathfinder U5 in plain terms
+
+**What it's about:** how a task gets handed to an agent and run. Right now this exists in three half-built versions:
+- the work-order format in `skogai2-skogai`
+- a different format in the runner's `WORKORDERS.md`
+- another one in `skogai2-core`
+
+**What U5 proposes:**
+1. **One format.** A "work order" is a markdown file that describes a task. It lists what the task `owns` (files it may change) and what it `reads`. The single spec is `skogai2-skogai/orchestration/work-orders/SPECIFICATION.md`. The runner's copy gets replaced with a link to it.
+2. **One way to run it.** `harness`'s `orchestrate-worktrees.js` runs it, giving each task its own git worktree and its own agent.
+3. **One command.** You'd type `mise run wo:dispatch -- <work-order>`. It checks that no two running orders own the same files, converts the order into a harness plan, and starts it. Whether the agent then runs in a visible herdr or tmux pane or as a background `claude -p` job is just a launch option.
+4. **Smaller cleanups:**
+   - one worktree location
+   - one prompt template
+   - one route checker (`skogai2-config/bin/check-routes`)
+   - project name taken from git rather than from `gh repo view`
+
+**What makes it shaky:**
+- The core of it, harness's `executePlan`, has never been traced. The submodule it lives in isn't even initialized.
+- Only one work order has ever been completed.
+- `wo:dispatch` doesn't exist yet.
+
+So U5 is a design that depends on an execution engine nobody has checked actually works.
+
+**How it ties to your other answers:**
+- You said `core` should be remade on mise and usage. That's U3 (commands as mise tasks) and part of U5, because `skogai2-core` holds one of the competing work-order formats.
+- With `dash-skogai` retired, its route checker is going away anyway.
+
+**The decision for you on U5:** do you want work orders and dispatch at all right now?
+- **Yes:** the first step is to verify that harness actually runs a plan, before building anything on top of it.
+- **Not yet:** park it, the same way as `dash-skogai`. Then the 12 related questions close as "deferred".
+
+My guess is "not yet". Nothing currently uses dispatch, and you're about to rebuild `core` anyway.
+
+Separately, archiving the six unarchived repos on GitHub (`skogai-nov10` is already archived) and dropping them from `mani.yaml` is the next concrete step. I haven't done either. Want me to, once U5 is settled?
+
+**Actions**
+
+- Bash: `sed -n '/^## U5/,/^## U6/p' doc/pathfinder-2026-11-14/03-unified-proposal.md; sed -n '/^## U5/,/^## U6/p' doc/pathfinder…`
+- Bash: `for o in skogai skogai2 Skogix; do gh repo list $o --limit 200 --json name,isArchived,pushedAt --jq ".[]|select(.name|te…`
+- Bash: `gh api repos/skogai/core/commits?per_page=3 --jq '.[]|"\(.commit.author.date[:16]) \(.commit.author.name): \(.commit.mes…`
+- Bash: `gh api 'repos/skogai/core/commits?per_page=3' --jq '.[]|"\(.commit.author.date[:16]) \(.commit.author.name): \(.commit.m…`
+- Read `doc/questions.md`
+- Edit `doc/questions.md`
+- Bash: `git add doc/questions.md && git commit -q -m "doc: record owner decisions of 2026-11-19 in questions.md`
+- Bash: `git show --stat --oneline HEAD | tail -3`
+
