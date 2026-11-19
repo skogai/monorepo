@@ -6,6 +6,26 @@ Sources: the [repo survey of 2026-11-14](surveys/2026-11-14-repo-survey.md), the
 
 Each question has an ID so an answer can refer to it. Suggested order: section 1 first, because most of section 4 depends on it.
 
+## Decisions of 2026-11-19
+
+Answered by the owner in one pass. They close or replace the questions listed after each item; those questions are not repeated below.
+
+- **Discontinued repos.** All seven on the Pathfinder retirement list are discontinued. Archiving them on GitHub is a separate step, not done yet.
+  - `core`: old; to be remade on mise and usage. (`skogai/core` was still pushed to on 2026-11-19.)
+  - `dash-skogai`: meant to hold all repo-wide data; retired for now.
+  - `marketplace`: remade as [`skogai/skogai-events`](https://github.com/skogai/skogai-events), currently a single plugin.
+  - `skogai-core`: removed, not used.
+  - `skogai-routing`: removed, not currently used.
+  - `skogai-nov10`: the earlier skogai; already archived on GitHub.
+  - `systemd`: removed; held only old systemd services.
+  - Closes Q1.1 for these names, Q1.2, Q3.1, Q4.5, Q4.6, Q4.19 to Q4.26, Q4.32 to Q4.35.
+- **Old knowledge bases are frozen.** `docs`, `dot-skogai`, `skogai-nov10` and `skogai2-docs` are read-only archives, mined when needed. Closes Q1.6, Q1.7, Q4.7 to Q4.12, Q4.46.
+- **Ops and security are taken as they come.** They become issues in their own repos when worked on. Covers Q4.1 to Q4.4, Q4.16 to Q4.18, Q4.36, Q4.37, Q4.40 to Q4.42.
+- **Personal side projects are out of scope for the monorepo for now:** `nvim-omarchy`, `skogix` (the backlog) and `skogai2-skogpunk`. Closes Q2.10, Q4.13 to Q4.15, Q4.29 to Q4.31, Q4.63, Q4.64.
+- **OpenWiki will be tried with LM Studio setups** (a local OpenAI-compatible endpoint) instead of an OpenAI key.
+- **Recorded from earlier decisions:** `/skogai` belongs to `skogai2-dash-skogai` (2026-11-14), which closes Q1.9; the repo journal is `doc/journal.md` (2026-11-15).
+- **Still open:** Pathfinder U5 (work orders and dispatch; Q1.3, Q1.4, Q4.27, Q4.28, Q4.38, Q4.39, Q4.55 to Q4.60), section 2 housekeeping, and the remaining skogai2 per-repo questions.
+
 ## 1. Decisions that cut across repos
 
 **Q1.1 Which org is canonical, per name?** For each row: `skogai`, `skogai2`, or "both, they are different things". Then what happens to the other copy: archive, point at the canonical one, or keep.
