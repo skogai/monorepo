@@ -49,6 +49,11 @@ url = "https://github.com/rhysd/actionlint/releases/download/v1.7.12/actionlint_
 url_api = "https://api.github.com/repos/rhysd/actionlint/releases/assets/384924919"
 provenance = "github-attestations"
 
+[[tools.code-review-graph]]
+version = "2.4.0"
+backend = "pypi:code-review-graph"
+specifiers = ["latest"]
+
 [[tools.gh]]
 version = "2.104.0"
 backend = "aqua:cli/cli"

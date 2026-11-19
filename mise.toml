@@ -27,6 +27,7 @@ pkl = "latest"
 stylua = "latest"
 jq = "latest"
 mani = "latest"
+code-review-graph = "latest"
 
 
 # GitHub OAuth for mise, gh and git push. See doc/github-auth.md.
