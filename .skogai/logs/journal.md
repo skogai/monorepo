@@ -1711,3 +1711,35 @@ I also removed the hard-coded "20 repos" count.
 - Bash: `git add -A mani.yaml openwiki && git commit -q -m "openwiki: fold in the old per-repo wikis and record the 2026-11-19 cl…`
 - Bash: `gh pr merge 67 -R skogai/monorepo --merge --delete-branch 2>&1 | tail -2; git switch -q master && git pull -q --ff-only …`
 
+## 2026-11-19 20:55 · turn 0c025b74
+
+**User**
+
+> great. what is next?
+
+**Assistant**
+
+With the cleanup done, there are four kinds of work left:
+
+**1. Small cleanups.** I can just do these:
+- `skogai-events` still has `sync: true`, and the convention is `false`.
+- `.github/workflows/openwiki-update.yml` still uses OpenAI. Remove it, or hold it until the LM Studio trial shows what replaces it.
+- Wiki pages for `skogai-events` and `skogfleet`, the two active repos the wiki doesn't cover yet.
+
+**2. The rest of `doc/questions.md`.**
+- Section 2 is monorepo housekeeping: 11 small questions such as how the AGENTS.md cache works and where answers get recorded. Most have an obvious default, so I'd propose all the defaults in one pass and you'd only override the ones you disagree with.
+- A handful of per-repo skogai2 questions are left after the retirements.
+
+**3. Turn the plan into real issues.** Your workflow is now issues → PRs, but none of Pathfinder's U1–U9 exists as an issue. With U5 deferred, eight concerns remain: env, agent identity, mise-task commands, fleet registry, hooks/journal, `.skogai` layout, plugins, services. Each would get a milestone, with its concrete fixes (the W-items) as issues on project board 4. Some W-items now point at archived repos (e.g. `dash-skogai/bin/check-skogai-routes`), so those get dropped as I go.
+
+**4. Bigger work that depends on #3:**
+- the LM Studio OpenWiki trial;
+- the `core` remake on mise/usage, which is Pathfinder U3/U4;
+- U1 env cleanup, which everything else rests on.
+
+**My recommendation: #3 next.** Without issues, nothing else has a place to live. Doing it also surfaces which W-items died with the archived repos.
+
+I'd start with U1 (env) as the first milestone. It's small and concrete, with five fixes in `mise-plugin` and `skogai2-cli`, and it's the base the `core` remake builds on. I'd bring the U1 issue list to you before creating the rest.
+
+Go with that? Or would you rather clear #1 and #2 first?
+
