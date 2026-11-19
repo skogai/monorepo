@@ -1652,3 +1652,62 @@ Should I open that issue and start on it?
 - Bash: `git ls-files agents/ | grep -E 'agents/(core|dash-skogai|skogai-core|skogai-routing|skogai-nov10)\.md' ; for r in core d…`
 - Bash: `git rm -q agents/core.md agents/dash-skogai.md agents/skogai-nov10.md && git add mani.yaml && git commit -q -m "catalog:…`
 
+## 2026-11-19 20:21 · turn fc793412
+
+**User**
+
+> please go ahead
+
+**Assistant**
+
+I worked through issue #66 as PR #67, which is now merged into master; the issue closed automatically. All relative links in `openwiki/` resolve.
+
+**New page: `openwiki/repos/retired.md`.** It covers the seven archived repos, with your note and the successor for each. It also maps the old wikis those repos carry:
+- **`core`**: 6 pages from September. `skogai2-core` has a byte-identical copy. The command-contract and context-pipeline pages are the ones that matter for the mise/usage remake.
+- **`dash-skogai`**: the `skogai-paseo` delegation and `repo workon` ideas, which nothing else in the wiki records.
+- **`skogai-nov10`**: 22 pages. This is the best record of the reasoning behind later work: the decision log, skogfences, the notation, and the research projects.
+
+I linked and summarised these old wikis instead of copying them. They describe the repos as of September, so copied text would just be stale facts presented as current.
+
+**What didn't need a new page:**
+- `dot-skogai` and `skogai2-core` already describe their own old wikis.
+- `skogai-core.md` stays as the map of its leftover `todo/` folder, now marked archived.
+
+**Updated pages:** the index, quickstart, `repos/index.md` and both concept pages now show:
+- what's archived;
+- what's frozen (`docs`, `dot-skogai`, `skogai2-docs`);
+- what's set aside as a personal project (nvim, skogix, skogpunk);
+- that U5 is deferred;
+- `skogai-events`.
+
+I also removed the hard-coded "20 repos" count.
+
+**`mani.yaml` duplicate:** `skogfleet` was listed twice, so the second (skogai2) entry silently replaced the first. Your local `repos/skogfleet` is a clone of `skogai2/skogfleet`, so that entry keeps the name. The older `skogai/skogfleet` (last pushed in July) is now `skogai-skogfleet` with `sync: false`. That breaks the convention of prefixing the skogai2 copy; I did it so your existing clone doesn't have to move. Say if you'd rather follow the convention and rename the folder.
+
+**Still open:**
+- `skogai-events` still has `sync: true`.
+- `skogai-events` and both `skogfleet` repos have no wiki pages yet.
+
+**Actions**
+
+- Bash: `mkdir -p /tmp/claude-1000/oldwikis && cd /tmp/claude-1000/oldwikis && for r in skogai/core skogai2/core skogai/dash-skog…`
+- Bash: `cd /tmp/claude-1000/oldwikis && diff -rq skogai_core skogai2_core && echo "core wikis identical"; for d in skogai_core s…`
+- Bash: `gh issue create -R skogai/monorepo --title "openwiki: fold in the old per-repo wikis and update for the 2026-11-19 clean…`
+- Bash: `sha=$(git log --format=%h -1 --grep 'catalog: drop the archived' master); echo $sha; gh issue view 66 -R skogai/monorepo…`
+- Bash: `cd /tmp/claude-1000/oldwikis && for f in skogai_skogai-nov10/quickstart.md skogai_dash-skogai/quickstart.md skogai_dot-s…`
+- Bash: `cd /tmp/claude-1000/oldwikis && for d in skogai_core skogai_dash-skogai skogai_skogai-nov10 skogai_dot-skogai; do echo "…`
+- Bash: `cd openwiki && sed -n 1,40p repos/skogai-core.md; grep -n openwiki repos/skogai2-core.md | head -5; grep -rln "skogai-co…`
+- Bash: `cd /home/skogix/Work && git -C repos/skogfleet remote get-url origin 2>&1; ls repos | grep -i fleet; git log --oneline -…`
+- Bash: `cd /home/skogix/Work/openwiki && sed -n 40,200p repos/skogai-core.md | grep -nE '^#|todo/|jq|dot-core|routing' | head -3…`
+- Write `openwiki/repos/retired.md`
+- Bash: `ls /tmp/claude-1000/oldwikis/skogai_skogai-nov10 | grep -v index | wc -l; grep -nE "^#+ .*(skogai-routing|marketplace|sy…`
+- Bash: `grep -nE "skogai-routing|/marketplace|systemd" /home/skogix/Work/doc/surveys/2026-11-14-repo-survey.md | head -12`
+- Bash: `cd /home/skogix/Work/openwiki/repos && python3 - <<'EOF'`
+- Bash: `cd /home/skogix/Work/openwiki && python3 - <<'EOF'`
+- Bash: `python3 - <<'EOF'`
+- Bash: `python3 - <<'EOF'`
+- Bash: `sed -i -E 's/`(skogai-routing|dash-skogai|core|systemd)` \(retiring(, not in this wiki)?\)/`\1` (archived 2026-11-19)/g;…`
+- Bash: `cd openwiki && python3 - <<'EOF'`
+- Bash: `git add -A mani.yaml openwiki && git commit -q -m "openwiki: fold in the old per-repo wikis and record the 2026-11-19 cl…`
+- Bash: `gh pr merge 67 -R skogai/monorepo --merge --delete-branch 2>&1 | tail -2; git switch -q master && git pull -q --ff-only …`
+
