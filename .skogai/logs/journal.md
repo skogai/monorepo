@@ -1364,3 +1364,57 @@ My suggestion for the first decision: settle W20 (revive or delete OpenWiki) bef
 - Bash: `cat repos/index.md concepts/*.md`
 - Bash: `cd /home/skogix/Work && grep -c 'openwiki' mani.yaml; grep -B8 'openwiki' mani.yaml | grep -E '^  [a-z0-9-]+:$' | tr -d …`
 
+## 2026-11-19 19:14 · turn e070253e
+
+**User**
+
+> great. then i guess what do we have on the list of things to do? merge the clones and define what they actually do etc? set up overall how we should manage the wiki etc?
+
+**Assistant**
+
+Most of the list already exists. It's just spread across three places, and none of it is tracked where you'd see it.
+
+## What's already written down
+
+**1. The Pathfinder plan** (`doc/pathfinder-2026-11-14/03-unified-proposal.md`)
+- This is the "merge the clones and define what each does" work, already broken down.
+- **U1–U9** name one owner per concern: env, agent identity, commands, fleet, work orders, hooks, `.skogai`, plugins, services.
+- **W1–W23** are concrete fixes with file:line references, e.g. W4 "delete the uncalled `scripts/config` copy in the marketplace" and W6 "delete `cloudflare/old-systemd-solution/`".
+- `04-handoff-prompts.md` has a ready `/make-plan` prompt for each U.
+- **Retirement list**, waiting on your sign-off: `core`, `dash-skogai`, `marketplace`, `skogai-core`, `skogai-routing`, `skogai-nov10`, `systemd`.
+
+**2. Owner questions** (`doc/questions.md`)
+- All 21 questions still have an empty `A:`.
+- A few were settled later in other threads but never written back here: `/skogai` → dash-skogai (2026-11-14) and the journal → `doc/journal.md` (2026-11-15).
+- Q1.1, "which org is canonical, per name", is the same question as the retirement sign-off.
+
+**3. GitHub issues**
+- 23 open issues, but only the mise-toolkit work has milestones.
+- None of U1–U9, the W-items or the retirement list is an issue. Per your rule ("track planned work as real milestones and projects"), that's the main gap.
+
+## Suggested order
+
+1. **Decide how the wiki is managed.** That's the open call W20: revive OpenWiki or delete it. The update workflow is deliberately unarmed until you decide, and the first run overwrites the hand-written pages.
+2. **Sign off the retirement list (Q1.1).** Then archive those repos and drop them from `mani.yaml`. Every later step gets smaller.
+3. **Fill in `doc/questions.md`.** Record the answers you've already given, and delete the questions the retirements make moot.
+4. **Turn U1–U9 into issues.** One milestone per U, with its W-items as issues, on project board 4.
+5. **Work through the U's one repo at a time.** U1 (env) and U4 (mani as the fleet registry) come first, because the others depend on them.
+
+## First decision: the wiki
+
+As I see it, there are three real options:
+
+- **A. Keep it hand-maintained.** Disable the workflow, and update a repo's page whenever we change that repo. This is cheap and accurate, but the pages drift unless someone updates them.
+- **B. Arm OpenWiki.** This needs the `OPENAI_API_KEY` and `OPENWIKI_REPOS_TOKEN` secrets. It regenerates daily as a PR with claim tracking. You'd accept losing the current hand-written text on the first run, and it adds a token that can read your private repos.
+- **C. Delete it.** Rely on each repo's own `AGENTS.md` plus the `agents/` cache.
+
+I recommend **A for now**. The wiki's real job right now is to support the consolidation in steps 2–5. Its pages will be wrong after every retirement anyway, so updating them by hand as each repo is cleaned up works well. Once the fleet is down to its final set, we can switch to B.
+
+Which one do you want? Once that's settled, I'll bring the retirement list for sign-off.
+
+**Actions**
+
+- Bash: `git log --oneline -5 && ls doc doc/adr doc/pathfinder-2026-11-14 2>/dev/null; gh issue list -R skogai/monorepo --state o…`
+- Bash: `grep -nE '^#|W[0-9]+|sign-off|owner call' doc/pathfinder-2026-11-14/03-unified-proposal.md | head -80; echo ----; head -…`
+- Bash: `grep -c '^A:$' doc/questions.md; grep -c '^A: .' doc/questions.md; grep -n '^## ' doc/questions.md`
+
