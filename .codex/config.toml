@@ -9,3 +9,18 @@ args = [
     "/home/skogix/Work",
     "mcp",
 ]
+
+[mcp_servers.code-review-graph]
+command = "uvx"
+args = [
+    "code-review-graph",
+    "serve",
+]
+cwd = "/home/skogix/Work"
+type = "stdio"
+
+[mcp_servers.code-review-graph.env]
+CRG_OPENAI_BASE_URL = "http://127.0.0.1:1234/v1"
+CRG_OPENAI_API_KEY = "lm-studio"
+CRG_OPENAI_MODEL = "text-embedding-nomic-embed-text-v1.5-embedding"
+CRG_VECTOR_CACHE = "1"

@@ -1,0 +1,164 @@
+# code-review-graph embeddings via the local LM Studio OpenAI-compatible server.
+# Loaded in every environment; override any variable per-machine in mise.local.toml (ignored by Git).
+[env]
+CRG_OPENAI_BASE_URL = "http://127.0.0.1:1234/v1"
+CRG_OPENAI_API_KEY = "lm-studio"
+CRG_OPENAI_MODEL = "text-embedding-nomic-embed-text-v1.5-embedding"
+CRG_VECTOR_CACHE = "1"
+
+[tasks."crg:health"]
+description = "Check that the embedding server responds and serves CRG_OPENAI_MODEL"
+quiet = true
+run = '''
+set -eu
+url="${CRG_OPENAI_BASE_URL%/}/models"
+body=$(curl --fail --silent --show-error --max-time 5 "$url")
+if printf '%s\n' "$body" | jq -e --arg m "$CRG_OPENAI_MODEL" 'any(.data[]?; .id == $m)' >/dev/null; then
+  printf 'ok   %s  model=%s\n' "$url" "$CRG_OPENAI_MODEL"
+else
+  printf 'FAIL %s reachable, but model %s is not listed\n' "$url" "$CRG_OPENAI_MODEL" >&2
+  printf '%s\n' "$body" | jq -r '.data[]?.id' | sed 's/^/  available: /' >&2
+  exit 1
+fi
+'''
+
+[tasks."crg:status"]
+description = "Show node and embedding counts for one repo or all built graphs"
+quiet = true
+usage = 'arg "[repo]" help="Repo path or name under repos/ (omit for all built graphs)"'
+run = '''
+set -eu
+root="{{config_root}}"
+target="${usage_repo:-}"
+python3 - "$root" "$target" <<'PY'
+import glob, os, sqlite3, sys
+
+root, target = sys.argv[1], sys.argv[2]
+if target:
+    if os.path.isdir(target):
+        paths = [os.path.abspath(target)]
+    elif os.path.isdir(os.path.join(root, "repos", target)):
+        paths = [os.path.join(root, "repos", target)]
+    else:
+        sys.stderr.write(f"Repo not found: {target}\n")
+        sys.exit(1)
+else:
+    candidates = [root] + sorted(glob.glob(os.path.join(root, "repos", "*")))
+    paths = [p for p in candidates if os.path.isfile(os.path.join(p, ".code-review-graph", "graph.db"))]
+
+if not paths:
+    print("No built code-review-graph databases found.")
+    sys.exit(0)
+
+print(f"{'REPO':<26} {'NODES':>7} {'EMBED':>7}  PROVIDER")
+for repo in paths:
+    db = os.path.join(repo, ".code-review-graph", "graph.db")
+    label = "(root)" if os.path.abspath(repo) == os.path.abspath(root) else os.path.basename(repo)
+    if not os.path.isfile(db):
+        print(f"{label:<26} {'-':>7} {'-':>7}  (no graph.db)")
+        continue
+    conn = sqlite3.connect(f"file:{db}?mode=ro", uri=True)
+    try:
+        tables = {r[0] for r in conn.execute("SELECT name FROM sqlite_master WHERE type='table'")}
+        nodes = conn.execute("SELECT COUNT(*) FROM nodes").fetchone()[0] if "nodes" in tables else 0
+        if "embeddings" in tables:
+            rows = conn.execute("SELECT provider, COUNT(*) FROM embeddings GROUP BY provider ORDER BY provider").fetchall()
+            emb_total = sum(c for _, c in rows)
+            prov = ", ".join(p for p, _ in rows) if rows else "(none)"
+        else:
+            emb_total = 0
+            prov = "(none)"
+        print(f"{label:<26} {nodes:>7} {emb_total:>7}  {prov}")
+    finally:
+        conn.close()
+PY
+'''
+
+[tasks."crg:embed"]
+description = "Compute or refresh vector embeddings for one repo or all built graphs"
+usage = 'arg "[repo]" help="Repo path or name under repos/ (omit for all built graphs)"'
+run = '''
+set -eu
+root="{{config_root}}"
+resolve_repo() {
+  if [ -d "$1" ]; then
+    printf '%s\n' "$1"
+  elif [ -d "$root/repos/$1" ]; then
+    printf '%s\n' "$root/repos/$1"
+  else
+    printf 'Repo not found: %s\n' "$1" >&2
+    exit 1
+  fi
+}
+if [ -n "${usage_repo:-}" ]; then
+  target=$(resolve_repo "$usage_repo")
+  code-review-graph embed --repo "$target" --wait
+else
+  for repo in "$root" "$root"/repos/*; do
+    [ -f "$repo/.code-review-graph/graph.db" ] || continue
+    printf '==> %s\n' "$repo"
+    code-review-graph embed --repo "$repo" --wait
+  done
+fi
+'''
+
+[tasks."crg:update"]
+description = "Incrementally update graph and refresh embeddings for one repo or all built graphs"
+usage = 'arg "[repo]" help="Repo path or name under repos/ (omit for all built graphs)"'
+run = '''
+set -eu
+root="{{config_root}}"
+resolve_repo() {
+  if [ -d "$1" ]; then
+    printf '%s\n' "$1"
+  elif [ -d "$root/repos/$1" ]; then
+    printf '%s\n' "$root/repos/$1"
+  else
+    printf 'Repo not found: %s\n' "$1" >&2
+    exit 1
+  fi
+}
+if [ -n "${usage_repo:-}" ]; then
+  target=$(resolve_repo "$usage_repo")
+  code-review-graph update --repo "$target" --wait
+  code-review-graph embed --repo "$target" --wait
+else
+  for repo in "$root" "$root"/repos/*; do
+    [ -f "$repo/.code-review-graph/graph.db" ] || continue
+    printf '==> %s\n' "$repo"
+    code-review-graph update --repo "$repo" --wait
+    code-review-graph embed --repo "$repo" --wait
+  done
+fi
+'''
+
+[tasks."crg:search"]
+description = "Run hybrid semantic + FTS5 search against a repo graph"
+quiet = true
+usage = '''
+arg "<query>" help="Search query"
+flag "-r --repo <repo>" help="Repo path or name under repos/ (default: monorepo root)"
+flag "-l --limit <limit>" default="10" help="Maximum results to return"
+'''
+run = '''
+set -eu
+root="{{config_root}}"
+if [ -n "${usage_repo:-}" ]; then
+  if [ -d "$usage_repo" ]; then
+    target="$usage_repo"
+  elif [ -d "$root/repos/$usage_repo" ]; then
+    target="$root/repos/$usage_repo"
+  else
+    printf 'Repo not found: %s\n' "$usage_repo" >&2
+    exit 1
+  fi
+else
+  target="$root"
+fi
+code-review-graph search "$usage_query" --repo "$target" --limit "$usage_limit"
+'''
+
+[tasks."crg:daemon"]
+description = "Manage the multi-repo code-review-graph watch daemon (default: status)"
+usage = 'arg "[action]" default="status" help="Daemon subcommand (status, start, stop, restart, logs)"'
+run = 'crg-daemon "$usage_action"'
