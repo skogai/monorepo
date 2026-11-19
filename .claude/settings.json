@@ -1,8 +1,4 @@
 {
-  "enabledPlugins": {
-    "skogai-core@skogai-marketplace": true,
-    "claude-mem@thedotmack": true
-  },
   "hooks": {
     "PostToolUse": [
       {
@@ -28,5 +24,9 @@
         ]
       }
     ]
+  },
+  "enabledPlugins": {
+    "skogai-core@skogai-marketplace": false,
+    "claude-mem@thedotmack": true
   }
 }
