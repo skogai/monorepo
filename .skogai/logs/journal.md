@@ -1614,3 +1614,41 @@ I'd do that as one issue → PR after the archiving.
 - Bash: `git add doc/questions.md && git commit -q -m "doc: record U5 deferral; work runs as issues to PRs`
 - Bash: `git show --stat --oneline HEAD | tail -2`
 
+## 2026-11-19 19:59 · turn cb318a6c
+
+**User**
+
+> please go ahead. and archive core as well and remove them from mani.yaml as well
+
+**Assistant**
+
+I archived the six repos and removed the catalog entries. Pushed to master as `b1f…`, the latest commit.
+
+**Archived on GitHub (checked):** `core`, `dash-skogai`, `marketplace`, `skogai-core`, `skogai-routing`, `systemd`. `skogai-nov10` was already archived. The open issues and PRs in those repos are now read-only along with them.
+
+**Removed from `mani.yaml`:** `core`, `dash-skogai`, `skogai-core`, `skogai-routing`, `skogai-nov10`. `marketplace` and `systemd` were never in the catalog. `mani list projects` no longer shows any of them; the `skogai2-*` copies are still listed.
+
+**Removed from `agents/`:** the cached copies `core.md`, `dash-skogai.md` and `skogai-nov10.md`. Otherwise they'd sit there as orphans.
+
+**Your local clones are untouched.** Three of them have uncommitted changes: `repos/dash-skogai`, `repos/skogai-routing` and `repos/skogai-nov10`. None has unpushed commits. Since the remotes are archived, that work can't be pushed anywhere until you unarchive. Have a look before you delete anything there.
+
+Three things I noticed in `mani.yaml` but didn't touch:
+- **`skogfleet` is listed twice**, once under `skogai/` and once under `skogai2/`. A YAML file can only keep one entry per key, so the second one silently replaces the first.
+- **Both `skogfleet` and `skogai-events` have `sync: true`.** The header says every project uses `sync: false`.
+- **The wiki is now behind.** `openwiki/repos/skogai-core.md` documents a repo that's no longer in the catalog, and `repos/index.md` still lists the removed repos under "Not covered".
+
+**Next step:** the wiki merge, run as an issue → PR. It would:
+- read the five old `openwiki/` folders (`skogai/core`, `skogai2/core`, `dash-skogai`, `dot-skogai`, `skogai-nov10`) and copy any facts the main wiki lacks onto the right pages;
+- update the pages for this cleanup: remove or archive the `skogai-core` page, update the index and the two-orgs page;
+- fix the `skogfleet` duplicate.
+
+Should I open that issue and start on it?
+
+**Actions**
+
+- Bash: `for r in dash-skogai marketplace skogai-core skogai-routing systemd core; do gh repo archive skogai/$r --yes && echo "ar…`
+- Read `mani.yaml`
+- Bash: `python3 - <<'EOF'`
+- Bash: `git ls-files agents/ | grep -E 'agents/(core|dash-skogai|skogai-core|skogai-routing|skogai-nov10)\.md' ; for r in core d…`
+- Bash: `git rm -q agents/core.md agents/dash-skogai.md agents/skogai-nov10.md && git add mani.yaml && git commit -q -m "catalog:…`
+
