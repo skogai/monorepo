@@ -46,11 +46,6 @@ projects:
     url: https://github.com/skogai/skogai
     sync: false
     tags: [skogai]
-  skogai-core:
-    path: repos/skogai-core
-    url: https://github.com/skogai/skogai-core
-    sync: false
-    tags: [skogai-core, openwiki]
   skogai-jq:
     path: repos/skogai-jq
     url: https://github.com/skogai/skogai-jq
@@ -61,16 +56,6 @@ projects:
     url: https://github.com/skogai/skogix
     sync: false
     tags: [skogix, openwiki]
-  skogai-nov10:
-    path: repos/skogai-nov10
-    url: https://github.com/skogai/skogai-nov10
-    sync: false
-    tags: [skogai-nov10]
-  core:
-    path: repos/core
-    url: https://github.com/skogai/core
-    sync: false
-    tags: [core]
   docs:
     path: repos/docs
     url: https://github.com/skogai/docs
@@ -81,16 +66,6 @@ projects:
     url: https://github.com/skogai/harness
     sync: false
     tags: [harness, openwiki]
-  skogai-routing:
-    path: repos/skogai-routing
-    url: https://github.com/skogai/skogai-routing
-    sync: false
-    tags: [skogai-routing]
-  dash-skogai:
-    path: repos/dash-skogai
-    url: https://github.com/skogai/dash-skogai
-    sync: false
-    tags: [dash-skogai]
   dot-skogai:
     path: repos/dot-skogai
     url: https://github.com/skogai/dot-skogai
