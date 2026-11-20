@@ -4,6 +4,10 @@
 T3CODE_HOME = "{{env.HOME}}/.t3"
 T3_LOCAL_ROOT = "{{config_root}}"
 T3_LOCAL_PORT = "3773"
+# Used by t3:start when the project has no default model. Provider instance ids and model
+# slugs come from this installation (see `t3 thread show` on an existing thread).
+T3_PROVIDER = "claudeAgent"
+T3_MODEL = "claude-opus-5-5"
 
 [tasks."t3:info"]
 description = "Show the selected local T3 directory and URL"
@@ -15,6 +19,7 @@ run = 't3 status --base-dir "$T3CODE_HOME"'
 
 [tasks."t3:health"]
 description = "Check that the local T3 HTTP server responds"
+quiet = true
 run = 'curl --fail --silent --show-error --output /dev/null --write-out "HTTP %{http_code}\n" "http://127.0.0.1:$T3_LOCAL_PORT/"'
 
 [tasks."t3:projects"]
@@ -46,9 +51,19 @@ run = 't3 thread show --base-dir "$T3CODE_HOME" "$usage_thread"'
 
 [tasks."t3:start"]
 description = "Start an agent thread in this checkout"
-usage = 'arg "<message>" help="Prompt, or - to read stdin"'
+usage = '''
+arg "<message>" help="Prompt, or - to read stdin"
+flag "-p --provider <provider>" help="Provider instance id (default: $T3_PROVIDER)"
+flag "-m --model <model>" help="Model slug (default: $T3_MODEL)"
+flag "-t --title <title>" help="Thread title (default: the message's first line)"
+'''
 interactive = true
-run = 't3 thread start --base-dir "$T3CODE_HOME" "$T3_LOCAL_ROOT" "$usage_message"'
+run = '''
+set -eu
+set -- --provider "${usage_provider:-$T3_PROVIDER}" --model "${usage_model:-$T3_MODEL}"
+[ -z "${usage_title:-}" ] || set -- "$@" --title "$usage_title"
+t3 thread start --base-dir "$T3CODE_HOME" "$T3_LOCAL_ROOT" "$usage_message" "$@"
+'''
 
 [tasks."t3:send"]
 description = "Send a follow-up to a thread (queues if busy)"
@@ -64,10 +79,6 @@ description = "Pick a project and thread; read messages or compose a prompt"
 interactive = true
 tools = { gum = "2.0.2" }
 run = 'python3 "$T3_LOCAL_ROOT/scripts/t3-picker.py"'
-
-[tasks.default]
-description = "Open the local T3 interactive picker"
-depends = ["t3"]
 
 [tasks."t3:init"]
 description = "Register this checkout in the running local T3 server"

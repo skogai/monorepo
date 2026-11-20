@@ -10,7 +10,7 @@ Start from the [README](../README.md), then read the [decisions](adr/). The plan
 
 When the owner opens a session with just "hi" (or a similar bare greeting), it means: present the next thing on the list. Do this:
 
-1. Run `mise run next`. It lists open pull requests, project 4 items in progress, and the first open item per track (`roadmap`, `mise-toolkit`, `backlog`).
+1. Run `mise run next` (a bare `mise run` also ends with it, after the daily startup). It lists open pull requests, project 4 items in progress, and the first open item per track (`roadmap`, `mise-toolkit`, `backlog`).
 2. Present the state briefly. Open pull requests come first: they are waiting on review or merge. Then work in progress, then the next item per track.
 3. Recommend one next item, following the order in the project 4 README. Say whether it suits a subagent: a self-contained issue with a clear checklist, no open pull request touching it, and no open decision that needs the owner. If it does not, say what is blocking it or what the owner must decide.
 4. Stop and wait. Do not start work or spawn a subagent until the owner picks.
@@ -55,7 +55,7 @@ Your output will be read next to other agents' output for the same task, produce
 | `.skogai/tests/` | Dated experiment records: what was run, where, and the result. |
 | `mani.yaml` | The catalog of SkogAI repos: name, path and URL of each. |
 | `repos/<name>/` | Clones of catalog repos, made with `mani sync -t <name> --ignore-sync-state`. Ignored by Git. |
-| `agents/<name>.md` | Cached copy of each catalog repo's root `AGENTS.md`, readable without cloning. A repo with no root `AGENTS.md` has no file. Refresh by hand with `mise run agents:sync` and commit the diff. |
+| `agents/<name>.md` | Cached copy of each catalog repo's root `AGENTS.md`, readable without cloning. A repo with no root `AGENTS.md` has no file. Refresh with `mise run agents:refresh` (cloned repos only) or `mise run agents:sync` (clone all, refresh, prune) and commit the diff. |
 | `openwiki/` | Wiki of the catalog repos tagged `openwiki` in `mani.yaml`: one page per repo plus cross-repo pages. `openwiki/INSTRUCTIONS.md` is the brief; `.github/workflows/openwiki-update.yml` regenerates the rest (manual run, or daily once the repository variable `OPENWIKI_ENABLE_SCHEDULED_UPDATE` is `true`). `mise run openwiki:clone` clones the covered repos. |
 | `repos/skogix/.skogai/todo.list` | The owner's backlog (needs `mani sync -t skogix --ignore-sync-state`). |
 

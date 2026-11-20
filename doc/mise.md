@@ -77,6 +77,10 @@ The plugin cannot see an environment chosen in `.miserc.toml`, so `SKOGAI_MISE_E
 | `mise run env:test` | Checks that the plugin loaded, that `SKOGAI_MONOREPO_DIR` is this checkout, and that host, OS, architecture and environment are valid. It exits non-zero on failure and notes when `SKOGAI_HOST` is overridden. |
 | `mise run env:context` | Prints host, platform, environment, checkout and Git commit, for an agent's start-up context. |
 | `mise run env:context --trailers` | Prints the same as Git trailers (`Host:`, `Platform:`, `Mise-Env:`). |
+| `mise run` | The daily startup: `mise install`, `env:test`, `catalog:check`, `agents:refresh`, `crg:update` (graph only when the embedding server is down), `agenttrail:up`, `t3:health`, then `next`. A failing step prints `WARN` and the run continues. |
+| `mise run catalog:check` | Checks `mani.yaml`: every project `sync: false`, path `repos/<name>`, tagged with its own name, a GitHub URL. |
+| `mise run agents:refresh` | Refreshes `agents/<name>.md` from the repos already cloned and lists what changed. `agents:sync` clones everything first; `agents:prune` deletes copies of repos no longer in `mani.yaml`. |
+| `mise run lint` | `actionlint` on the workflows and `mise fmt --check` on the mise config. |
 
 To add the trailers to a commit:
 

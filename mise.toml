@@ -12,8 +12,7 @@ SKOGAI_MISE_ENV = "{{ mise_env | default(value=[]) | join(sep=',') | replace(fro
 # .config/mise/conf.d/plugin.skogai.toml; with no source loaded, mise skips it with a warning
 # instead of failing. It sets SKOGAI_MONOREPO_DIR, SKOGAI_CONFIG_DIR and the SKOGAI_HOST,
 # SKOGAI_OS and SKOGAI_ARCH defaults. A value set above this line, or in mise.local.toml, wins.
-_.skogai = { paths = ["bin", ".skogai/bin"]}
-SKOGAI_MY_SETTING = "test"
+_.skogai = { paths = ["bin", ".skogai/bin"] }
 COUNCIL_PROVIDERS = "claude-cli,codex"
 
 [tools]
@@ -27,10 +26,12 @@ lua-language-server = "latest"
 pkl = "latest"
 stylua = "latest"
 jq = "latest"
+yq = "latest"
 mani = "latest"
 code-review-graph = "latest"
 uv = "latest"
-python = "3.14"  # PyYAML 6.0.3 has no cp315 wheels: on 3.15 code-review-graph can only get a version-only lock
+# python 3.14: PyYAML 6.0.3 has no cp315 wheels: on 3.15 code-review-graph can only get a version-only lock
+python = "3.14"
 npm = "latest"
 "npm:agenttrail" = "latest"
 
@@ -48,19 +49,73 @@ run = [
 ]
 
 [tasks."agents:repomix"]
-description = "repomix"
+description = "Pack a cloned repo (or every cloned repo) into repomix output inside that repo"
+usage = 'arg "[repo]" help="Catalog name (omit for every cloned repo)"'
+run = '''
+set -eu
+if [ -n "${usage_repo:-}" ]; then
+  mani sync -t "$usage_repo" --ignore-sync-state
+  mani run repomix -t "$usage_repo"
+else
+  mani run repomix --all --ignore-non-existing
+fi
+'''
+
+# Cache of each catalog repo's root AGENTS.md in agents/<name>.md. The per-repo task is in mani.yaml.
+[tasks."agents:refresh"]
+description = "Refresh agents/<name>.md from the repos already cloned (clones nothing)"
+quiet = true
+run = '''
+set -eu
+cd "{{config_root}}"
+mani run agents-cache --all --ignore-non-existing --silent --parallel -o table >/dev/null
+changes=$(git status --short -- agents)
+echo "ok   $(ls agents/*.md | wc -l) cached copies in agents/"
+[ -z "$changes" ] || { echo "     changed since the last commit:"; printf '%s\n' "$changes" | sed 's/^/     /'; }
+'''
+
+[tasks."agents:prune"]
+description = "Delete agents/<name>.md files whose repo is no longer in mani.yaml"
+quiet = true
+run = '''
+set -eu
+cd "{{config_root}}"
+names=$(yq -r '.projects | keys | .[]' mani.yaml)
+for f in agents/*.md; do
+  [ -e "$f" ] || continue
+  n=$(basename "$f" .md)
+  printf '%s\n' "$names" | grep -qxF "$n" || { rm -f "$f"; echo "removed $f (not in mani.yaml)"; }
+done
+'''
+
+[tasks."agents:sync"]
+description = "Clone every catalog repo, refresh agents/, and prune copies of removed repos"
 run = [
   "mani sync --ignore-sync-state",
-  "mani run repomix --all",
+  { task = "agents:refresh" },
+  { task = "agents:prune" },
 ]
 
-# Cache of each catalog repo's root AGENTS.md in agents/<name>.md. The tasks are in mani.yaml.
-[tasks."agents:sync"]
-description = "Clone catalog repos, then refresh the cached root AGENTS.md files in agents/"
-run = [
-  "mani sync --ignore-sync-state",
-  "mani run agents-cache --all --ignore-non-existing",
-]
+[tasks."catalog:check"]
+description = "Check mani.yaml: every project lazy, path repos/<name>, tagged with its name, GitHub URL"
+quiet = true
+run = '''
+set -eu
+yq -r '.projects | to_entries[] | [.key, .value.path, (.value.sync|tostring), ((.value.tags // [])|join(",")), .value.url] | @tsv' "{{config_root}}/mani.yaml" |
+awk -F'\t' '
+  { n = $1; c++
+    if ($3 != "false") bad(n ": sync is " $3)
+    if ($2 != "repos/" n) bad(n ": path is " $2 ", expected repos/" n)
+    if (index("," $4 ",", "," n ",") == 0) bad(n ": tags lack " n)
+    if ($5 !~ /^https:\/\/github\.com\/[^\/]+\/[^\/]+$/) bad(n ": url is " $5) }
+  function bad(m) { print "FAIL " m; f = 1 }
+  END { if (!f) print "ok   " c " projects in mani.yaml"; exit f }'
+'''
+
+[tasks.lint]
+description = "Lint the GitHub workflows and check mise config formatting"
+quiet = true
+run = ["actionlint", "mise fmt --check"]
 
 # The wiki in openwiki/ covers the mani.yaml projects tagged `openwiki`.
 [tasks."openwiki:clone"]
@@ -70,6 +125,8 @@ run = "mani sync -t openwiki --ignore-sync-state"
 # agenttrail Map (npm:agenttrail above) for this repo, read by the herdr-app
 # agenttrail panel on 127.0.0.1:5330-5344. agenttrail exits early by itself
 # when a board for this repo is already up. Saved boards: ~/.agenttrail/.
+# It takes any unknown argument as a repo path (there is no --help): `agenttrail --help`
+# registers a board for ./--help. Use these tasks instead of calling it by hand.
 [tasks."agenttrail:start"]
 description = "Run the agenttrail Map for this repo in the foreground (Ctrl-C stops it)"
 run = 'agenttrail "{{config_root}}" --no-open'
@@ -157,6 +214,27 @@ else
   echo "git:      ${branch:-detached} at ${commit:-unknown}"
 fi
 """
+
+# A bare `mise run`: the everyday startup. Each step warns and the run continues, so a missing
+# server (LM Studio, T3) never blocks the rest. Ends with `next`, the "hi" view.
+[tasks.default]
+description = "Daily startup: install tools, check env and catalog, refresh caches and graph, relaunch boards, show next"
+quiet = true
+run = '''
+step() { name=$1; shift; printf '\n== %s\n' "$name"; "$@" || printf 'WARN %s failed (exit %s); continuing\n' "$name" "$?"; }
+step "tools"          mise install --quiet
+step "environment"    mise run env:test
+step "catalog"        mise run catalog:check
+step "agents cache"   mise run agents:refresh
+if mise run crg:health >/dev/null 2>&1; then
+  step "code graph"   mise run crg:update
+else
+  step "code graph (no embedding server: graph only)" mise run crg:update --no-embed
+fi
+step "agenttrail"     mise run agenttrail:up
+step "T3"             mise run t3:health
+step "next"           mise run next
+'''
 
 # Session start: what "hi" means in doc/agent-workflow.md, "Starting a session".
 [tasks.next]
