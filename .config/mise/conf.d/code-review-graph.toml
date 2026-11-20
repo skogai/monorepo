@@ -1,10 +1,11 @@
-# code-review-graph embeddings via the local LM Studio OpenAI-compatible server.
+# code-review-graph environment variables (local LM Studio embeddings and opt-in context-savings log).
 # Loaded in every environment; override any variable per-machine in mise.local.toml (ignored by Git).
 [env]
 CRG_OPENAI_BASE_URL = "http://127.0.0.1:1234/v1"
 CRG_OPENAI_API_KEY = "lm-studio"
 CRG_OPENAI_MODEL = "text-embedding-nomic-embed-text-v1.5-embedding"
 CRG_VECTOR_CACHE = "1"
+CRG_CONTEXT_HISTORY = "1"
 
 [tasks."crg:health"]
 description = "Check that the embedding server responds and serves CRG_OPENAI_MODEL"
