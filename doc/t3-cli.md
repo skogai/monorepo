@@ -170,7 +170,7 @@ The default URL is `http://127.0.0.1:3773`. Run `mise run t3:info` to check
 the selected state directory and URL. For a custom installation, override
 `T3CODE_HOME` and `T3_LOCAL_PORT` in an ignored `mise.local.toml`.
 
-Other tasks: `t3:health` checks HTTP; `t3:status` reports settings; `t3:projects`, `t3:threads` and `t3:threads-all` print inventories. `t3:show`, `t3:start` and `t3:send` retain explicit argument interfaces with `--help`. The picker is also available as `mise run t3`.
+Other tasks: `t3:health` checks HTTP; `t3:status` reports settings; `t3:projects`, `t3:threads` and `t3:threads-all` print inventories. `t3:show`, `t3:start` and `t3:send` retain explicit argument interfaces with `--help`; `t3:start` passes `--provider`/`--model` (defaults `T3_PROVIDER`, `T3_MODEL` in `.config/mise/conf.d/t3.toml`), because a project without a default model rejects a bare start. The picker is `mise run t3`; a bare `mise run` is the daily startup, not the picker.
 
 Project discovery and cross-project thread discovery query internal SQLite tables read-only. Agent actions go through the CLI with an explicit base directory. T3 upgrades may require query updates. No live provider execution is covered by the focused checks:
 

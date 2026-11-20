@@ -75,62 +75,43 @@ for repo in paths:
 PY
 '''
 
+# Repo lookup for the tasks below: scripts/crg-repo.sh (a name under repos/, or a path).
+[tasks."crg:build"]
+quiet = true
+description = "Build the graph for a repo that has none yet (then run crg:embed)"
+usage = 'arg "<repo>" help="Repo path or name under repos/"'
+run = '''
+set -eu
+target=$("{{config_root}}/scripts/crg-repo.sh" "{{config_root}}" "$usage_repo")
+code-review-graph build --repo "$target" --wait
+'''
+
 [tasks."crg:embed"]
+quiet = true
 description = "Compute or refresh vector embeddings for one repo or all built graphs"
 usage = 'arg "[repo]" help="Repo path or name under repos/ (omit for all built graphs)"'
 run = '''
 set -eu
-root="{{config_root}}"
-resolve_repo() {
-  if [ -d "$1" ]; then
-    printf '%s\n' "$1"
-  elif [ -d "$root/repos/$1" ]; then
-    printf '%s\n' "$root/repos/$1"
-  else
-    printf 'Repo not found: %s\n' "$1" >&2
-    exit 1
-  fi
-}
-if [ -n "${usage_repo:-}" ]; then
-  target=$(resolve_repo "$usage_repo")
-  code-review-graph embed --repo "$target" --wait
-else
-  for repo in "$root" "$root"/repos/*; do
-    [ -f "$repo/.code-review-graph/graph.db" ] || continue
-    printf '==> %s\n' "$repo"
-    code-review-graph embed --repo "$repo" --wait
-  done
-fi
+for repo in $("{{config_root}}/scripts/crg-repo.sh" "{{config_root}}" "${usage_repo:-}"); do
+  printf '==> %s\n' "$repo"
+  code-review-graph embed --repo "$repo" --wait
+done
 '''
 
 [tasks."crg:update"]
+quiet = true
 description = "Incrementally update graph and refresh embeddings for one repo or all built graphs"
-usage = 'arg "[repo]" help="Repo path or name under repos/ (omit for all built graphs)"'
+usage = '''
+arg "[repo]" help="Repo path or name under repos/ (omit for all built graphs)"
+flag "--no-embed" help="Update the graph only; skip embeddings (no embedding server needed)"
+'''
 run = '''
 set -eu
-root="{{config_root}}"
-resolve_repo() {
-  if [ -d "$1" ]; then
-    printf '%s\n' "$1"
-  elif [ -d "$root/repos/$1" ]; then
-    printf '%s\n' "$root/repos/$1"
-  else
-    printf 'Repo not found: %s\n' "$1" >&2
-    exit 1
-  fi
-}
-if [ -n "${usage_repo:-}" ]; then
-  target=$(resolve_repo "$usage_repo")
-  code-review-graph update --repo "$target" --wait
-  code-review-graph embed --repo "$target" --wait
-else
-  for repo in "$root" "$root"/repos/*; do
-    [ -f "$repo/.code-review-graph/graph.db" ] || continue
-    printf '==> %s\n' "$repo"
-    code-review-graph update --repo "$repo" --wait
-    code-review-graph embed --repo "$repo" --wait
-  done
-fi
+for repo in $("{{config_root}}/scripts/crg-repo.sh" "{{config_root}}" "${usage_repo:-}"); do
+  printf '==> %s\n' "$repo"
+  code-review-graph update --repo "$repo" --wait
+  [ "${usage_no_embed:-false}" = true ] || code-review-graph embed --repo "$repo" --wait
+done
 '''
 
 [tasks."crg:search"]
@@ -144,18 +125,7 @@ flag "-l --limit <limit>" default="10" help="Maximum results to return"
 run = '''
 set -eu
 root="{{config_root}}"
-if [ -n "${usage_repo:-}" ]; then
-  if [ -d "$usage_repo" ]; then
-    target="$usage_repo"
-  elif [ -d "$root/repos/$usage_repo" ]; then
-    target="$root/repos/$usage_repo"
-  else
-    printf 'Repo not found: %s\n' "$usage_repo" >&2
-    exit 1
-  fi
-else
-  target="$root"
-fi
+target=$("$root/scripts/crg-repo.sh" "$root" "${usage_repo:-$root}")
 code-review-graph search "$usage_query" --repo "$target" --limit "$usage_limit"
 '''
 

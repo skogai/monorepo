@@ -25,6 +25,9 @@ files: [mani.yaml, .gitignore]
 - [ ] Check the workstation's ~/.local/src clones against the list {#catalog-inventory}
   tech: issue #86 (Pathfinder U4)
   from: roadmap
+- [x] Check the catalog's shape with one command {#catalog-check}
+  tech: mise.toml tasks."catalog:check" (uses yq) — sync: false, tag == name, path == repos/<name>
+  by: claude
 
 ## Copy each repo's agent instructions here {#agents-cache}
 tech: mani task agents-cache + mise task agents:sync → agents/<name>.md
@@ -43,6 +46,9 @@ files: [agents/**]
 - [ ] Delete cached copies of repos that left the list {#agents-cache-orphans}
   tech: doc/questions.md Q2.9 — nothing removes them today; agents/systemd.md is one
   from: roadmap
+- [x] Refresh cached copies without cloning everything first {#agents-cache-refresh}
+  tech: mise tasks agents:refresh (cloned repos only), agents:sync (clone + refresh), agents:prune
+  by: claude
 
 ## Write a wiki of the active repos {#openwiki}
 tech: openwiki/ pages + OpenWiki CLI GitHub Action
@@ -92,6 +98,12 @@ files: [mise.toml, mise.lock, .miserc.toml, .config/mise/conf.d/plugin.*.toml, .
 - [ ] Ship offline mise docs, composed environments and the plugin contract {#mise-roadmap-2-5}
   tech: issues #32, #33, #34, #35
   from: roadmap
+- [x] Bring the workstation up to date with a bare `mise run` {#mise-startup}
+  tech: tasks.default in mise.toml — install, env check, catalog check, cache refresh, graph update, agenttrail up, T3 health, then `next`
+  by: claude
+- [x] Tidy the root tasks and add a lint task {#mise-task-tidy}
+  tech: mise.toml — SKOGAI_MY_SETTING dropped, agenttrail:start on config_root, lint (actionlint + mise fmt --check, passes), quiet task echo
+  by: claude
 
 ## Give every agent harness the same tools {#agent-wiring}
 tech: MCP config (mise, atuin, code-review-graph) + hooks + skills per harness
@@ -116,6 +128,9 @@ files: [AGENTS.md, CLAUDE.md, GEMINI.md, .mcp.json, .claude/**, .codex/**, .gemi
 - [ ] Show run context at session start and add it to commits {#wiring-session-context}
   tech: issue #40 — env:context --trailers exists, nothing calls it
   from: roadmap
+- [x] Build a graph for a newly cloned repo and share the repo lookup {#wiring-crg-build}
+  tech: .config/mise/conf.d/code-review-graph.toml crg:build; scripts/crg-repo.sh used by crg:embed/update/search/build
+  by: claude
 
 ## Drive T3 Code threads from the terminal {#t3}
 tech: mise t3:* tasks over the T3 CLI and its SQLite state, gum picker
@@ -130,6 +145,9 @@ files: [.config/mise/conf.d/t3.toml, scripts/t3-picker.py, .skogai/tests/test_t3
   tech: t3.toml T3CODE_HOME; commit for PR #60
 - [x] Keep a local copy of the T3 Code docs {#t3-docs}
   tech: doc/t3code/** with UPSTREAM.md; doc/t3-cli.md
+- [x] Start a thread without a project default model {#t3-start-model}
+  tech: t3:start --provider/--model/--title, defaults T3_PROVIDER/T3_MODEL in t3.toml
+  by: claude
 
 ## Record decisions and open questions {#decisions}
 tech: ADRs, questions file, surveys, research notes, dated experiment records
@@ -200,9 +218,10 @@ files: [doc/pathfinder-2026-11-14/**]
   tech: deferred 2026-11-19 until the harness works; work goes issue → PR directly
 
 ## decisions
-- 2026-11-20 (claude): Backfilled PLAN.md from the code. Trust order used: tracked files and layout → git log (173 commits, latest 2026-11-20) → doc/questions.md "Decisions of 2026-11-19" and open GitHub issues (#13–#105, read with `gh issue list`) → README/agent-workflow last. Every `[x]` cites a file or commit; nothing was ticked from prose alone. No task is `[~]`: nothing is being built in this session.
+- 2026-11-20 (claude): Backfilled PLAN.md from the code. Trust order used: tracked files and layout → git log (173 commits, latest 2026-11-20) → doc/questions.md "Decisions of 2026-11-19" and open GitHub issues (#13–#105, read with `gh issue list`) → README/agent-workflow last. Every `[x]` cites a file or commit; nothing was ticked from prose alone. No task was `[~]` at backfill time.
 - Eight components. The Pathfinder work is a component (fleet-fixes) even though its commits land in child repos, because it is where most open work in this repo's tracker lives and it owns doc/pathfinder-2026-11-14/. code-review-graph setup lives in agent-wiring rather than its own card: one conf.d file and hooks, no second task yet.
 - Discrepancies found between docs and code, left as open tasks rather than fixed: (1) mani.yaml set `sync: true` on skogai-events and skogfleet although AGENTS.md says every project is `sync: false` → fixed, {#catalog-all-lazy}; (2) doc/questions.md records doc/journal.md as the journal (2026-11-15) but no such file exists → {#decisions-journals}; (3) the openwiki workflow still needs OPENAI_API_KEY despite the LM Studio decision → {#openwiki-lmstudio}; (4) doc/questions.md Q2.8 said agents/ holds two files — it holds 15; answered in questions.md.
 - Unchecked for lack of evidence: README quickstart (#31 open, no verified section), container/read-only fetch notes (agent-workflow says "not yet run"/"not verified"), the openwiki workflow (never run).
 - 2026-11-20 (owner): `/home/skogix/Work` (~/Work) is the fixed checkout path, so the hard-coded MCP paths stay; the task to remove them was dropped. Every catalog project is `sync: false`. `.skogai/logs/journal.md` is the spammable journal, moving to skogai-events behind an env var. LM Studio is running for OpenWiki. All recorded in doc/questions.md "Decisions of 2026-11-20".
 - The agenttrail convention (AGENTS.md/CLAUDE.md section, `npm:agenttrail` in mise.toml + .mise/locks, PLAN.md) is committed together with this backfill.
+- 2026-11-20 (owner → claude): a bare `mise run` becomes the daily startup: install tools, check the environment and catalog, refresh what is already cloned, update the code graph, relaunch agenttrail boards, check T3, then show `next`. Every step warns instead of stopping the run. The T3 picker stays reachable as `mise run t3`.
