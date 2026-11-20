@@ -67,6 +67,48 @@ run = [
 description = "Clone the repos the wiki (openwiki/) covers into repos/"
 run = "mani sync -t openwiki --ignore-sync-state"
 
+# agenttrail Map (npm:agenttrail above) for this repo, read by the herdr-app
+# agenttrail panel on 127.0.0.1:5330-5344. agenttrail exits early by itself
+# when a board for this repo is already up. Saved boards: ~/.agenttrail/.
+[tasks."agenttrail:start"]
+description = "Run the agenttrail Map for this repo in the foreground (Ctrl-C stops it)"
+run = 'agenttrail "{{config_root}}" --no-open'
+
+[tasks."agenttrail:up"]
+description = "Start the agenttrail Map for this repo in the background; log in ~/.agenttrail/Work.log"
+quiet = true
+run = """
+setsid -f agenttrail "{{config_root}}" --no-open >>"$HOME/.agenttrail/Work.log" 2>&1 </dev/null
+for i in $(seq 1 50); do
+  for p in $(seq 5330 5344); do
+    if curl -s -m 0.3 "http://127.0.0.1:$p/whoami" | grep -q "\\"repoPath\\":\\"{{config_root}}\\""; then
+      echo "agenttrail up: http://localhost:$p"; exit 0
+    fi
+  done
+  sleep 0.2
+done
+echo "agenttrail did not come up; see ~/.agenttrail/Work.log" >&2; exit 1
+"""
+
+[tasks."agenttrail:status"]
+description = "List the agenttrail Maps running on this machine (any repo)"
+quiet = true
+run = """
+found=0
+for p in $(seq 5330 5344); do
+  w=$(curl -s -m 0.3 "http://127.0.0.1:$p/whoami") || continue
+  echo "$p  $(echo "$w" | jq -r .repoPath)"; found=1
+done
+[ "$found" = 1 ] || echo "no agenttrail Map running"
+"""
+
+[tasks."agenttrail:stop"]
+description = "Stop the agenttrail Map for this repo"
+quiet = true
+run = """
+if pkill -f 'agenttrail\\.mjs {{config_root}}( |$)'; then echo "agenttrail stopped"; else echo "agenttrail was not running for this repo"; fi
+"""
+
 # Basic environment variables: see doc/mise.md, "Basic environment variables".
 [tasks."env:show"]
 description = "Show the SKOGAI_ variables mise sets here"
