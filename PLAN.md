@@ -41,7 +41,7 @@ files: [agents/**]
   tech: doc/questions.md Q2.7
   from: roadmap
 - [ ] Delete cached copies of repos that left the list {#agents-cache-orphans}
-  tech: doc/questions.md Q2.9 — nothing removes them today
+  tech: doc/questions.md Q2.9 — nothing removes them today; agents/systemd.md is one
   from: roadmap
 
 ## Write a wiki of the active repos {#openwiki}
@@ -157,8 +157,11 @@ files: [doc/adr/**, doc/questions.md, doc/surveys/**, doc/agent-workflow.md, doc
   tech: doc/questions.md "Decisions of 2026-11-20"
   by: claude
 - [ ] Answer the remaining repo housekeeping questions {#decisions-housekeeping}
-  tech: doc/questions.md section 2 (Q2.1–Q2.11)
+  tech: doc/questions.md section 2 — Q2.8 and Q2.11 answered; the rest carry a recommendation and wait on the owner
   from: roadmap
+- [x] Re-check every open question against the source and drop the closed ones {#decisions-questions-refresh}
+  tech: doc/questions.md "Refresh of 2026-11-20"; .skogai/tests/2026-11-20-fetch-checks.md (Q2.11 checks run)
+  by: claude
 
 ## Fix duplication across the SkogAI repos {#fleet-fixes}
 tech: Pathfinder 2026-11-14 proposal → GitHub milestones U1–U9 (issues #68–#105, project 4); commits land in the child repos
