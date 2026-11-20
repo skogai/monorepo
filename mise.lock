@@ -338,6 +338,12 @@ url = "https://registry.npmjs.org/npm/-/npm-12.2.3.tgz"
 checksum = "sha256:fa0711dd513fa1386bbad3962a292cb813461cb57dedf07d6eb7efe76dffe897"
 url = "https://registry.npmjs.org/npm/-/npm-12.2.3.tgz"
 
+[[tools."npm:agenttrail"]]
+version = "0.4.1"
+aube = { path = ".mise/locks/npm-agenttrail/0.4.1", digest = "sha256:18200c95a1d45902dec493774fe962cd7a94962246b654e996067a9fd7b238e2" }
+backend = "npm:agenttrail"
+specifiers = ["latest"]
+
 [[tools.pkl]]
 version = "0.33.1"
 backend = "aqua:apple/pkl"

@@ -1,0 +1,24 @@
+lockfileVersion: '9.0'
+
+settings:
+  autoInstallPeers: true
+  excludeLinksFromLockfile: false
+
+importers:
+
+  .:
+    dependencies:
+      agenttrail:
+        specifier: 0.4.1
+        version: 0.4.1
+
+packages:
+
+  agenttrail@0.4.1:
+    resolution: {integrity: sha512-RPgvko+G/1FNF3UpaCLpMyNa0llmMhSsp6MHO2FCBUpH4T+OJAQKJYAfT+SSgcmTlmgpGFyWo2aAUUc4B3fjpQ==}
+    engines: {node: '>=20'}
+    hasBin: true
+
+snapshots:
+
+  agenttrail@0.4.1: {}

@@ -85,7 +85,7 @@ projects:
   skogai-events:
     path: repos/skogai-events
     url: https://github.com/skogai/skogai-events
-    sync: true
+    sync: false
     tags: [skogai-events]
   skogai2-marketplace:
     path: repos/skogai2-marketplace
@@ -160,7 +160,7 @@ projects:
   skogfleet:
     path: repos/skogfleet
     url: https://github.com/skogai2/skogfleet
-    sync: true
+    sync: false
     tags: [skogfleet]
 tasks:
   repomix:

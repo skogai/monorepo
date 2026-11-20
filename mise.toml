@@ -32,6 +32,7 @@ code-review-graph = "latest"
 uv = "latest"
 python = "latest"
 npm = "latest"
+"npm:agenttrail" = "latest"
 
 
 # GitHub OAuth for mise, gh and git push. See doc/github-auth.md.

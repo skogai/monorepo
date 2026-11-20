@@ -28,6 +28,16 @@ Answered by the owner in one pass. They close or replace the questions listed af
 - **The rest of Pathfinder is tracked as GitHub issues.** Milestones U1–U4 and U6–U9 in this repo (#68–#105, all on project board 4), each issue checked against the source on 2026-11-19. Dropped on the way: fixes that targeted the archived repos (the `dash-skogai`/`skogai-nov10` wrappers and route checker, `core`), the harness `orchestrate-worktrees.js` task (U5), and the `dot-skogai/SKOGAI.md` doc fix (frozen repo). U6 targets `skogai-events`, the successor of the disabled `skogai-core` plugin. Owner calls are issues of their own: #88 (old journals), #96 (decision store), #101 (marketplace `docs/`).
 - **Still open:** section 2 housekeeping and the remaining skogai2 per-repo questions.
 
+## Decisions of 2026-11-20
+
+Answered by the owner while PLAN.md was backfilled. They close or narrow the questions listed after each item.
+
+- **Every catalog project is `sync: false`.** `skogai-events` and `skogfleet` were `sync: true`; both are now lazy like the rest, so a bare `mani sync` clones nothing again. A low-stakes fix, done in `mani.yaml`.
+- **Journals.** `.skogai/logs/journal.md` is the current "spammable" turn journal. The skogai-core Claude plugin writes it, through a plugin setting, and commits it as `skogai-core: journal`. That job moves to `skogai-events`, with the journal path set by an environment variable instead of a plugin option. `.skogai/journal.md` is the older journal from before the move to `.skogai/logs/`. The curated journal decided on 2026-11-15, `doc/journal.md`, does not exist yet. Narrows #87 and #88.
+- **OpenWiki on LM Studio is close.** A local LM Studio server is up and running. The workflow still asks for `OPENAI_API_KEY` until it is pointed at that endpoint.
+- **`~/Work` is the fixed checkout path.** The MCP configs (`.mcp.json`, `.codex/config.toml`, `.agents/plugins/monorepo/mcp_config.json`) hard-code `/home/skogix/Work`, and that is accepted from now on. A checkout elsewhere has to override them by hand.
+- **Recorded from the current state:** `agents/` on master now holds 15 cached files, which answers Q2.8. The `agents-cache` task removes a cached copy when its repo has no root `AGENTS.md`, but a repo that leaves `mani.yaml` still keeps its copy, so Q2.9 stays open.
+
 ## 1. Decisions that cut across repos
 
 **Q1.1 Which org is canonical, per name?** For each row: `skogai`, `skogai2`, or "both, they are different things". Then what happens to the other copy: archive, point at the canonical one, or keep.
@@ -97,9 +107,9 @@ A:
 A:
 
 **Q2.8 AGENTS.md cache: commit a full refresh?** `agents/` on master holds two files (mise-plugin, skogai-jq). A run on skogix-workstation produced 14 more and a changed `skogai-jq.md`; they were never committed and are gone from the root checkout.
-A:
+A: Done (2026-11-20): `agents/` holds 15 cached files on master.
 
-**Q2.9 Orphan cache files: when a repo leaves `mani.yaml`, should `mise run agents:sync` delete its `agents/<name>.md`?** Nothing removes it today.
+**Q2.9 Orphan cache files: when a repo leaves `mani.yaml`, should `mise run agents:sync` delete its `agents/<name>.md`?** Nothing removes it today. (2026-11-20: `agents-cache` now deletes the copy when a cloned repo has no `AGENTS.md`; a repo that leaves the catalog is not cloned, so its copy stays.)
 A:
 
 **Q2.10 The README backlog link points at `repos/skogix/.skogai/todo.list`, which exists only after that repo is cloned. Keep, or link to the GitHub file instead?**
