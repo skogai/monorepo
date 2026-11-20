@@ -132,7 +132,7 @@ description = "Run the agenttrail Map for this repo in the foreground (Ctrl-C st
 run = 'agenttrail "{{config_root}}" --no-open'
 
 [tasks."agenttrail:up"]
-description = "Start every saved agenttrail Map that isn't running (~/.agenttrail/); a repo is saved by its first agenttrail:start"
+description = "Start every saved agenttrail Map (~/.agenttrail/) that isn't running, in the background; a repo never run needs agenttrail:start once"
 quiet = true
 run = "agenttrail up"
 
