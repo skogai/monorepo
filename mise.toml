@@ -17,7 +17,7 @@ SKOGAI_MY_SETTING = "test"
 COUNCIL_PROVIDERS = "claude-cli,codex"
 
 [tools]
-gh = { version = "2.104.0", minimum_release_age = "0s", lazy = true }
+gh = { version = "latest", minimum_release_age = "0s", lazy = true }
 usage = { version = "7.3.0", workflow = "publish-cli.yml" }
 worktrunk = { version = "latest", workflow = "release.yaml" }
 actionlint = "latest"
