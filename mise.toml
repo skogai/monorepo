@@ -132,20 +132,9 @@ description = "Run the agenttrail Map for this repo in the foreground (Ctrl-C st
 run = 'agenttrail "{{config_root}}" --no-open'
 
 [tasks."agenttrail:up"]
-description = "Start the agenttrail Map for this repo in the background; log in ~/.agenttrail/Work.log"
+description = "Start every saved agenttrail Map that isn't running (~/.agenttrail/); a repo is saved by its first agenttrail:start"
 quiet = true
-run = """
-setsid -f agenttrail "{{config_root}}" --no-open >>"$HOME/.agenttrail/Work.log" 2>&1 </dev/null
-for i in $(seq 1 50); do
-  for p in $(seq 5330 5344); do
-    if curl -s -m 0.3 "http://127.0.0.1:$p/whoami" | grep -q "\\"repoPath\\":\\"{{config_root}}\\""; then
-      echo "agenttrail up: http://localhost:$p"; exit 0
-    fi
-  done
-  sleep 0.2
-done
-echo "agenttrail did not come up; see ~/.agenttrail/Work.log" >&2; exit 1
-"""
+run = "agenttrail up"
 
 [tasks."agenttrail:status"]
 description = "List the agenttrail Maps running on this machine (any repo)"
