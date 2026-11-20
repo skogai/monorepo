@@ -88,7 +88,15 @@ The plugin's own checks run in isolated mise directories with `mise run //repos/
 
 ## Tools
 
-Tools in `mise.toml` are pinned to exact versions, and `mise.lock` records the download URL, checksum and signer for each platform. To change a version:
+Most tools in `mise.toml` request `latest`; a few (`usage`, `lua`) are pinned to exact versions. Either way `mise.lock` records the resolved version, download URL, checksum and signer for each platform, so a checkout installs what was locked, not whatever is newest. `gh` follows `latest` like Omarchy's system entry, so the version here matches the machine's.
+
+To move the `latest` tools forward, or one of them:
+
+```sh
+mise lock --bump        # or: mise lock --bump gh
+```
+
+To change a pinned version:
 
 ```sh
 mise lock usage@7.4.0
