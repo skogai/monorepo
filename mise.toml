@@ -226,6 +226,11 @@ step "next"           mise run next
 '''
 
 # Session start: what "hi" means in doc/agent-workflow.md, "Starting a session".
+[tasks."plan:overview"]
+description = "Size of the plan: every monorepo issue with its size label, milestone and target repos, as JSON for the plan dashboard"
+usage = 'arg "[out]" default=".skogai/tmp/plan-overview.json" help="Where to write the JSON"'
+run = 'python3 -I scripts/plan-overview.py "${usage_out}"'
+
 [tasks.next]
 description = "Show open PRs and project 4 work, and the next item per track"
 quiet = true
