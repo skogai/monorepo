@@ -19,6 +19,7 @@ mise.*.local.toml
 /repos/
 # mani #
 repos/skogfleet
+repos/skillshare
 repos/skogai2-skogai-fleet
 repos/skogai-skogfleet
 repos/repomix
